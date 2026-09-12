@@ -1,0 +1,80 @@
+{
+    "toss": {
+        "oman_hong kong, china_2026-09-12": {
+            "tossWinner": "Oman",
+            "tossDecision": "bowl",
+            "matchWinner": "Oman",
+            "status": "COMPLETED"
+        },
+        "hong kong, china_oman_2026-09-12": {
+            "tossWinner": "Oman",
+            "tossDecision": "bowl",
+            "matchWinner": "Oman",
+            "status": "COMPLETED"
+        },
+        "nepal_united arab emirates_2026-09-12": {
+            "tossWinner": "Nepal",
+            "tossDecision": "bowl",
+            "matchWinner": "Nepal",
+            "status": "COMPLETED"
+        },
+        "united arab emirates_nepal_2026-09-12": {
+            "tossWinner": "Nepal",
+            "tossDecision": "bowl",
+            "matchWinner": "Nepal",
+            "status": "COMPLETED"
+        },
+        "guyana amazon warriors_trinbago knight riders_2026-09-12": {
+            "tossWinner": "Guyana Amazon Warriors",
+            "tossDecision": "bowl",
+            "matchWinner": "Guyana Amazon Warriors",
+            "status": "COMPLETED"
+        },
+        "trinbago knight riders_guyana amazon warriors_2026-09-12": {
+            "tossWinner": "Guyana Amazon Warriors",
+            "tossDecision": "bowl",
+            "matchWinner": "Guyana Amazon Warriors",
+            "status": "COMPLETED"
+        },
+        "mohali kings_amritsar soormas_2026-09-12": {
+            "tossWinner": "Amritsar Soormas",
+            "tossDecision": "bowl",
+            "matchWinner": "Amritsar Soormas",
+            "status": "COMPLETED"
+        },
+        "amritsar soormas_mohali kings_2026-09-12": {
+            "tossWinner": "Amritsar Soormas",
+            "tossDecision": "bowl",
+            "matchWinner": "Amritsar Soormas",
+            "status": "COMPLETED"
+        },
+        "uganda_kenya_2026-09-12": {
+            "tossWinner": "Kenya",
+            "tossDecision": "bowl",
+            "matchWinner": "Kenya",
+            "status": "COMPLETED"
+        },
+        "kenya_uganda_2026-09-12": {
+            "tossWinner": "Kenya",
+            "tossDecision": "bowl",
+            "matchWinner": "Kenya",
+            "status": "COMPLETED"
+        },
+        "bangladesh a_south africa a_2026-09-12": {
+            "tossWinner": "Bangladesh A",
+            "tossDecision": "bowl",
+            "matchWinner": "Bangladesh A",
+            "status": "COMPLETED"
+        },
+        "south africa a_bangladesh a_2026-09-12": {
+            "tossWinner": "Bangladesh A",
+            "tossDecision": "bowl",
+            "matchWinner": "Bangladesh A",
+            "status": "COMPLETED"
+        }
+    },
+    "deleted": [
+        "england_pakistan_2026-09-12",
+        "pakistan_england_2026-09-12"
+    ]
+}
