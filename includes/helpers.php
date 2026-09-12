@@ -10,6 +10,19 @@ function sibling_path(string $rel): string
     return dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'cricket-toss-analyzer' . DIRECTORY_SEPARATOR . $rel;
 }
 
+function historical_toss_path(): string
+{
+    $local = data_path('historical_toss.json');
+    if (is_file($local)) {
+        return $local;
+    }
+    $env = getenv('HISTORICAL_TOSS_PATH');
+    if (is_string($env) && $env !== '' && is_file($env)) {
+        return $env;
+    }
+    return sibling_path('src/data/historical_toss.json');
+}
+
 function read_json(string $path, $fallback = [])
 {
     if (!is_file($path)) {

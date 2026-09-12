@@ -84,7 +84,7 @@ function load_history(): array
     if ($rows !== null) {
         return $rows;
     }
-    $raw = read_json(sibling_path('src/data/historical_toss.json'), []);
+    $raw = read_json(historical_toss_path(), []);
     $rows = [];
     foreach ($raw as $m) {
         $rows[] = [

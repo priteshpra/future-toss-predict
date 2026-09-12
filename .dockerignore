@@ -1,0 +1,5 @@
+.git
+**/*.bat
+data/cache_*.json
+data/tg_bets.json
+data/_*.php
