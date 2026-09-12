@@ -60,6 +60,7 @@ function enrich_match(array $m, string $date): array
 
     $tA = $analysis['teamA'];
     $tB = $analysis['teamB'];
+    [$loadA, $loadB] = market_load_share($teamA, $teamB, $date, $m['league'] ?? '', $mins);
 
     return [
         'id' => $m['id'] ?? ('m_' . md5($teamA . $teamB . $date . $time)),
@@ -96,8 +97,8 @@ function enrich_match(array $m, string $date): array
             'decision' => $analysis['prediction']['likelyDecision'],
             'teamAPct' => $tA['probability'],
             'teamBPct' => $tB['probability'],
-            'tossLoadA' => $tA['tossLoad'],
-            'tossLoadB' => $tB['tossLoad'],
+            'tossLoadA' => $loadA,
+            'tossLoadB' => $loadB,
             'insights' => $analysis['prediction']['insights'],
             'locked' => $mins <= 30,
         ],
@@ -232,20 +233,19 @@ try {
             $date = normalize_date($_GET['date'] ?? ist_today());
             $league = $_GET['league'] ?? 'all';
             $matches = collect_day($date, $league);
+            $loadMap = [];
             try {
                 $tgFeed = fetch_telegram_bets();
-                $loadMap = [];
-                foreach (build_punter_load($tgFeed['posts'] ?? [], $matches)['matches'] as $row) {
+                foreach (build_punter_load($tgFeed['posts'] ?? [], $matches, $date)['matches'] as $row) {
                     $loadMap[$row['id']] = $row;
                 }
-                foreach ($matches as &$mm) {
-                    if (isset($loadMap[$mm['id']])) {
-                        $mm['punterLoad'] = $loadMap[$mm['id']];
-                    }
-                }
-                unset($mm);
             } catch (Throwable $e) {
+                $loadMap = [];
             }
+            foreach ($matches as &$mm) {
+                $mm = apply_live_toss_markets($mm, $loadMap[$mm['id']] ?? null);
+            }
+            unset($mm);
             $alerts = array_values(array_filter($matches, fn($m) => in_array($m['phase'], ['alert_30', 'toss_now'], true) && empty($m['tossWinner'])));
             json_ok([
                 'date' => $date,

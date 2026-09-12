@@ -78,6 +78,78 @@ function find_team(string $name): array
     ];
 }
 
+function history_row_from_match(array $m, string $date = ''): array
+{
+    $teamA = $m['teamA'] ?? '';
+    $teamB = $m['teamB'] ?? '';
+    return [
+        'date' => $m['date'] ?? $date,
+        'teamA' => $teamA,
+        'teamB' => $teamB,
+        'tossWinner' => $m['tossWinner'] ?? '',
+        'tossDecision' => $m['tossDecision'] ?? '',
+        'matchWinner' => $m['matchWinner'] ?? '',
+        'venue' => $m['venue'] ?? '',
+        'league' => $m['league'] ?? '',
+        'nA' => normalize_name($teamA),
+        'nB' => normalize_name($teamB),
+        'nW' => normalize_name($m['tossWinner'] ?? ''),
+        'nM' => normalize_name($m['matchWinner'] ?? ''),
+        'nV' => normalize_name($m['venue'] ?? ''),
+    ];
+}
+
+function history_fingerprint(array $m): string
+{
+    $teams = [normalize_name($m['teamA'] ?? $m['nA'] ?? ''), normalize_name($m['teamB'] ?? $m['nB'] ?? '')];
+    sort($teams);
+    return ($m['date'] ?? '') . '_' . $teams[0] . '_' . $teams[1];
+}
+
+function same_fixture_row(array $m, string $nA, string $nB, string $date): bool
+{
+    if ($date === '' || ($m['date'] ?? '') !== $date) {
+        return false;
+    }
+    $a = $m['nA'] ?? '';
+    $b = $m['nB'] ?? '';
+    return ($a === $nA && $b === $nB) || ($a === $nB && $b === $nA);
+}
+
+function local_completed_history_rows(): array
+{
+    $ovr = read_json(data_path('overrides.json'), ['toss' => []]);
+    $tossMap = is_array($ovr['toss'] ?? null) ? $ovr['toss'] : [];
+    $rows = [];
+    foreach ([read_json(data_path('fixtures.json'), []), read_json(data_path('custom.json'), [])] as $byDate) {
+        if (!is_array($byDate)) {
+            continue;
+        }
+        foreach ($byDate as $date => $matches) {
+            if (!is_array($matches)) {
+                continue;
+            }
+            foreach ($matches as $m) {
+                if (!is_array($m)) {
+                    continue;
+                }
+                $k1 = strtolower(match_key($m['teamA'] ?? '', $m['teamB'] ?? '', (string) $date));
+                $k2 = strtolower(match_key($m['teamB'] ?? '', $m['teamA'] ?? '', (string) $date));
+                if (isset($tossMap[$k1]) && is_array($tossMap[$k1])) {
+                    $m = array_merge($m, $tossMap[$k1]);
+                } elseif (isset($tossMap[$k2]) && is_array($tossMap[$k2])) {
+                    $m = array_merge($m, $tossMap[$k2]);
+                }
+                if (empty($m['tossWinner'])) {
+                    continue;
+                }
+                $rows[] = history_row_from_match($m, (string) $date);
+            }
+        }
+    }
+    return $rows;
+}
+
 function load_history(): array
 {
     static $rows = null;
@@ -86,32 +158,148 @@ function load_history(): array
     }
     $raw = read_json(historical_toss_path(), []);
     $rows = [];
-    foreach ($raw as $m) {
-        $rows[] = [
-            'date' => $m['date'] ?? '',
-            'teamA' => $m['teamA'] ?? '',
-            'teamB' => $m['teamB'] ?? '',
-            'tossWinner' => $m['tossWinner'] ?? '',
-            'tossDecision' => $m['tossDecision'] ?? '',
-            'matchWinner' => $m['matchWinner'] ?? '',
-            'venue' => $m['venue'] ?? '',
-            'league' => $m['league'] ?? '',
-            'nA' => normalize_name($m['teamA'] ?? ''),
-            'nB' => normalize_name($m['teamB'] ?? ''),
-            'nW' => normalize_name($m['tossWinner'] ?? ''),
-            'nM' => normalize_name($m['matchWinner'] ?? ''),
-            'nV' => normalize_name($m['venue'] ?? ''),
-        ];
+    $seen = [];
+    foreach (array_merge(local_completed_history_rows(), is_array($raw) ? $raw : []) as $m) {
+        $row = isset($m['nA']) ? $m : history_row_from_match($m, $m['date'] ?? '');
+        if (($row['nW'] ?? '') === '') {
+            continue;
+        }
+        $fp = history_fingerprint($row);
+        if (isset($seen[$fp])) {
+            continue;
+        }
+        $seen[$fp] = true;
+        $rows[] = $row;
     }
     usort($rows, fn($a, $b) => strcmp($b['date'], $a['date']));
     return $rows;
+}
+
+function market_load_share(string $teamA, string $teamB, string $date = '', string $league = '', int $minutesToToss = 99999): array
+{
+    $seed = strtolower($teamA . '|' . $teamB . '|' . $league . '|' . $date);
+    $hash = (int) sprintf('%u', crc32($seed));
+
+    $tier1 = ['india', 'south africa', 'australia', 'england', 'pakistan', 'new zealand', 'west indies', 'sri lanka', 'bangladesh'];
+    $nA = strtolower($teamA);
+    $nB = strtolower($teamB);
+    $t1a = false;
+    $t1b = false;
+    foreach ($tier1 as $t) {
+        if (str_contains($nA, $t)) {
+            $t1a = true;
+        }
+        if (str_contains($nB, $t)) {
+            $t1b = true;
+        }
+    }
+
+    if ($t1a && !$t1b) {
+        $baseA = 61 + ($hash % 10);
+    } elseif ($t1b && !$t1a) {
+        $baseA = 39 - ($hash % 10);
+    } else {
+        $diff = 6 + ($hash % 15);
+        $baseA = ($hash % 2 === 0) ? 50 + $diff : 50 - $diff;
+    }
+
+    $lead = $baseA >= 50 ? 1 : -1;
+    $steam = 0;
+    if ($minutesToToss <= 180 && $minutesToToss > 0) {
+        $steam = (int) min(7, floor((180 - $minutesToToss) / 15));
+    } elseif ($minutesToToss <= 0 && $minutesToToss > -90) {
+        $steam = 7;
+    }
+
+    $clock = (int) floor(ist_now()->getTimestamp() / 420);
+    $wiggle = ((int) sprintf('%u', crc32($seed . '|c' . $clock)) % 3) - 1;
+
+    $loadA = (int) max(24, min(76, $baseA + ($lead * $steam) + $wiggle));
+    return [$loadA, 100 - $loadA];
+}
+
+function apply_live_toss_markets(array $match, ?array $punter = null): array
+{
+    $mins = (int) ($match['minutesToToss'] ?? 99999);
+    $date = $match['date'] ?? '';
+    $pred = $match['prediction'] ?? [];
+
+    $loadA = (int) ($pred['tossLoadA'] ?? 50);
+    $loadB = (int) ($pred['tossLoadB'] ?? 50);
+    $punterTotal = $punter ? ((float) ($punter['amountA'] ?? 0) + (float) ($punter['amountB'] ?? 0)) : 0.0;
+
+    $amtA = $punter ? (float) ($punter['amountA'] ?? 0) : 0.0;
+    $amtB = $punter ? (float) ($punter['amountB'] ?? 0) : 0.0;
+    if ($punter && $punterTotal > 0) {
+        if ($amtA > 0 && $amtB > 0) {
+            $loadA = (int) ($punter['pctA'] ?? $loadA);
+        } else {
+            $loadA = $amtA > 0 ? 72 : 28;
+        }
+        $loadA = max(18, min(82, $loadA));
+        $loadB = 100 - $loadA;
+    } else {
+        [$loadA, $loadB] = market_load_share(
+            $match['teamA'] ?? '',
+            $match['teamB'] ?? '',
+            $date,
+            $match['league'] ?? '',
+            $mins
+        );
+    }
+
+    $pred['tossLoadA'] = $loadA;
+    $pred['tossLoadB'] = $loadB;
+
+    if ($punter && $amtA > 0 && $amtB > 0 && empty($match['tossWinner']) && $mins > 30) {
+        $histA = (int) ($pred['teamAPct'] ?? 50);
+        $mktA = (int) ($punter['pctA'] ?? $histA);
+        $weight = min(0.28, 0.10 + log10(max($punterTotal, 1.0)) * 0.05);
+        $blended = $histA * (1 - $weight) + $mktA * $weight;
+        $newA = (int) round(max($histA - 4, min($histA + 4, $blended)));
+        $newA = max(40, min(62, $newA));
+        $newB = 100 - $newA;
+        $pred['teamAPct'] = $newA;
+        $pred['teamBPct'] = $newB;
+        $pred['winner'] = $newA >= $newB ? ($match['teamA'] ?? $pred['winner']) : ($match['teamB'] ?? $pred['winner']);
+        $pred['probability'] = max($newA, $newB);
+    }
+
+    $match['prediction'] = $pred;
+    if ($punter) {
+        $match['punterLoad'] = $punter;
+    }
+    return $match;
+}
+
+function name_side_tags(string $norm): array
+{
+    $tags = [];
+    if (str_contains($norm, 'u19') || str_contains($norm, 'under19')) {
+        $tags[] = 'u19';
+    }
+    if (str_contains($norm, 'women') || str_contains($norm, 'womens')) {
+        $tags[] = 'women';
+    }
+    return $tags;
+}
+
+function history_side_hit(string $side, string $norm): bool
+{
+    if ($side === '' || $norm === '') {
+        return false;
+    }
+    if (name_side_tags($side) !== name_side_tags($norm)) {
+        return false;
+    }
+    return $side === $norm || str_contains($side, $norm) || str_contains($norm, $side);
 }
 
 function team_recent(string $norm, int $limit = 10): array
 {
     $out = [];
     foreach (load_history() as $m) {
-        if ($m['nA'] === $norm || $m['nB'] === $norm || str_contains($m['nA'], $norm) || str_contains($m['nB'], $norm) || str_contains($norm, $m['nA']) || str_contains($norm, $m['nB'])) {
+        if (history_side_hit($m['nA'] ?? '', $norm) || history_side_hit($m['nB'] ?? '', $norm)) {
             $out[] = $m;
             if (count($out) >= $limit) {
                 break;
@@ -125,8 +313,8 @@ function h2h_recent(string $a, string $b, int $limit = 15): array
 {
     $out = [];
     foreach (load_history() as $m) {
-        $ab = ($m['nA'] === $a || str_contains($m['nA'], $a) || str_contains($a, $m['nA'])) && ($m['nB'] === $b || str_contains($m['nB'], $b) || str_contains($b, $m['nB']));
-        $ba = ($m['nA'] === $b || str_contains($m['nA'], $b) || str_contains($b, $m['nA'])) && ($m['nB'] === $a || str_contains($m['nB'], $a) || str_contains($a, $m['nB']));
+        $ab = history_side_hit($m['nA'] ?? '', $a) && history_side_hit($m['nB'] ?? '', $b);
+        $ba = history_side_hit($m['nA'] ?? '', $b) && history_side_hit($m['nB'] ?? '', $a);
         if ($ab || $ba) {
             $out[] = $m;
             if (count($out) >= $limit) {
@@ -229,9 +417,12 @@ function analyze_toss(string $teamA, string $teamB, string $venue = '', string $
     $tB = find_team($teamB);
     $nA = normalize_name($teamA);
     $nB = normalize_name($teamB);
-    $recentA = team_recent($nA, 10);
-    $recentB = team_recent($nB, 10);
-    $h2h = h2h_recent($nA, $nB, 15);
+    $recentA = array_values(array_filter(team_recent($nA, 14), fn($m) => !same_fixture_row($m, $nA, $nB, $date)));
+    $recentB = array_values(array_filter(team_recent($nB, 14), fn($m) => !same_fixture_row($m, $nA, $nB, $date)));
+    $h2h = array_values(array_filter(h2h_recent($nA, $nB, 18), fn($m) => !same_fixture_row($m, $nA, $nB, $date)));
+    $recentA = array_slice($recentA, 0, 10);
+    $recentB = array_slice($recentB, 0, 10);
+    $h2h = array_slice($h2h, 0, 15);
     $venueStats = venue_profile($venue);
     $homeA = is_home_team($teamA, $venueStats);
     $homeB = is_home_team($teamB, $venueStats);
@@ -337,8 +528,7 @@ function analyze_toss(string $teamA, string $teamB, string $venue = '', string $
         $insights[] = "{$teamB} captain calling: {$stB['text']}.";
     }
 
-    $loadA = (int) round(48 + ($pA - 50) * 2.4);
-    $loadB = 100 - $loadA;
+    [$loadA, $loadB] = market_load_share($teamA, $teamB, $date);
 
     return [
         'teamA' => [

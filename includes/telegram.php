@@ -242,10 +242,27 @@ function team_aliases(): array
         'glasgow' => ['glasgowcosmic'],
         'glasgowcosmic' => ['glasgow'],
         'tkrw' => ['trinbagoknightriderswomen'],
+        'trinbagow' => ['trinbagoknightriderswomen'],
+        'trinbagoknightridersw' => ['trinbagoknightriderswomen'],
         'gaww' => ['guyanaamazonwarriorswomen'],
+        'guyanaw' => ['guyanaamazonwarriorswomen'],
         'pakistan' => ['pakistan'],
         'england' => ['england'],
     ];
+}
+
+function team_age_gender_tags(string $raw): array
+{
+    $s = strtolower($raw);
+    $n = normalize_name($raw);
+    $tags = [];
+    if (str_contains($n, 'u19') || str_contains($n, 'under19') || preg_match('/\bu19\b|\bunder[- ]?19\b/', $s)) {
+        $tags[] = 'u19';
+    }
+    if (str_contains($n, 'women') || preg_match('/\bwomen\b|\bwomens\b|\bw\b/', $s)) {
+        $tags[] = 'women';
+    }
+    return $tags;
 }
 
 function team_hits_name(string $betTeam, string $fixtureTeam): bool
@@ -253,6 +270,9 @@ function team_hits_name(string $betTeam, string $fixtureTeam): bool
     $a = normalize_name($betTeam);
     $b = normalize_name($fixtureTeam);
     if ($a === '' || $b === '') {
+        return false;
+    }
+    if (team_age_gender_tags($betTeam) !== team_age_gender_tags($fixtureTeam)) {
         return false;
     }
     if ($a === $b || str_contains($b, $a) || str_contains($a, $b)) {
@@ -288,9 +308,29 @@ function tg_match_is_settled(array $row): bool
     return ($row['phase'] ?? '') === 'done';
 }
 
-function build_punter_load(array $posts, array $matches = []): array
+function post_ist_date(array $p): ?string
 {
-    $bets = array_values(array_filter($posts, fn($p) => ($p['type'] ?? '') === 'BET_PLACED' && !empty($p['teamName'])));
+    try {
+        return (new DateTimeImmutable($p['isoTime'] ?? 'now'))
+            ->setTimezone(new DateTimeZone('Asia/Kolkata'))
+            ->format('Y-m-d');
+    } catch (Throwable $e) {
+        return null;
+    }
+}
+
+function build_punter_load(array $posts, array $matches = [], ?string $date = null): array
+{
+    $bets = array_values(array_filter($posts, function ($p) use ($date) {
+        if (($p['type'] ?? '') !== 'BET_PLACED' || empty($p['teamName'])) {
+            return false;
+        }
+        if (!$date) {
+            return true;
+        }
+        $ist = post_ist_date($p);
+        return $ist === null || $ist === $date;
+    }));
     $byTeam = [];
     foreach ($bets as $p) {
         $key = strtoupper(trim($p['teamName']));
@@ -400,7 +440,7 @@ function telegram_payload(array $options = [], array $matches = []): array
         $filtered = $watched;
     }
 
-    $load = build_punter_load($feed['posts'] ?? [], $matches);
+    $load = build_punter_load($feed['posts'] ?? [], $matches, ist_today());
 
     return [
         'ok' => true,
