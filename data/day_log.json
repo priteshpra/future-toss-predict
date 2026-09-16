@@ -1,0 +1,99 @@
+{
+    "2026-09-16": [
+        {
+            "id": "live_1552321",
+            "teamA": "England Under-19s",
+            "teamB": "Pakistan Under-19s",
+            "league": "international",
+            "tournament": "England Under-19s v Pakistan Under-19s",
+            "format": "T20",
+            "time": "07:30 PM IST",
+            "venue": "International Cricket Ground",
+            "status": "UPCOMING",
+            "tossWinner": null,
+            "tossDecision": null,
+            "liveScore": "England Under-19s v Pakistan Under-19s"
+        },
+        {
+            "id": "live_1513606",
+            "teamA": "Hampshire Women",
+            "teamB": "Surrey Women",
+            "league": "women_t20i",
+            "tournament": "Hampshire Women v Surrey Women",
+            "format": "T20",
+            "time": "07:30 PM IST",
+            "venue": "International Cricket Ground",
+            "status": "UPCOMING",
+            "tossWinner": null,
+            "tossDecision": null,
+            "liveScore": "Hampshire Women v Surrey Women"
+        },
+        {
+            "id": "live_1547899",
+            "teamA": "Glasgow Cosmic",
+            "teamB": "Amsterdam Flames",
+            "league": "etpl",
+            "tournament": "Glasgow Cosmic v Amsterdam Flames",
+            "format": "T20",
+            "time": "07:30 PM IST",
+            "venue": "International Cricket Ground",
+            "status": "UPCOMING",
+            "tossWinner": null,
+            "tossDecision": null,
+            "liveScore": "Glasgow Cosmic v Amsterdam Flames"
+        },
+        {
+            "id": "wcpl_playoff",
+            "teamA": "WCPL 2nd Place",
+            "teamB": "WCPL 3rd Place",
+            "league": "wcpl",
+            "tournament": "Playoff (2nd vs 3rd), Women's CPL 2026",
+            "format": "T20",
+            "time": "07:30 PM IST",
+            "venue": "Kensington Oval, Bridgetown, Barbados",
+            "status": "UPCOMING"
+        },
+        {
+            "id": "saved_aaba0e15cd2650e262a89e723217e024",
+            "teamA": "Malaysia",
+            "teamB": "United Arab Emirates",
+            "league": "custom",
+            "tournament": "Malaysia vs United Arab Emirates",
+            "format": "T20",
+            "time": "07:30 PM IST",
+            "venue": "International Cricket Ground",
+            "tossWinner": "United Arab Emirates",
+            "tossDecision": "bowl",
+            "matchWinner": "United Arab Emirates",
+            "status": "COMPLETED"
+        },
+        {
+            "id": "live_1540219",
+            "teamA": "Barbados Tridents Women",
+            "teamB": "Guyana Amazon Warriors Women",
+            "league": "wcpl",
+            "tournament": "Barbados Tridents Women v Guyana Amazon Warriors Women",
+            "format": "T20",
+            "time": "07:30 PM IST",
+            "venue": "International Cricket Ground",
+            "status": "UPCOMING",
+            "tossWinner": null,
+            "tossDecision": null,
+            "liveScore": "Barbados Tridents Women v Guyana Amazon Warriors Women"
+        },
+        {
+            "id": "live_1534214",
+            "teamA": "Barbados Tridents",
+            "teamB": "Jamaica Kingsmen",
+            "league": "cpl",
+            "tournament": "Barbados Tridents v Jamaica Kingsmen",
+            "format": "T20",
+            "time": "07:30 PM IST",
+            "venue": "International Cricket Ground",
+            "status": "UPCOMING",
+            "tossWinner": null,
+            "tossDecision": null,
+            "liveScore": "Barbados Tridents v Jamaica Kingsmen"
+        }
+    ]
+}

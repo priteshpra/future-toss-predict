@@ -251,20 +251,6 @@ function apply_live_toss_markets(array $match, ?array $punter = null): array
     $pred['tossLoadA'] = $loadA;
     $pred['tossLoadB'] = $loadB;
 
-    if ($punter && $amtA > 0 && $amtB > 0 && empty($match['tossWinner']) && $mins > 30) {
-        $histA = (int) ($pred['teamAPct'] ?? 50);
-        $mktA = (int) ($punter['pctA'] ?? $histA);
-        $weight = min(0.28, 0.10 + log10(max($punterTotal, 1.0)) * 0.05);
-        $blended = $histA * (1 - $weight) + $mktA * $weight;
-        $newA = (int) round(max($histA - 4, min($histA + 4, $blended)));
-        $newA = max(40, min(62, $newA));
-        $newB = 100 - $newA;
-        $pred['teamAPct'] = $newA;
-        $pred['teamBPct'] = $newB;
-        $pred['winner'] = $newA >= $newB ? ($match['teamA'] ?? $pred['winner']) : ($match['teamB'] ?? $pred['winner']);
-        $pred['probability'] = max($newA, $newB);
-    }
-
     $match['prediction'] = $pred;
     if ($punter) {
         $match['punterLoad'] = $punter;
@@ -388,13 +374,17 @@ function is_home_team(string $team, array $venue): bool
     return false;
 }
 
+function toss_won_by(array $m, string $norm): bool
+{
+    return history_side_hit($m['nW'] ?? '', $norm);
+}
+
 function streak_of(array $matches, string $norm): array
 {
     $type = null;
     $count = 0;
     foreach ($matches as $m) {
-        $won = $m['nW'] && (str_contains($m['nW'], $norm) || str_contains($norm, $m['nW']));
-        $r = $won ? 'W' : 'L';
+        $r = toss_won_by($m, $norm) ? 'W' : 'L';
         if ($type === null) {
             $type = $r;
             $count = 1;
@@ -408,6 +398,64 @@ function streak_of(array $matches, string $norm): array
         'type' => $type ?: 'N/A',
         'count' => $count,
         'text' => $count > 1 ? ($count . ' consecutive toss ' . ($type === 'W' ? 'wins' : 'losses')) : 'No long streak',
+    ];
+}
+
+function opponent_name(array $m, string $norm): string
+{
+    if (history_side_hit($m['nA'] ?? '', $norm)) {
+        return $m['teamB'] ?? 'opponent';
+    }
+    return $m['teamA'] ?? 'opponent';
+}
+
+function team_toss_record(string $norm, string $skipA = '', string $skipB = '', string $skipDate = ''): array
+{
+    $played = $won = $bat = $bowl = 0;
+    $recent = [];
+    foreach (load_history() as $m) {
+        if (!history_side_hit($m['nA'] ?? '', $norm) && !history_side_hit($m['nB'] ?? '', $norm)) {
+            continue;
+        }
+        if (same_fixture_row($m, $skipA, $skipB, $skipDate)) {
+            continue;
+        }
+        if (($m['nW'] ?? '') === '') {
+            continue;
+        }
+        $didWin = toss_won_by($m, $norm);
+        $played++;
+        if ($didWin) {
+            $won++;
+            if (($m['tossDecision'] ?? '') === 'bat') {
+                $bat++;
+            } else {
+                $bowl++;
+            }
+        }
+        if (count($recent) < 8) {
+            $dec = ($m['tossDecision'] ?? '') === 'bat' ? 'bat' : 'bowl';
+            $recent[] = [
+                'date' => $m['date'] ?? '',
+                'vs' => opponent_name($m, $norm),
+                'won' => $didWin,
+                'decision' => $didWin ? $dec : '',
+                'text' => ($m['date'] ?? '') . ' vs ' . opponent_name($m, $norm) . ' · ' . ($didWin ? ('WON toss, chose ' . $dec) : 'LOST toss'),
+            ];
+        }
+        if ($played >= 80) {
+            break;
+        }
+    }
+    return [
+        'played' => $played,
+        'won' => $won,
+        'lost' => max(0, $played - $won),
+        'pct' => $played ? (int) round($won / $played * 100) : 50,
+        'choseBat' => $bat,
+        'choseBowl' => $bowl,
+        'call' => $won ? (($bowl >= $bat) ? 'Bowl first' : 'Bat first') : 'No sample',
+        'recent' => $recent,
     ];
 }
 
@@ -426,13 +474,15 @@ function analyze_toss(string $teamA, string $teamB, string $venue = '', string $
     $venueStats = venue_profile($venue);
     $homeA = is_home_team($teamA, $venueStats);
     $homeB = is_home_team($teamB, $venueStats);
+    $recA = team_toss_record($nA, $nA, $nB, $date);
+    $recB = team_toss_record($nB, $nA, $nB, $date);
 
     $last5A = array_slice($recentA, 0, 5);
     $last5B = array_slice($recentB, 0, 5);
     $wins = function (array $rows, string $norm): int {
         $c = 0;
         foreach ($rows as $m) {
-            if ($m['nW'] && (str_contains($m['nW'], $norm) || str_contains($norm, $m['nW']))) {
+            if (toss_won_by($m, $norm)) {
                 $c++;
             }
         }
@@ -444,123 +494,116 @@ function analyze_toss(string $teamA, string $teamB, string $venue = '', string $
     $b10 = $wins($recentB, $nB);
     $hA = 0;
     foreach ($h2h as $m) {
-        if ($m['nW'] && (str_contains($m['nW'], $nA) || str_contains($nA, $m['nW']))) {
+        if (toss_won_by($m, $nA)) {
             $hA++;
         }
     }
     $hB = max(0, count($h2h) - $hA);
     $pct = fn($w, $t) => $t ? (int) round($w / $t * 100) : 50;
 
-    $hasA = count($last5A) > 0;
-    $hasB = count($last5B) > 0;
-    $smoothA = $hasA ? (($a5 + 3) / (count($last5A) + 6)) * 100 : 50.0;
-    $smoothB = $hasB ? (($b5 + 3) / (count($last5B) + 6)) * 100 : 50.0;
+    $hasA = $recA['played'] > 0 || count($last5A) > 0;
+    $hasB = $recB['played'] > 0 || count($last5B) > 0;
+    $recentSmoothA = count($recentA) ? (($a10 + 4) / (count($recentA) + 8)) * 100 : 50.0;
+    $recentSmoothB = count($recentB) ? (($b10 + 4) / (count($recentB) + 8)) * 100 : 50.0;
+    $careerSmoothA = $recA['played'] ? (($recA['won'] + 6) / ($recA['played'] + 12)) * 100 : 50.0;
+    $careerSmoothB = $recB['played'] ? (($recB['won'] + 6) / ($recB['played'] + 12)) * 100 : 50.0;
 
     $scoreA = 50.0;
-    $scoreA += ($smoothA - $smoothB) * 0.28;
+    $minPlayed = min($recA['played'], $recB['played']);
+    $recentW = ($minPlayed >= 8 && count($recentA) >= 5 && count($recentB) >= 5) ? 0.30 : 0.12;
+    $scoreA += ($recentSmoothA - $recentSmoothB) * $recentW;
+    $scoreA += ($careerSmoothA - $careerSmoothB) * 0.42;
     if (count($h2h) >= 1) {
-        $scoreA += (((( $hA + 2) / (count($h2h) + 4)) * 100) - 50) * 0.18;
+        $scoreA += ((((($hA + 2) / (count($h2h) + 4)) * 100) - 50) * 0.20);
     }
     $stA = streak_of($recentA, $nA);
     $stB = streak_of($recentB, $nB);
     if ($stA['type'] === 'W' && $stA['count'] >= 2) {
-        $scoreA += min($stA['count'] * 1.0, 3.5);
+        $scoreA += min($stA['count'] * 1.1, 4.0);
     } elseif ($stA['type'] === 'L' && $stA['count'] >= 2) {
-        $scoreA -= min($stA['count'] * 0.8, 2.5);
+        $scoreA -= min($stA['count'] * 0.9, 3.0);
     }
     if ($stB['type'] === 'W' && $stB['count'] >= 2) {
-        $scoreA -= min($stB['count'] * 1.0, 3.5);
+        $scoreA -= min($stB['count'] * 1.1, 4.0);
     } elseif ($stB['type'] === 'L' && $stB['count'] >= 2) {
-        $scoreA += min($stB['count'] * 0.8, 2.5);
+        $scoreA += min($stB['count'] * 0.9, 3.0);
     }
     if ($homeA && !$homeB) {
-        $scoreA += 2.8;
+        $scoreA += 2.4;
     } elseif ($homeB && !$homeA) {
-        $scoreA -= 2.8;
-    }
-    if (($venueStats['bowlFirstPct'] ?? 50) >= 58) {
-        $scoreA += $a5 > $b5 ? 1.1 : ($a5 < $b5 ? -1.1 : 0);
+        $scoreA -= 2.4;
     }
 
     if (!$hasA && !$hasB) {
         $pA = 50;
         $pB = 50;
-        $conf = 'Even 50-50 (thin history)';
-    } elseif ($scoreA >= 50.5) {
-        $pA = min(58, (int) round(50 + ($scoreA - 50) * 1.15));
-        $pB = 100 - $pA;
-        $conf = $pA >= 56 ? 'Moderate statistical edge' : 'Marginal edge';
-    } elseif ($scoreA <= 49.5) {
-        $pA = max(42, (int) round(50 - (50 - $scoreA) * 1.15));
-        $pB = 100 - $pA;
-        $conf = $pB >= 56 ? 'Moderate statistical edge' : 'Marginal edge';
+        $conf = 'Even 50-50 (thin toss history)';
     } else {
-        $pA = 52;
-        $pB = 48;
-        $conf = 'Slight calling lean';
+        $pA = (int) round($scoreA);
+        $pA = max(44, min(62, $pA));
+        $pB = 100 - $pA;
+        if ($pA === $pB) {
+            if ($recA['won'] !== $recB['won']) {
+                $pA = $recA['won'] > $recB['won'] ? 52 : 48;
+                $pB = 100 - $pA;
+            } elseif ($a10 !== $b10) {
+                $pA = $a10 > $b10 ? 52 : 48;
+                $pB = 100 - $pA;
+            }
+        }
+        $lead = max($pA, $pB);
+        $conf = $lead >= 58 ? 'Stronger toss-win record' : ($lead >= 54 ? 'Clear calling lean' : 'Slight toss-win lean');
     }
 
     $favored = $pA >= $pB ? $teamA : $teamB;
     $favP = max($pA, $pB);
     $insights = [];
-    if (!$hasA && !$hasB) {
-        $insights[] = "Pure coin: limited toss history for both sides.";
-    } else {
-        $insights[] = "AI lock lean: {$favored} at {$favP}% from form, H2H, home and venue calling.";
-    }
-    if ($last5A) {
-        $insights[] = "{$teamA} won {$a5}/" . count($last5A) . " of last recorded tosses ({$pct($a5, count($last5A))}%).";
-    }
-    if ($last5B) {
-        $insights[] = "{$teamB} won {$b5}/" . count($last5B) . " of last recorded tosses ({$pct($b5, count($last5B))}%).";
+    $insights[] = "Ground toss pick: {$favored} ({$favP}%) from career toss wins, last 10, H2H and home calling.";
+    $insights[] = "{$teamA} career toss wins {$recA['won']}/{$recA['played']} ({$recA['pct']}%). Last 10: {$a10}/" . count($recentA) . ". Last 5: {$a5}/" . count($last5A) . ".";
+    $insights[] = "{$teamB} career toss wins {$recB['won']}/{$recB['played']} ({$recB['pct']}%). Last 10: {$b10}/" . count($recentB) . ". Last 5: {$b5}/" . count($last5B) . ".";
+    if ($recA['won'] || $recB['won']) {
+        $insights[] = "{$teamA} after winning toss: bowl {$recA['choseBowl']} / bat {$recA['choseBat']}. {$teamB}: bowl {$recB['choseBowl']} / bat {$recB['choseBat']}.";
     }
     if ($h2h) {
-        $insights[] = "Head-to-head toss: {$teamA} {$hA} – {$hB} {$teamB}.";
+        $insights[] = "Head-to-head toss: {$teamA} {$hA} – {$hB} {$teamB} (" . count($h2h) . " meetings).";
     }
     if ($homeA xor $homeB) {
-        $insights[] = 'Home calling edge: ' . ($homeA ? $teamA : $teamB) . ' at ' . $venueStats['venueName'] . '.';
+        $insights[] = 'Home ground calling: ' . ($homeA ? $teamA : $teamB) . ' at ' . $venueStats['venueName'] . '.';
     }
-    $insights[] = $venueStats['venueName'] . ' toss winners prefer ' . $venueStats['preferredDecision'] . " ({$venueStats['bowlFirstPct']}% bowl).";
+    $insights[] = 'Ground calling at ' . $venueStats['venueName'] . ': toss winners prefer ' . $venueStats['preferredDecision'] . " (bowl {$venueStats['bowlFirstPct']}% / bat {$venueStats['batFirstPct']}%, dew {$venueStats['dewFactor']}).";
     if ($stA['count'] >= 2) {
-        $insights[] = "{$teamA} captain calling: {$stA['text']}.";
+        $insights[] = ($tA['captain'] ? $tA['captain'] . ' (' . $teamA . ')' : $teamA) . " calling: {$stA['text']}.";
     }
     if ($stB['count'] >= 2) {
-        $insights[] = "{$teamB} captain calling: {$stB['text']}.";
+        $insights[] = ($tB['captain'] ? $tB['captain'] . ' (' . $teamB . ')' : $teamB) . " calling: {$stB['text']}.";
     }
 
     [$loadA, $loadB] = market_load_share($teamA, $teamB, $date);
 
+    $packTeam = function (string $name, array $t, int $p, int $w5, array $last5, int $w10, array $recent, bool $home, array $st, int $load, array $rec) use ($pct) {
+        return [
+            'name' => $name,
+            'badge' => $t['badge'] ?? '🏏',
+            'color' => $t['color'] ?? '#3b82f6',
+            'captain' => $t['captain'] ?? '',
+            'short' => $t['short'] ?? '',
+            'probability' => $p,
+            'last5Wins' => $w5,
+            'last5Total' => count($last5),
+            'last5Pct' => $pct($w5, count($last5)),
+            'last10Wins' => $w10,
+            'last10Total' => count($recent),
+            'last10Pct' => $pct($w10, count($recent)),
+            'home' => $home,
+            'streak' => $st,
+            'tossLoad' => $load,
+            'record' => $rec,
+        ];
+    };
+
     return [
-        'teamA' => [
-            'name' => $teamA,
-            'badge' => $tA['badge'] ?? '🏏',
-            'color' => $tA['color'] ?? '#3b82f6',
-            'captain' => $tA['captain'] ?? '',
-            'short' => $tA['short'] ?? '',
-            'probability' => $pA,
-            'last5Wins' => $a5,
-            'last5Total' => count($last5A),
-            'last5Pct' => $pct($a5, count($last5A)),
-            'last10Pct' => $pct($a10, count($recentA)),
-            'home' => $homeA,
-            'streak' => $stA,
-            'tossLoad' => $loadA,
-        ],
-        'teamB' => [
-            'name' => $teamB,
-            'badge' => $tB['badge'] ?? '🏏',
-            'color' => $tB['color'] ?? '#ef4444',
-            'captain' => $tB['captain'] ?? '',
-            'short' => $tB['short'] ?? '',
-            'probability' => $pB,
-            'last5Wins' => $b5,
-            'last5Total' => count($last5B),
-            'last5Pct' => $pct($b5, count($last5B)),
-            'last10Pct' => $pct($b10, count($recentB)),
-            'home' => $homeB,
-            'streak' => $stB,
-            'tossLoad' => $loadB,
-        ],
+        'teamA' => $packTeam($teamA, $tA, $pA, $a5, $last5A, $a10, $recentA, $homeA, $stA, $loadA, $recA),
+        'teamB' => $packTeam($teamB, $tB, $pB, $b5, $last5B, $b10, $recentB, $homeB, $stB, $loadB, $recB),
         'headToHead' => [
             'total' => count($h2h),
             'teamAWins' => $hA,
@@ -574,7 +617,7 @@ function analyze_toss(string $teamA, string $teamB, string $venue = '', string $
             'likelyDecision' => $venueStats['preferredDecision'],
             'insights' => $insights,
             'lockedPick' => $favored,
-            'model' => 'Bayesian Laplace + home + venue + captain streak',
+            'model' => 'Career toss wins + last 10 + H2H + home calling',
         ],
     ];
 }
@@ -603,7 +646,7 @@ function toss_leaderboard(?string $league = 'all'): array
             }
             $stats[$key]['played']++;
             $n = normalize_name($name);
-            if ($m['nW'] && (str_contains($m['nW'], $n) || str_contains($n, $m['nW']))) {
+            if (toss_won_by($m, $n)) {
                 $stats[$key]['tossWon']++;
                 if (($m['tossDecision'] ?? '') === 'bat') {
                     $stats[$key]['choseBat']++;

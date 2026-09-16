@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Future Toss AI · 30-min Toss Portal</title>
-  <link rel="stylesheet" href="assets/app.css?v=6">
+  <link rel="stylesheet" href="assets/app.css?v=8">
 </head>
 <body>
   <div class="orb a"></div>
@@ -150,6 +150,6 @@
 
   <div class="drawer-bg" id="drawerBg"></div>
   <aside class="drawer" id="drawer"></aside>
-  <script src="assets/app.js?v=8"></script>
+  <script src="assets/app.js?v=14"></script>
 </body>
 </html>

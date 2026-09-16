@@ -71,6 +71,18 @@
             "tossDecision": "bowl",
             "matchWinner": "Bangladesh A",
             "status": "COMPLETED"
+        },
+        "malaysia_united arab emirates_2026-09-16": {
+            "tossWinner": "United Arab Emirates",
+            "tossDecision": "bowl",
+            "matchWinner": "United Arab Emirates",
+            "status": "COMPLETED"
+        },
+        "united arab emirates_malaysia_2026-09-16": {
+            "tossWinner": "United Arab Emirates",
+            "tossDecision": "bowl",
+            "matchWinner": "United Arab Emirates",
+            "status": "COMPLETED"
         }
     },
     "deleted": [

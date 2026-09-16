@@ -75,6 +75,14 @@ function fillTeams(selectId) {
 }
 
 function cardHTML(m) {
+  const pred = m.prediction || {};
+  const form = m.form || {};
+  const venue = m.venueStats || {};
+  const h2h = form.h2h || {};
+  const aPct = pred.teamAPct ?? 50;
+  const bPct = pred.teamBPct ?? 50;
+  const loadA = pred.tossLoadA ?? 50;
+  const loadB = pred.tossLoadB ?? 50;
   const phaseBadge = m.tossWinner
     ? '<span class="badge live">TOSS DONE</span>'
     : m.phase === 'alert_30' || m.phase === 'toss_now'
@@ -84,11 +92,13 @@ function cardHTML(m) {
         : m.status === 'COMPLETED'
           ? '<span class="badge done">DONE</span>'
           : '<span class="badge">UPCOMING</span>';
-  const aPct = m.prediction.teamAPct;
-  const bPct = m.prediction.teamBPct;
-  const pickClass = m.prediction.locked ? 'pick locked' : 'pick';
+  const pickClass = pred.locked ? 'pick locked' : 'pick';
   const actual = m.tossWinner
-    ? `<div class="insight">Ground toss: <b>${m.tossWinner}</b> chose ${m.tossDecision || '—'} ${m.prediction.winner && namesClose(m.tossWinner, m.prediction.winner) ? '· AI hit' : '· AI miss / pending compare'}</div>`
+    ? `<div class="insight">Ground toss: <b>${esc(m.tossWinner)}</b> chose ${esc(m.tossDecision || '—')} ${pred.winner && namesClose(m.tossWinner, pred.winner) ? '· AI hit' : '· AI miss / pending compare'}</div>`
+    : '';
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const dateBit = (m.date && m.date !== state.date)
+    ? ` · ${Number(m.date.slice(8, 10))} ${months[Number(m.date.slice(5, 7)) - 1] || m.date}`
     : '';
   return `
     <article class="card ${m.phase === 'alert_30' || m.phase === 'toss_now' ? 'alert30' : ''} ${m.status === 'LIVE' ? 'live' : ''}">
@@ -97,19 +107,19 @@ function cardHTML(m) {
         ${phaseBadge}
       </div>
       <div class="meta" style="margin-top:6px">
-        <span class="meta-left">${esc(m.time)} · toss ${esc(m.tossTime)}</span>
+        <span class="meta-left">${esc(m.time)}${dateBit} · toss ${esc(m.tossTime)}</span>
         <span class="meta-right">${fmtMins(m.minutesToToss)}</span>
       </div>
       <p class="tourney">${esc(m.tournament)}</p>
       <div class="vs">
         <div class="team">
-          <div class="ico">${m.teamABadge}</div>
+          <div class="ico">${m.teamABadge || '🏏'}</div>
           <h3>${esc(m.teamA)}</h3>
           <small>${m.teamAHome ? 'Home ground' : esc(m.teamACaptain || 'Away / Neutral')}</small>
         </div>
         <div class="vs-mid">VS</div>
         <div class="team">
-          <div class="ico">${m.teamBBadge}</div>
+          <div class="ico">${m.teamBBadge || '🏏'}</div>
           <h3>${esc(m.teamB)}</h3>
           <small>${m.teamBHome ? 'Home ground' : esc(m.teamBCaptain || 'Away / Neutral')}</small>
         </div>
@@ -117,21 +127,21 @@ function cardHTML(m) {
       <div class="bars">
         <div class="bar-row"><span>AI toss win %</span><span>${aPct}% — ${bPct}%</span></div>
         <div class="track"><i style="width:${aPct}%"></i><i style="width:${bPct}%"></i></div>
-        <div class="bar-row"><span>Market toss load</span><span>${m.prediction.tossLoadA} — ${m.prediction.tossLoadB}</span></div>
-        <div class="track"><i style="width:${m.prediction.tossLoadA}%"></i><i style="width:${m.prediction.tossLoadB}%"></i></div>
+        <div class="bar-row"><span>Market toss load</span><span>${loadA} — ${loadB}</span></div>
+        <div class="track"><i style="width:${loadA}%"></i><i style="width:${loadB}%"></i></div>
       </div>
       <div class="${pickClass}">
-        ${m.prediction.locked ? '🔒 Locked 30-min pick' : '🤖 AI toss winner'}:
-        <b>${esc(m.prediction.winner)}</b> (${m.prediction.probability}%) · likely ${esc(m.prediction.decision)}
+        ${pred.locked ? '🔒 Locked 30-min pick' : '🤖 AI toss winner'}:
+        <b>${esc(pred.winner)}</b> (${pred.probability || 50}%) · likely ${esc(pred.decision)}
       </div>
       ${m.liveScore ? `<p class="live-line">${esc(m.liveScore)}</p>` : ''}
       ${actual}
       ${m.punterLoad && (m.punterLoad.amountA + m.punterLoad.amountB) > 0 ? `<div class="punter-line">Punter money: <b>${esc(m.punterLoad.leader || 'Even')}</b> ${m.punterLoad.leader ? m.punterLoad.leaderPct + '%' : ''} · ${esc(m.teamA)} ${esc(m.punterLoad.amountALabel)} vs ${esc(m.teamB)} ${esc(m.punterLoad.amountBLabel)}</div>` : ''}
       <div class="facts">
         <span>📍 ${esc(m.venue)}</span>
-        <span>Last 5: ${m.form.aLast5} vs ${m.form.bLast5}</span>
-        <span>H2H toss ${m.form.h2h.teamAWins}-${m.form.h2h.teamBWins}</span>
-        <span>${m.venueStats.dewFactor} dew</span>
+        <span>Last 5: ${form.aLast5 || '—'} vs ${form.bLast5 || '—'}</span>
+        <span>H2H toss ${h2h.teamAWins ?? 0}-${h2h.teamBWins ?? 0}</span>
+        <span>${venue.dewFactor || '—'} dew</span>
       </div>
       <div class="actions">
         <button class="btn mint" data-act="analysis" data-id="${m.id}">Full analysis</button>
@@ -153,6 +163,10 @@ function renderMatches(payload) {
   const grid = $('grid');
   $('dayTitle').textContent = headingFor(payload.date);
   $('dayCount').textContent = `${payload.total} matches · updated ${payload.now}`;
+  const calRow = (state.meta?.calendar || []).find((d) => d.date === payload.date);
+  if (calRow && typeof payload.total === 'number') {
+    calRow.count = payload.total;
+  }
   if (!state.matches.length) {
     grid.innerHTML = `<div class="empty">Is date par scheduled match nahi mila. Niche se custom match add karo.</div>`;
   } else {
@@ -189,38 +203,78 @@ function headingFor(date) {
 
 async function loadMatches() {
   $('grid').innerHTML = `<div class="empty">Live feeds + historical toss model load ho raha hai…</div>`;
-  const data = await api('matches', { date: state.date, league: state.league });
-  renderMatches(data);
+  try {
+    const data = await api('matches', { date: state.date, league: state.league });
+    if (!data || data.error) {
+      $('grid').innerHTML = `<div class="empty">Is date par scheduled match nahi mila. Niche se custom match add karo.</div>`;
+      return;
+    }
+    renderMatches(data);
+  } catch (e) {
+    $('grid').innerHTML = `<div class="empty">Is date par scheduled match nahi mila. Niche se custom match add karo.</div>`;
+  }
   renderDates();
+}
+
+function recordLines(team, rec) {
+  rec = rec || {};
+  const recent = (rec.recent || []).map((r) => `<div style="margin-top:4px;color:#94a3b8">${esc(r.text)}</div>`).join('');
+  return `
+    <div class="insight">
+      <b>${esc(team.name)}</b>${team.captain ? ` · captain ${esc(team.captain)}` : ''}${team.home ? ' · Home' : ''}<br>
+      Career toss wins <b>${rec.won || 0}/${rec.played || 0}</b> (${rec.pct || 50}%) · lost ${rec.lost || 0}<br>
+      Last 10: ${team.last10Wins || 0}/${team.last10Total || 0} (${team.last10Pct || 50}%) · Last 5: ${team.last5Wins || 0}/${team.last5Total || 0} (${team.last5Pct || 50}%)<br>
+      After winning toss: bowl ${rec.choseBowl || 0} / bat ${rec.choseBat || 0} · usual call <b>${esc(rec.call || '—')}</b><br>
+      ${esc(team.streak?.text || '')}
+      ${recent}
+    </div>`;
+}
+
+function analysisDetailHTML(a, teamAName, teamBName, extra = {}) {
+  const v = a.venue || extra.venueStats || {};
+  const h2h = a.headToHead || extra.h2h || {};
+  const pick = extra.prediction || a.prediction || {};
+  return `
+    <div class="pick locked">Best AI toss winner: <b>${esc(pick.winner || pick.favoredWinner || '')}</b> · ${pick.probability || pick.favoredProbability || ''}% · ${esc(pick.confidence || '')}</div>
+    <div class="insight">If they win the toss, ground call: <b>${esc(pick.decision || pick.likelyDecision || v.preferredDecision || '—')}</b> at ${esc(v.venueName || extra.venue || '')} (bowl ${v.bowlFirstPct ?? '—'}% / bat ${v.batFirstPct ?? '—'}%, dew ${esc(v.dewFactor || '—')})</div>
+    <h3>Why this pick</h3>
+    ${(Array.isArray(a.prediction?.insights) ? a.prediction.insights : (Array.isArray(pick.insights) ? pick.insights : [])).map((i) => `<div class="insight">${esc(i)}</div>`).join('')}
+    <h3>Team toss wins</h3>
+    ${recordLines(a.teamA || {}, a.teamA?.record)}
+    ${recordLines(a.teamB || {}, a.teamB?.record)}
+    <h3>H2H toss</h3>
+    <div class="insight">${esc(teamAName)} ${h2h.teamAWins ?? 0} – ${h2h.teamBWins ?? 0} ${esc(teamBName)} from ${h2h.total ?? 0} meetings</div>
+    <h3>Calling / home / venue</h3>
+    <div class="insight">Home: ${esc(teamAName)} ${a.teamA?.home ? 'YES' : 'no'} · ${esc(teamBName)} ${a.teamB?.home ? 'YES' : 'no'}</div>
+    <div class="insight">Toss winner also won match historically ${v.tossWinMatchWinPct ?? '—'}% at this ground</div>
+    <p style="font-size:12px;color:#64748b">Pick is from recorded toss wins (career + last 10 + H2H + home). A toss is still a coin; this is the statistical lean, not a guarantee.</p>
+  `;
 }
 
 function openAnalysis(id) {
   const m = state.matches.find((x) => x.id === id);
-  if (!m) return;
   const d = $('drawer');
+  if (!m || !d) return;
+  document.body.classList.add('drawer-open');
   $('drawerBg')?.classList.add('show');
-  const a = m.analysis;
   d.innerHTML = `
     <button class="btn ghost" onclick="closeDrawer()">Close</button>
-    <h2 style="margin:12px 0 4px">${m.teamA} vs ${m.teamB}</h2>
-    <p style="color:#94a3b8">${m.tournament}<br>${m.venue} · toss ${m.tossTime}</p>
-    <div class="pick locked">Best AI toss winner: <b>${m.prediction.winner}</b> · ${m.prediction.probability}% · ${m.prediction.confidence}</div>
-    <h3>Why this pick</h3>
-    ${(a.prediction.insights || []).map((i) => `<div class="insight">${i}</div>`).join('')}
-    <h3>Calling / home / venue</h3>
-    <div class="insight">Home: ${m.teamA} ${m.teamAHome ? 'YES' : 'no'} · ${m.teamB} ${m.teamBHome ? 'YES' : 'no'}</div>
-    <div class="insight">Venue bowl-first ${m.venueStats.bowlFirstPct}% · bat-first ${m.venueStats.batFirstPct}% · dew ${m.venueStats.dewFactor}</div>
-    <div class="insight">Toss winner also won match historically ${m.venueStats.tossWinMatchWinPct}%</div>
-    <h3>Form</h3>
-    <div class="insight">${m.teamA} last 5 toss ${m.form.aLast5} (${m.form.aLast5Pct}%) · ${m.form.aStreak}</div>
-    <div class="insight">${m.teamB} last 5 toss ${m.form.bLast5} (${m.form.bLast5Pct}%) · ${m.form.bStreak}</div>
-    <p style="font-size:12px;color:#64748b">Toss is still a coin with a 52–58% statistical lean. Use the 30-min lock as your analysis snapshot, not a guarantee.</p>
+    <h2 style="margin:12px 0 4px">${esc(m.teamA)} vs ${esc(m.teamB)}</h2>
+    <p style="color:#94a3b8">${esc(m.tournament)}<br>${esc(m.venue)} · toss ${esc(m.tossTime)}</p>
+    ${analysisDetailHTML(m.analysis || {}, m.teamA, m.teamB, { prediction: m.prediction, venueStats: m.venueStats, venue: m.venue })}
   `;
   d.classList.add('show');
+  d.scrollTop = 0;
+  d.style.setProperty('transform', 'translate3d(0,0,0)', 'important');
 }
 
 function closeDrawer() {
-  $('drawer').classList.remove('show');
+  document.body.classList.remove('drawer-open');
+  const d = $('drawer');
+  if (d) {
+    d.classList.remove('show');
+    d.style.removeProperty('transform');
+  }
   $('drawerBg')?.classList.remove('show');
 }
 
@@ -228,7 +282,19 @@ async function promptToss(m) {
   const winner = prompt('Ground toss winner team name', m.prediction.winner);
   if (winner === null) return;
   const decision = prompt('Decision: bat or bowl', 'bowl') || 'bowl';
-  await api('set_toss', { date: m.date, teamA: m.teamA, teamB: m.teamB, tossWinner: winner, tossDecision: decision }, 'POST');
+  await api('set_toss', {
+    date: m.date,
+    teamA: m.teamA,
+    teamB: m.teamB,
+    tossWinner: winner,
+    tossDecision: decision,
+    league: m.league,
+    time: m.time,
+    venue: m.venue,
+    tournament: m.tournament,
+    format: m.format,
+    id: m.id,
+  }, 'POST');
   loadMatches();
 }
 
@@ -278,10 +344,11 @@ async function runSim(e) {
   const teamB = $('sTeamB').value || $('sTeamBCustom').value;
   const venue = $('sVenue').value;
   const data = await api('predict', { teamA, teamB, venue });
-  $('simOut').innerHTML = `
-    <div class="pick locked">AI toss winner: <b>${data.prediction.favoredWinner}</b> (${data.prediction.favoredProbability}%) · ${data.prediction.confidence}</div>
-    ${(data.prediction.insights || []).map((i) => `<div class="insight">${i}</div>`).join('')}
-  `;
+  if (!data || data.error) {
+    $('simOut').innerHTML = `<div class="empty">${esc(data?.error || 'Prediction failed')}</div>`;
+    return;
+  }
+  $('simOut').innerHTML = analysisDetailHTML(data, teamA, teamB, { venue });
 }
 
 async function loadBoard() {

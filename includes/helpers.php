@@ -52,6 +52,13 @@ function ist_today(): string
     return ist_now()->format('Y-m-d');
 }
 
+function ist_shift(string $date, int $days): string
+{
+    return (new DateTimeImmutable($date, new DateTimeZone('Asia/Kolkata')))
+        ->modify(($days >= 0 ? '+' : '') . $days . ' days')
+        ->format('Y-m-d');
+}
+
 function normalize_date(?string $date): string
 {
     $date = trim((string) $date);

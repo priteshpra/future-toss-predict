@@ -42,11 +42,14 @@ function http_get(string $url, int $timeout = 4): ?string
 
 function clean_live_team(string $raw): string
 {
-    $t = preg_replace('/\d+\/\d+/', '', $raw);
+    $t = preg_replace('/under[- ]?19s?/i', 'UNDERnineteen', $raw);
+    $t = preg_replace('/u[- ]?19s?/i', 'UNDERnineteen', $t);
+    $t = preg_replace('/\d+\/\d+/', '', $t);
     $t = preg_replace('/\d+/', '', $t);
+    $t = str_ireplace('UNDERnineteen', 'Under-19s', $t);
     $t = str_replace(['&', '*'], '', $t);
     $t = preg_replace('/\(.*?\)/', '', $t);
-    return trim($t);
+    return trim(preg_replace('/\s+/', ' ', $t));
 }
 
 function cache_get(string $key, int $ttl)
@@ -135,31 +138,6 @@ function fetch_live_feed(): array
             }
         }
     }
-
-    foreach ($out as &$row) {
-        if (empty($row['sourceId'])) {
-            continue;
-        }
-        $json = http_get('https://www.espncricinfo.com/ci/engine/match/' . $row['sourceId'] . '.json', 2);
-        if (!$json) {
-            continue;
-        }
-        $info = json_decode($json, true);
-        $m = $info['match'] ?? null;
-        if (!is_array($m)) {
-            continue;
-        }
-        $row['venue'] = $m['ground_name'] ?? $m['ground_small_name'] ?? $row['venue'];
-        if (!empty($m['toss_winner_team_id']) && (string) $m['toss_winner_team_id'] !== '0') {
-            if ((string) $m['toss_winner_team_id'] === (string) ($m['team1_id'] ?? '')) {
-                $row['tossWinner'] = clean_live_team($m['team1_name'] ?? $row['teamA']);
-            } elseif ((string) $m['toss_winner_team_id'] === (string) ($m['team2_id'] ?? '')) {
-                $row['tossWinner'] = clean_live_team($m['team2_name'] ?? $row['teamB']);
-            }
-            $row['tossDecision'] = $m['toss_decision_name'] ?? $row['tossDecision'];
-        }
-    }
-    unset($row);
 
     cache_set('live_rss', $out);
     return $out;
