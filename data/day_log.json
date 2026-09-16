@@ -93,7 +93,8 @@
             "status": "UPCOMING",
             "tossWinner": null,
             "tossDecision": null,
-            "liveScore": "Barbados Tridents v Jamaica Kingsmen"
+            "liveScore": "Barbados Tridents v Jamaica Kingsmen",
+            "tossTime": "07:00 PM IST"
         }
     ]
 }

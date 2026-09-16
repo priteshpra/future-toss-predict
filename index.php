@@ -116,7 +116,7 @@
 
   <div class="modal-bg" id="addModal">
     <div class="modal">
-      <h2>Add custom match</h2>
+      <h2 id="modalTitle">Add custom match</h2>
       <form id="customForm" class="form">
         <label>Date <input type="date" id="cDate" required></label>
         <div class="two">
@@ -130,7 +130,9 @@
           </label>
         </div>
         <div class="two">
-          <label>Match time IST <input id="cTime" placeholder="07:00 PM" value="07:00 PM" required></label>
+          <label>Match time IST <input id="cTime" placeholder="07:00 PM" value="07:00 PM" required>
+            <small style="color:#64748b">Toss lock 30 min pehle. e.g. 04:30 AM / 07:30 PM</small>
+          </label>
           <label>Format
             <select id="cFormat">
               <option>T20</option><option>ODI</option><option>Test</option><option>T10</option>
@@ -141,7 +143,7 @@
         <label>Venue <input id="cVenue" placeholder="Stadium, City" value="International Cricket Ground"></label>
         <label>Tournament label <input id="cTourn" placeholder="Optional series name"></label>
         <div class="actions">
-          <button class="btn mint" type="submit">Save & predict</button>
+          <button class="btn mint" type="submit" id="cSaveBtn">Save & predict</button>
           <button class="btn ghost" type="button" id="closeModal">Cancel</button>
         </div>
       </form>
@@ -150,6 +152,6 @@
 
   <div class="drawer-bg" id="drawerBg"></div>
   <aside class="drawer" id="drawer"></aside>
-  <script src="assets/app.js?v=14"></script>
+  <script src="assets/app.js?v=15"></script>
 </body>
 </html>

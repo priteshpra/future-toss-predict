@@ -26,6 +26,85 @@ function save_overrides(array $ovr): void
     write_json(data_path('overrides.json'), $ovr);
 }
 
+function save_fixtures(array $fixtures): void
+{
+    write_json(data_path('fixtures.json'), $fixtures);
+}
+
+function normalize_match_time(string $time): string
+{
+    $time = trim($time);
+    if ($time === '') {
+        return '07:30 PM IST';
+    }
+    if (!str_contains(strtoupper($time), 'IST')) {
+        $time .= ' IST';
+    }
+    return $time;
+}
+
+function match_row_hit(array $m, string $id, string $teamA, string $teamB): bool
+{
+    if ($id !== '' && ($m['id'] ?? '') === $id) {
+        return true;
+    }
+    $a = $m['teamA'] ?? '';
+    $b = $m['teamB'] ?? '';
+    return (names_match($a, $teamA) && names_match($b, $teamB))
+        || (names_match($a, $teamB) && names_match($b, $teamA));
+}
+
+function patch_date_bucket(array &$bucket, string $oldDate, string $newDate, string $id, string $teamA, string $teamB, array $patch): bool
+{
+    if (!isset($bucket[$oldDate]) || !is_array($bucket[$oldDate])) {
+        return false;
+    }
+    foreach ($bucket[$oldDate] as $i => $row) {
+        if (!is_array($row) || !match_row_hit($row, $id, $teamA, $teamB)) {
+            continue;
+        }
+        $updated = array_merge($row, $patch);
+        if ($oldDate === $newDate) {
+            $bucket[$oldDate][$i] = $updated;
+            return true;
+        }
+        unset($bucket[$oldDate][$i]);
+        $bucket[$oldDate] = array_values($bucket[$oldDate]);
+        if ($bucket[$oldDate] === []) {
+            unset($bucket[$oldDate]);
+        }
+        if (!isset($bucket[$newDate]) || !is_array($bucket[$newDate])) {
+            $bucket[$newDate] = [];
+        }
+        $bucket[$newDate][] = $updated;
+        return true;
+    }
+    return false;
+}
+
+function apply_field_override(array $m, array $fields, string $date): array
+{
+    if (!$fields) {
+        return $m;
+    }
+    $id = (string) ($m['id'] ?? '');
+    $k1 = strtolower(match_key($m['teamA'] ?? '', $m['teamB'] ?? '', $date));
+    $k2 = strtolower(match_key($m['teamB'] ?? '', $m['teamA'] ?? '', $date));
+    $patch = null;
+    if ($id !== '' && isset($fields[$id]) && is_array($fields[$id])) {
+        $patch = $fields[$id];
+    } elseif (isset($fields[$k1]) && is_array($fields[$k1])) {
+        $patch = $fields[$k1];
+    } elseif (isset($fields[$k2]) && is_array($fields[$k2])) {
+        $patch = $fields[$k2];
+    }
+    if (!is_array($patch)) {
+        return $m;
+    }
+    unset($patch['id'], $patch['origDate'], $patch['origTeamA'], $patch['origTeamB']);
+    return array_merge($m, $patch);
+}
+
 function load_day_log(): array
 {
     $log = read_json(data_path('day_log.json'), []);
@@ -443,6 +522,7 @@ function collect_day(string $date, string $league = 'all'): array
         if ($live) {
             $m = merge_live($m, $live);
         }
+        $m = apply_field_override($m, $store['overrides']['fields'] ?? [], $rowDate);
         if (is_placeholder_team($m['teamA'] ?? '') || is_placeholder_team($m['teamB'] ?? '')) {
             $round = placeholder_round($m);
             $hasNamed = false;
@@ -693,6 +773,95 @@ try {
             }));
             save_overrides($ovr);
             json_ok(['ok' => true, 'match' => enrich_match($match, $date)]);
+            break;
+
+        case 'update_match':
+            $body = request_json();
+            $origDate = normalize_date($body['origDate'] ?? $body['date'] ?? ist_today());
+            $newDate = normalize_date($body['date'] ?? $origDate);
+            $origA = trim($body['origTeamA'] ?? $body['teamA'] ?? '');
+            $origB = trim($body['origTeamB'] ?? $body['teamB'] ?? '');
+            $teamA = trim($body['teamA'] ?? '');
+            $teamB = trim($body['teamB'] ?? '');
+            $id = trim((string) ($body['id'] ?? ''));
+            if ($teamA === '' || $teamB === '' || strcasecmp($teamA, $teamB) === 0) {
+                json_ok(['error' => 'Enter two different teams'], 400);
+            }
+            $time = normalize_match_time((string) ($body['time'] ?? '07:30 PM'));
+            $patch = [
+                'teamA' => $teamA,
+                'teamB' => $teamB,
+                'league' => $body['league'] ?? 'custom',
+                'tournament' => trim((string) ($body['tournament'] ?? '')) ?: ($teamA . ' vs ' . $teamB),
+                'format' => $body['format'] ?? 'T20',
+                'time' => $time,
+                'tossTime' => toss_time_from_match($time),
+                'venue' => trim((string) ($body['venue'] ?? '')) ?: 'International Cricket Ground',
+            ];
+            if ($id !== '') {
+                $patch['id'] = $id;
+            }
+            $store = load_store();
+            $fixtures = $store['fixtures'];
+            $custom = $store['custom'];
+            $hitFx = patch_date_bucket($fixtures, $origDate, $newDate, $id, $origA, $origB, $patch);
+            $hitCustom = patch_date_bucket($custom, $origDate, $newDate, $id, $origA, $origB, $patch + ['custom' => true]);
+            if ($hitFx) {
+                save_fixtures($fixtures);
+            }
+            if ($hitCustom) {
+                save_custom($custom);
+            }
+
+            $log = load_day_log();
+            $hitLog = patch_date_bucket($log, $origDate, $newDate, $id, $origA, $origB, $patch);
+            if ($hitLog) {
+                save_day_log($log);
+            } else {
+                upsert_day_log_match($newDate, array_merge(['id' => $id ?: ('saved_' . md5($teamA . $teamB . $newDate))], $patch));
+            }
+
+            $ovr = $store['overrides'];
+            if (!isset($ovr['fields']) || !is_array($ovr['fields'])) {
+                $ovr['fields'] = [];
+            }
+            $oldKeys = [
+                $id,
+                strtolower(match_key($origA, $origB, $origDate)),
+                strtolower(match_key($origB, $origA, $origDate)),
+            ];
+            foreach ($oldKeys as $k) {
+                if ($k !== '') {
+                    unset($ovr['fields'][$k]);
+                }
+            }
+            $stored = $patch;
+            $stored['date'] = $newDate;
+            if ($id !== '') {
+                $ovr['fields'][$id] = $stored;
+            }
+            $ovr['fields'][strtolower(match_key($teamA, $teamB, $newDate))] = $stored;
+            $ovr['fields'][strtolower(match_key($teamB, $teamA, $newDate))] = $stored;
+
+            foreach ([
+                strtolower(match_key($origA, $origB, $origDate)),
+                strtolower(match_key($origB, $origA, $origDate)),
+            ] as $oldToss) {
+                if (isset($ovr['toss'][$oldToss]) && is_array($ovr['toss'][$oldToss])) {
+                    $tossRow = array_merge($ovr['toss'][$oldToss], $patch, ['date' => $newDate]);
+                    unset($ovr['toss'][$oldToss]);
+                    $ovr['toss'][strtolower(match_key($teamA, $teamB, $newDate))] = $tossRow;
+                    $ovr['toss'][strtolower(match_key($teamB, $teamA, $newDate))] = $tossRow;
+                }
+            }
+
+            $ovr['deleted'] = array_values(array_filter($ovr['deleted'] ?? [], function ($k) use ($teamA, $teamB, $newDate) {
+                $k = strtolower((string) $k);
+                return $k !== strtolower(match_key($teamA, $teamB, $newDate))
+                    && $k !== strtolower(match_key($teamB, $teamA, $newDate));
+            }));
+            save_overrides($ovr);
+            json_ok(['ok' => true, 'match' => enrich_match(array_merge($patch, ['date' => $newDate]), $newDate)]);
             break;
 
         case 'delete_match':

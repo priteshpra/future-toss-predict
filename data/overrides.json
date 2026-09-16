@@ -88,5 +88,43 @@
     "deleted": [
         "england_pakistan_2026-09-12",
         "pakistan_england_2026-09-12"
-    ]
+    ],
+    "fields": {
+        "live_1534214": {
+            "teamA": "Barbados Tridents",
+            "teamB": "Jamaica Kingsmen",
+            "league": "cpl",
+            "tournament": "Barbados Tridents v Jamaica Kingsmen",
+            "format": "T20",
+            "time": "07:30 PM IST",
+            "tossTime": "07:00 PM IST",
+            "venue": "International Cricket Ground",
+            "id": "live_1534214",
+            "date": "2026-09-16"
+        },
+        "barbados tridents_jamaica kingsmen_2026-09-16": {
+            "teamA": "Barbados Tridents",
+            "teamB": "Jamaica Kingsmen",
+            "league": "cpl",
+            "tournament": "Barbados Tridents v Jamaica Kingsmen",
+            "format": "T20",
+            "time": "07:30 PM IST",
+            "tossTime": "07:00 PM IST",
+            "venue": "International Cricket Ground",
+            "id": "live_1534214",
+            "date": "2026-09-16"
+        },
+        "jamaica kingsmen_barbados tridents_2026-09-16": {
+            "teamA": "Barbados Tridents",
+            "teamB": "Jamaica Kingsmen",
+            "league": "cpl",
+            "tournament": "Barbados Tridents v Jamaica Kingsmen",
+            "format": "T20",
+            "time": "07:30 PM IST",
+            "tossTime": "07:00 PM IST",
+            "venue": "International Cricket Ground",
+            "id": "live_1534214",
+            "date": "2026-09-16"
+        }
+    }
 }

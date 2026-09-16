@@ -145,6 +145,7 @@ function cardHTML(m) {
       </div>
       <div class="actions">
         <button class="btn mint" data-act="analysis" data-id="${m.id}">Full analysis</button>
+        <button class="btn" data-act="edit" data-id="${m.id}">Update</button>
         <button class="btn" data-act="toss" data-id="${m.id}">Set ground toss</button>
         <button class="btn danger" data-act="del" data-id="${m.id}">Remove</button>
       </div>
@@ -176,6 +177,7 @@ function renderMatches(payload) {
       if (!m) return;
       btn.onclick = () => {
         if (btn.dataset.act === 'analysis') openAnalysis(m.id);
+        if (btn.dataset.act === 'edit') openMatchModal(m);
         if (btn.dataset.act === 'toss') promptToss(m);
         if (btn.dataset.act === 'del') removeMatch(m);
       };
@@ -304,15 +306,73 @@ async function removeMatch(m) {
   loadMatches();
 }
 
-function openModal() {
+let editingMatch = null;
+
+function setTeamField(selectId, customId, name) {
+  const sel = $(selectId);
+  const custom = $(customId);
+  if (!sel) return;
+  const hit = [...sel.options].some((o) => o.value === name);
+  if (hit) {
+    sel.value = name;
+    if (custom) custom.value = '';
+  } else {
+    sel.value = '';
+    if (custom) custom.value = name || '';
+  }
+}
+
+function ensureLeagueOption(id) {
+  const sel = $('cLeague');
+  if (!sel || !id) return;
+  if (![...sel.options].some((o) => o.value === id)) {
+    const opt = document.createElement('option');
+    opt.value = id;
+    opt.textContent = leagueName(id);
+    sel.appendChild(opt);
+  }
+  sel.value = id;
+}
+
+function openMatchModal(m = null) {
+  editingMatch = m || null;
   $('addModal').classList.add('show');
-  $('cDate').value = state.date;
   fillTeams('cTeamA');
   fillTeams('cTeamB');
+  if ($('modalTitle')) $('modalTitle').textContent = m ? 'Update match' : 'Add custom match';
+  if ($('cSaveBtn')) $('cSaveBtn').textContent = m ? 'Save updates' : 'Save & predict';
+  if (m) {
+    $('cDate').value = m.date || state.date;
+    setTeamField('cTeamA', 'cTeamACustom', m.teamA);
+    setTeamField('cTeamB', 'cTeamBCustom', m.teamB);
+    $('cTime').value = String(m.time || '').replace(/\s*IST\s*$/i, '').trim() || '07:00 PM';
+    $('cVenue').value = m.venue || 'International Cricket Ground';
+    $('cFormat').value = m.format || 'T20';
+    $('cTourn').value = m.tournament || '';
+    ensureLeagueOption(m.league || 'custom');
+  } else {
+    $('cDate').value = state.date;
+    $('cTeamA').value = '';
+    $('cTeamB').value = '';
+    if ($('cTeamACustom')) $('cTeamACustom').value = '';
+    if ($('cTeamBCustom')) $('cTeamBCustom').value = '';
+    $('cTime').value = '07:00 PM';
+    $('cVenue').value = 'International Cricket Ground';
+    $('cFormat').value = 'T20';
+    $('cTourn').value = '';
+    if ($('cLeague')) $('cLeague').value = 'custom';
+  }
+}
+
+function openModal() {
+  openMatchModal(null);
 }
 
 function closeModal() {
+  editingMatch = null;
   $('addModal').classList.remove('show');
+  if ($('modalTitle')) $('modalTitle').textContent = 'Add custom match';
+  if ($('cSaveBtn')) $('cSaveBtn').textContent = 'Save & predict';
 }
 
 async function submitCustom(e) {
@@ -327,7 +387,13 @@ async function submitCustom(e) {
     format: $('cFormat').value,
     tournament: $('cTourn').value,
   };
-  const res = await api('add_custom', payload, 'POST');
+  if (editingMatch) {
+    payload.id = editingMatch.id;
+    payload.origDate = editingMatch.date;
+    payload.origTeamA = editingMatch.teamA;
+    payload.origTeamB = editingMatch.teamB;
+  }
+  const res = await api(editingMatch ? 'update_match' : 'add_custom', payload, 'POST');
   if (res.error) {
     alert(res.error);
     return;
