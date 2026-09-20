@@ -120,7 +120,8 @@ function find_field_patch(array $fields, array $m, string $date): ?array
                 continue;
             }
             if ((sides_match($m['teamA'] ?? '', $a) && sides_match($m['teamB'] ?? '', $b))
-                || (sides_match($m['teamA'] ?? '', $b) && sides_match($m['teamB'] ?? '', $a))) {
+                || (sides_match($m['teamA'] ?? '', $b) && sides_match($m['teamB'] ?? '', $a))
+            ) {
                 return $patch;
             }
         }
@@ -158,7 +159,8 @@ function apply_toss_override(array $m, array $tossMap, string $date): array
                 continue;
             }
             if ((sides_match($m['teamA'] ?? '', $payload['teamA'] ?? '') && sides_match($m['teamB'] ?? '', $payload['teamB'] ?? ''))
-                || (sides_match($m['teamA'] ?? '', $payload['teamB'] ?? '') && sides_match($m['teamB'] ?? '', $payload['teamA'] ?? ''))) {
+                || (sides_match($m['teamA'] ?? '', $payload['teamB'] ?? '') && sides_match($m['teamB'] ?? '', $payload['teamA'] ?? ''))
+            ) {
                 $ovr = $payload;
                 break;
             }
@@ -375,7 +377,7 @@ function enrich_match(array $m, string $date): array
         'tossWinner' => $tossWinner,
         'tossDecision' => $m['tossDecision'] ?? null,
         'matchWinner' => $m['matchWinner'] ?? null,
-        'liveScore' => $m['liveScore'] ?? null,
+        'liveScore' => null,
         'note' => $m['note'] ?? null,
         'custom' => !empty($m['custom']),
         'prediction' => [
@@ -1015,10 +1017,12 @@ try {
             $ovr['fields'][strtolower(match_key($teamA, $teamB, $newDate))] = $stored;
             $ovr['fields'][strtolower(match_key($teamB, $teamA, $newDate))] = $stored;
 
-            foreach ([
-                strtolower(match_key($origA, $origB, $origDate)),
-                strtolower(match_key($origB, $origA, $origDate)),
-            ] as $oldToss) {
+            foreach (
+                [
+                    strtolower(match_key($origA, $origB, $origDate)),
+                    strtolower(match_key($origB, $origA, $origDate)),
+                ] as $oldToss
+            ) {
                 if (isset($ovr['toss'][$oldToss]) && is_array($ovr['toss'][$oldToss])) {
                     $tossRow = array_merge($ovr['toss'][$oldToss], $patch, ['date' => $newDate]);
                     unset($ovr['toss'][$oldToss]);

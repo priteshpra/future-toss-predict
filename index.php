@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Toss Desk · Load + Last Matches</title>
   <link rel="stylesheet" href="assets/app.css?v=15">
 </head>
+
 <body>
   <div class="orb a"></div>
   <div class="orb b"></div>
@@ -108,7 +110,14 @@
       <div class="table-wrap">
         <table class="table">
           <thead>
-            <tr><th>#</th><th>Team</th><th>Played</th><th>Toss won</th><th>%</th><th>Bowl / Bat</th></tr>
+            <tr>
+              <th>#</th>
+              <th>Team</th>
+              <th>Played</th>
+              <th>Toss won</th>
+              <th>%</th>
+              <th>Bowl / Bat</th>
+            </tr>
           </thead>
           <tbody id="lbBody"></tbody>
         </table>
@@ -137,7 +146,10 @@
           </label>
           <label>Format
             <select id="cFormat">
-              <option>T20</option><option>ODI</option><option>Test</option><option>T10</option>
+              <option>T20</option>
+              <option>ODI</option>
+              <option>Test</option>
+              <option>T10</option>
             </select>
           </label>
         </div>
@@ -170,6 +182,7 @@
     </div>
   </div>
   <aside class="drawer" id="drawer"></aside>
-  <script src="assets/app.js?v=29"></script>
+  <script src="assets/app.js?v=30"></script>
 </body>
+
 </html>

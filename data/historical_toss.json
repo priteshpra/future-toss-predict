@@ -1467,5 +1467,18 @@
         "tossDecision": "bowl",
         "matchWinner": "",
         "source": "cricbuzz"
+    },
+    {
+        "id": "cb_172401",
+        "league": "kcl",
+        "date": "2026-09-20",
+        "format": "T20",
+        "teamA": "South Western Districts",
+        "teamB": "Mpumalanga Rhinos",
+        "venue": "Uplands College, White River, Mpumalanga",
+        "tossWinner": "Mpumalanga Rhinos",
+        "tossDecision": "bowl",
+        "matchWinner": "",
+        "source": "cricbuzz"
     }
 ]

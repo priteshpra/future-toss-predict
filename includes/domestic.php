@@ -16,8 +16,7 @@ function featured_domestic_fixtures(): array
             'time' => '07:30 PM IST',
             'tossTime' => '07:30 PM IST',
             'venue' => $odisha,
-            'status' => 'LIVE',
-            'liveScore' => 'Sambalpur Warriors 193/8 v Cuttack Panthers 40/2 *',
+            'status' => 'UPCOMING',
         ],
         [
             'id' => 'dom_odisha_2026_2',

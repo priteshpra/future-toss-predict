@@ -138,38 +138,38 @@ function cardHTML(m) {
   const dateBit = (m.date && m.date !== state.date)
     ? `  ·  ${Number(m.date.slice(8, 10))} ${months[Number(m.date.slice(5, 7)) - 1] || m.date}`
     : '';
-    const last5A = form.aLast5 && form.aLast5 !== '0/0' ? form.aLast5 : '—';
-    const last5B = form.bLast5 && form.bLast5 !== '0/0' ? form.bLast5 : '—';
-    const hasTg = !!(pred.hasTgLoad || (m.punterLoad && (m.punterLoad.amountA + m.punterLoad.amountB) > 0));
-    const web = m.websiteLoad || src.website || {};
-    const onBook = !!(pred.onBook || web.onBook);
-    const hasWeb = !!(pred.hasWebLoad || web.hasLean);
-    const tgLabel = hasTg
-      ? `${loadA}% — ${loadB}%`
-      : 'No TG money yet';
-    const webA = pred.webLoadA ?? web.pctA ?? 50;
-    const webB = pred.webLoadB ?? web.pctB ?? 50;
-    const webLabel = onBook
-      ? (hasWeb ? `${webA}% — ${webB}%` : 'Listed · no load yet')
-      : 'Not on toss-book';
-    const signalNote = src.split
-      ? `<div class="split-note">SPLIT: last 5 <b>${esc(src.lastToss?.winner)}</b>  ·  load <b>${esc(src.load?.winner)}</b> — skip</div>`
-      : (src.triple
-        ? `<div class="agree-note">BEST: last 5 + Telegram + website teeno <b>${esc(pred.winner)}</b> pe agree</div>`
-        : (src.agree ? `<div class="agree-note">STRONG: last 5 aur load dono <b>${esc(pred.winner)}</b> pe agree</div>` : ''));
-    const money = hasTg
-      ? `<div class="punter-line">Telegram ₹: <b>${esc(m.punterLoad?.leader || 'Even')}</b> ${m.punterLoad?.leader ? m.punterLoad.leaderPct + '%' : ''}  ·  ${esc(m.teamA)} ${esc(m.punterLoad?.amountALabel || '')} vs ${esc(m.teamB)} ${esc(m.punterLoad?.amountBLabel || '')}</div>`
-      : `<div class="punter-line">Telegram ₹: is match pe mapped toss money nahi mila</div>`;
-    const webLine = `<div class="web-line">${esc(web.label || (onBook ? (hasWeb ? ('Website load favouring ' + (web.leanTeam || '')) : 'Toss-book pe listed · no load yet') : 'Website load: toss-book pe listed nahi'))}</div>`;
-    const bookBadge = onBook ? '<span class="badge book">ON BOOK</span>' : '';
-    const reportBox = report.headline
-      ? `<div class="tipper ${esc(report.grade || 'wait')}">
+  const last5A = form.aLast5 && form.aLast5 !== '0/0' ? form.aLast5 : '—';
+  const last5B = form.bLast5 && form.bLast5 !== '0/0' ? form.bLast5 : '—';
+  const hasTg = !!(pred.hasTgLoad || (m.punterLoad && (m.punterLoad.amountA + m.punterLoad.amountB) > 0));
+  const web = m.websiteLoad || src.website || {};
+  const onBook = !!(pred.onBook || web.onBook);
+  const hasWeb = !!(pred.hasWebLoad || web.hasLean);
+  const tgLabel = hasTg
+    ? `${loadA}% — ${loadB}%`
+    : 'No TG money yet';
+  const webA = pred.webLoadA ?? web.pctA ?? 50;
+  const webB = pred.webLoadB ?? web.pctB ?? 50;
+  const webLabel = onBook
+    ? (hasWeb ? `${webA}% — ${webB}%` : 'Listed · no load yet')
+    : 'Not on toss-book';
+  const signalNote = src.split
+    ? `<div class="split-note">SPLIT: last 5 <b>${esc(src.lastToss?.winner)}</b>  ·  load <b>${esc(src.load?.winner)}</b> — skip</div>`
+    : (src.triple
+      ? `<div class="agree-note">BEST: last 5 + Telegram + website teeno <b>${esc(pred.winner)}</b> pe agree</div>`
+      : (src.agree ? `<div class="agree-note">STRONG: last 5 aur load dono <b>${esc(pred.winner)}</b> pe agree</div>` : ''));
+  const money = hasTg
+    ? `<div class="punter-line">Telegram ₹: <b>${esc(m.punterLoad?.leader || 'Even')}</b> ${m.punterLoad?.leader ? m.punterLoad.leaderPct + '%' : ''}  ·  ${esc(m.teamA)} ${esc(m.punterLoad?.amountALabel || '')} vs ${esc(m.teamB)} ${esc(m.punterLoad?.amountBLabel || '')}</div>`
+    : `<div class="punter-line">Telegram ₹: is match pe mapped toss money nahi mila</div>`;
+  const webLine = `<div class="web-line">${esc(web.label || (onBook ? (hasWeb ? ('Website load favouring ' + (web.leanTeam || '')) : 'Toss-book pe listed · no load yet') : 'Website load: toss-book pe listed nahi'))}</div>`;
+  const bookBadge = onBook ? '<span class="badge book">ON BOOK</span>' : '';
+  const reportBox = report.headline
+    ? `<div class="tipper ${esc(report.grade || 'wait')}">
           <div class="tipper-kicker">Tipper report · ${esc(report.action || 'WAIT')}</div>
           <p>${esc(report.headline)}</p>
           <small>${esc(report.when || '')}</small>
         </div>`
-      : '';
-    return `
+    : '';
+  return `
     <article class="card ${m.phase === 'alert_30' || m.phase === 'toss_now' ? 'alert30' : ''} ${m.status === 'LIVE' ? 'live' : ''}">
       <div class="meta">
         <div class="meta-left">${esc(m.format)}  ·  ${esc(leagueName(m.league))}</div>
@@ -205,7 +205,6 @@ function cardHTML(m) {
       </div>
       ${reportBox}
       <div class="${pickClass}">${pickBody}</div>
-      ${m.liveScore ? `<p class="live-line">${esc(m.liveScore)}</p>` : ''}
       ${actual}
       ${money}
       ${webLine}
@@ -312,17 +311,17 @@ function renderBookBoard(board) {
   box.innerHTML = `<div class="book-head">Toss-book website load <small>${esc(board.fetchedAt || '')} · ${rows.length} listed${inferred}</small></div>
     <p class="tg-hint">Yahi board tipper log website pe check karte hain — listed match + favouring side.</p>
     ${rows.map((r) => {
-      const hot = !!r.hasLean;
-      const pctA = r.pctA ?? 50;
-      const pctB = r.pctB ?? 50;
-      return `<article class="book-row ${hot ? 'hot' : ''}">
+    const hot = !!r.hasLean;
+    const pctA = r.pctA ?? 50;
+    const pctB = r.pctB ?? 50;
+    return `<article class="book-row ${hot ? 'hot' : ''}">
         <div class="book-meta">${esc(r.time || '')}${r.league ? ' · ' + esc(r.league) : ''} · ${esc(r.status || 'LISTED')}</div>
         <div class="book-teams"><b>${esc(r.teamA)}</b> <span>vs</span> <b>${esc(r.teamB)}</b></div>
         <div class="book-label">${esc(r.label || 'No load yet')}</div>
         <div class="track web"><i style="width:${hot ? pctA : 50}%"></i><i style="width:${hot ? pctB : 50}%"></i></div>
         <div class="book-money">${esc(r.amountALabel || '₹0')} vs ${esc(r.amountBLabel || '₹0')}</div>
       </article>`;
-    }).join('')}`;
+  }).join('')}`;
 }
 
 function headingFor(date) {
@@ -398,7 +397,7 @@ async function prefetchMatchDay(date) {
     if (data && !data.error) {
       matchCache[key] = data;
     }
-  } catch (e) {}
+  } catch (e) { }
 }
 
 function lastTossTable(team) {
@@ -867,7 +866,7 @@ function playTgBeep() {
     g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.45);
     o.start();
     o.stop(ctx.currentTime + 0.5);
-  } catch (e) {}
+  } catch (e) { }
 }
 
 function rememberSeen() {

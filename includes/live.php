@@ -152,9 +152,6 @@ function merge_live(array $match, array $liveRows): array
         if (!$same) {
             continue;
         }
-        if (!empty($lm['liveScore'])) {
-            $match['liveScore'] = $lm['liveScore'];
-        }
         if (!empty($match['userEdited']) || !empty($match['userToss'])) {
             $match['liveLinked'] = true;
             break;
@@ -308,26 +305,80 @@ function schedule_rows_for_date(string $date): array
     return array_values($picked);
 }
 
+function merge_schedule_by_date(array $base, array $add): array
+{
+    foreach ($add as $date => $rows) {
+        if (!is_array($rows)) {
+            continue;
+        }
+        if (!isset($base[$date]) || !is_array($base[$date])) {
+            $base[$date] = [];
+        }
+        $have = [];
+        foreach ($base[$date] as $m) {
+            $id = (string) ($m['id'] ?? '');
+            $pair = strtolower(trim($m['teamA'] ?? '') . '|' . trim($m['teamB'] ?? ''));
+            if ($id !== '') {
+                $have[$id] = true;
+            }
+            $have[$pair] = true;
+            $have[strtolower(trim($m['teamB'] ?? '') . '|' . trim($m['teamA'] ?? ''))] = true;
+        }
+        foreach ($rows as $m) {
+            if (!is_array($m)) {
+                continue;
+            }
+            $id = (string) ($m['id'] ?? '');
+            $pair = strtolower(trim($m['teamA'] ?? '') . '|' . trim($m['teamB'] ?? ''));
+            $rev = strtolower(trim($m['teamB'] ?? '') . '|' . trim($m['teamA'] ?? ''));
+            if (($id !== '' && isset($have[$id])) || isset($have[$pair]) || isset($have[$rev])) {
+                continue;
+            }
+            $base[$date][] = $m;
+            if ($id !== '') {
+                $have[$id] = true;
+            }
+            $have[$pair] = true;
+        }
+    }
+    return $base;
+}
+
 function fetch_cricbuzz_schedule(): array
 {
-    $cached = cache_get('cricbuzz_sched_v2', 900);
-    if (is_array($cached)) {
+    $cached = cache_get('cricbuzz_sched_v3', 600);
+    if (is_array($cached) && $cached) {
         return $cached;
     }
-    $html = http_get('https://www.cricbuzz.com/cricket-schedule/upcoming-series/all', 10);
-    if (!$html) {
-        $html = http_get('https://www.cricbuzz.com/cricket-schedule/upcoming-series/international', 8);
+    $urls = [
+        'https://www.cricbuzz.com/cricket-schedule/upcoming-series/all',
+        'https://www.cricbuzz.com/cricket-schedule/upcoming-series/league',
+        'https://www.cricbuzz.com/cricket-schedule/upcoming-series/women',
+        'https://www.cricbuzz.com/cricket-schedule/upcoming-series/domestic',
+        'https://www.cricbuzz.com/cricket-schedule/upcoming-series/international',
+    ];
+    $merged = [];
+    foreach ($urls as $url) {
+        $html = http_get($url, 6);
+        if (!is_string($html) || $html === '') {
+            continue;
+        }
+        $parsed = parse_cricbuzz_schedule_html($html);
+        if ($parsed) {
+            $merged = merge_schedule_by_date($merged, $parsed);
+        }
     }
-    $parsed = is_string($html) && $html !== '' ? parse_cricbuzz_schedule_html($html) : [];
-    if (!$parsed) {
-        $stale = cache_get('cricbuzz_sched_v2', 86400);
-        if (is_array($stale)) {
+    if ($merged) {
+        cache_set('cricbuzz_sched_v3', $merged);
+        return $merged;
+    }
+    foreach (['cricbuzz_sched_v3', 'cricbuzz_sched_v2'] as $key) {
+        $stale = cache_get($key, 86400);
+        if (is_array($stale) && $stale) {
             return $stale;
         }
-        return [];
     }
-        cache_set('cricbuzz_sched_v2', $parsed);
-    return $parsed;
+    return [];
 }
 
 function parse_cricbuzz_schedule_html(string $html): array
@@ -335,8 +386,18 @@ function parse_cricbuzz_schedule_html(string $html): array
     $html = preg_replace('/<!-- -->/', ' ', $html);
     $html = html_entity_decode($html, ENT_QUOTES | ENT_HTML5);
     $months = [
-        'JAN' => 1, 'FEB' => 2, 'MAR' => 3, 'APR' => 4, 'MAY' => 5, 'JUN' => 6,
-        'JUL' => 7, 'AUG' => 8, 'SEP' => 9, 'OCT' => 10, 'NOV' => 11, 'DEC' => 12,
+        'JAN' => 1,
+        'FEB' => 2,
+        'MAR' => 3,
+        'APR' => 4,
+        'MAY' => 5,
+        'JUN' => 6,
+        'JUL' => 7,
+        'AUG' => 8,
+        'SEP' => 9,
+        'OCT' => 10,
+        'NOV' => 11,
+        'DEC' => 12,
     ];
     if (!preg_match_all('/<h3[^>]*>\s*([A-Z]{3}),\s*([A-Z]{3})\s+(\d{1,2})\s+(\d{4})\s*<\/h3>(.*?)(?=<h3[^>]*>\s*[A-Z]{3},|$)/is', $html, $blocks, PREG_SET_ORDER)) {
         return [];
