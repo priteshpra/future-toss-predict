@@ -8,7 +8,26 @@ function extra_teams(): array
         ['name' => 'Barbados Tridents', 'short' => 'BT', 'type' => 'cpl', 'badge' => '🔱', 'color' => '#2563eb', 'captain' => 'Rovman Powell', 'aliases' => ['Barbados Royals']],
         ['name' => 'Barbados Tridents Women', 'short' => 'BT-W', 'type' => 'wcpl', 'badge' => '👑', 'color' => '#1e3a8a', 'captain' => 'Hayley Matthews', 'aliases' => ['Barbados Royals Women']],
         ['name' => 'Jamaica Empress Women', 'short' => 'JE-W', 'type' => 'wcpl', 'badge' => '💜', 'color' => '#7c3aed', 'captain' => 'Stafanie Taylor'],
-        ['name' => 'Jamaica Kingsmen', 'short' => 'JKM', 'type' => 'cpl', 'badge' => '👑', 'color' => '#d97706', 'captain' => 'Brandon King'],
+        ['name' => 'Antigua and Barbuda Falcons', 'short' => 'ABF', 'type' => 'cpl', 'badge' => '🦅', 'color' => '#ef4444', 'captain' => 'Imad Wasim', 'aliases' => ['Falcons']],
+        ['name' => 'Jamaica Kingsmen', 'short' => 'JKM', 'type' => 'cpl', 'badge' => '👑', 'color' => '#d97706', 'captain' => 'Brandon King', 'aliases' => ['Kingsmen']],
+        ['name' => 'Western Australia', 'short' => 'WAus', 'type' => 'odi', 'badge' => '🟡', 'color' => '#facc15', 'captain' => ''],
+        ['name' => 'Tasmania', 'short' => 'TAS', 'type' => 'odi', 'badge' => '🟢', 'color' => '#16a34a', 'captain' => ''],
+        ['name' => 'Bahamas', 'short' => 'BAH', 'type' => 't20i', 'badge' => '🇧🇸', 'color' => '#38bdf8', 'captain' => ''],
+        ['name' => 'Edinburgh Castle Rockers', 'short' => 'ECR', 'type' => 'etpl', 'badge' => '🏰', 'color' => '#1d4ed8', 'captain' => ''],
+        ['name' => 'Belfast Wolves', 'short' => 'BFW', 'type' => 'etpl', 'badge' => '🐺', 'color' => '#16a34a', 'captain' => ''],
+        ['name' => 'Amsterdam Flames', 'short' => 'ADF', 'type' => 'etpl', 'badge' => '🔥', 'color' => '#dc2626', 'captain' => ''],
+        ['name' => 'India A Women', 'short' => 'IND-A-W', 'type' => 'women_odi', 'badge' => '🇮🇳', 'color' => '#2563eb', 'captain' => ''],
+        ['name' => 'Australia A Women', 'short' => 'AUS-A-W', 'type' => 'women_odi', 'badge' => '🇦🇺', 'color' => '#f59e0b', 'captain' => ''],
+        ['name' => 'India Under-19s', 'short' => 'IND-U19', 'type' => 'international', 'badge' => '🇮🇳', 'color' => '#1d4ed8', 'captain' => '', 'aliases' => ['India U19', 'India U-19', 'India U19s', 'India Under-19']],
+        ['name' => 'Australia Under-19s', 'short' => 'AUS-U19', 'type' => 'international', 'badge' => '🇦🇺', 'color' => '#f59e0b', 'captain' => '', 'aliases' => ['Australia U19', 'Australia U-19', 'Australia U19s', 'Australia Under-19']],
+        ['name' => 'Leicestershire', 'short' => 'LEIC', 'type' => 'odi', 'badge' => '🦊', 'color' => '#dc2626', 'captain' => ''],
+        ['name' => 'Middlesex', 'short' => 'MDX', 'type' => 'odi', 'badge' => '🎖️', 'color' => '#1e3a8a', 'captain' => ''],
+        ['name' => 'Cayman Islands', 'short' => 'CAYM', 'type' => 't20i', 'badge' => '🇰🇾', 'color' => '#eab308', 'captain' => ''],
+        ['name' => 'Bermuda', 'short' => 'BER', 'type' => 't20i', 'badge' => '🇧🇲', 'color' => '#2563eb', 'captain' => ''],
+        ['name' => 'Nigeria', 'short' => 'NGA', 'type' => 't20i', 'badge' => '🇳🇬', 'color' => '#16a34a', 'captain' => ''],
+        ['name' => 'Ghana', 'short' => 'GH', 'type' => 't20i', 'badge' => '🇬🇭', 'color' => '#f97316', 'captain' => ''],
+        ['name' => 'Eastern Storm', 'short' => 'ESTORM', 'type' => 'odi', 'badge' => '⚡', 'color' => '#7c3aed', 'captain' => ''],
+        ['name' => 'Border', 'short' => 'BOR', 'type' => 'odi', 'badge' => '🛡️', 'color' => '#0f766e', 'captain' => ''],
         ['name' => 'Uganda', 'short' => 'UGA', 'type' => 'international', 'badge' => '🇺🇬', 'color' => '#eab308', 'captain' => 'Riazat Ali Shah'],
         ['name' => 'Kenya', 'short' => 'KEN', 'type' => 'international', 'badge' => '🇰🇪', 'color' => '#15803d', 'captain' => 'Rakep Patel'],
         ['name' => 'Sierra Leone', 'short' => 'SLE', 'type' => 'international', 'badge' => '🇸🇱', 'color' => '#0369a1', 'captain' => 'Lansana Lamin'],
@@ -220,36 +239,117 @@ function market_load_share(string $teamA, string $teamB, string $date = '', stri
 
 function apply_live_toss_markets(array $match, ?array $punter = null): array
 {
-    $mins = (int) ($match['minutesToToss'] ?? 99999);
-    $date = $match['date'] ?? '';
     $pred = $match['prediction'] ?? [];
-
-    $loadA = (int) ($pred['tossLoadA'] ?? 50);
-    $loadB = (int) ($pred['tossLoadB'] ?? 50);
-    $punterTotal = $punter ? ((float) ($punter['amountA'] ?? 0) + (float) ($punter['amountB'] ?? 0)) : 0.0;
+    $teamA = $match['teamA'] ?? '';
+    $teamB = $match['teamB'] ?? '';
+    $histA = (int) ($pred['teamAPct'] ?? 50);
+    $histB = 100 - $histA;
 
     $amtA = $punter ? (float) ($punter['amountA'] ?? 0) : 0.0;
     $amtB = $punter ? (float) ($punter['amountB'] ?? 0) : 0.0;
-    if ($punter && $punterTotal > 0) {
+    $punterTotal = $amtA + $amtB;
+    $hasLoad = $punterTotal > 0;
+    $loadA = 50;
+    $loadB = 50;
+    if ($hasLoad) {
         if ($amtA > 0 && $amtB > 0) {
-            $loadA = (int) ($punter['pctA'] ?? $loadA);
+            $loadA = (int) ($punter['pctA'] ?? round($amtA / $punterTotal * 100));
         } else {
-            $loadA = $amtA > 0 ? 72 : 28;
+            $loadA = $amtA > 0 ? 78 : 22;
         }
         $loadA = max(18, min(82, $loadA));
         $loadB = 100 - $loadA;
-    } else {
-        [$loadA, $loadB] = market_load_share(
-            $match['teamA'] ?? '',
-            $match['teamB'] ?? '',
-            $date,
-            $match['league'] ?? '',
-            $mins
-        );
     }
 
+    if ($punterTotal >= 20000) {
+        $loadW = 0.60;
+    } elseif ($punterTotal >= 3000) {
+        $loadW = 0.50;
+    } elseif ($hasLoad) {
+        $loadW = 0.35;
+    } else {
+        $loadW = 0.0;
+    }
+    $histW = 1 - $loadW;
+    $blendA = (int) round(($histA * $histW) + ($loadA * $loadW));
+    $blendA = max(40, min(72, $blendA));
+    $blendB = 100 - $blendA;
+    $winner = $blendA >= $blendB ? $teamA : $teamB;
+    $winPct = max($blendA, $blendB);
+    $histWinner = $histA >= $histB ? $teamA : $teamB;
+    $loadWinner = !$hasLoad ? null : ($loadA === $loadB ? null : ($loadA > $loadB ? $teamA : $teamB));
+    $agree = $hasLoad && $loadWinner && strcasecmp($loadWinner, $histWinner) === 0;
+    $split = $hasLoad && $loadWinner && strcasecmp($loadWinner, $histWinner) !== 0;
+
+    if ($split) {
+        $conf = 'SPLIT · load vs last-toss disagree — check both';
+    } elseif ($agree) {
+        $conf = $winPct >= 60 ? 'Load + last toss AGREE (strong)' : 'Load + last toss agree';
+    } elseif ($hasLoad) {
+        $conf = 'Punter load + last toss blended';
+    } else {
+        $conf = $pred['confidence'] ?? 'Last-toss lean (no punter money yet)';
+    }
+
+    $insights = is_array($pred['insights'] ?? null) ? $pred['insights'] : [];
+    array_unshift(
+        $insights,
+        $hasLoad
+            ? ('Punter load: ' . $teamA . ' ' . ($punter['amountALabel'] ?? '') . ' vs ' . $teamB . ' ' . ($punter['amountBLabel'] ?? '') . " ({$loadA}%–{$loadB}%).")
+            : 'Punter load: no toss money mapped to this match yet — pick is last-toss only.',
+        $split
+            ? ("Signals split: last toss → {$histWinner} ({$histA}%) · load → {$loadWinner} ({$loadA}%). Combined lean: {$winner} ({$winPct}%).")
+            : ("Combined toss lean: {$winner} ({$winPct}%) from last matches" . ($hasLoad ? ' + punter load' : '') . '.')
+    );
+
+    $pred['teamAPct'] = $histA;
+    $pred['teamBPct'] = $histB;
     $pred['tossLoadA'] = $loadA;
     $pred['tossLoadB'] = $loadB;
+    $pred['hasLoad'] = $hasLoad;
+    $pred['winner'] = $winner;
+    $pred['probability'] = $winPct;
+    $pred['confidence'] = $conf;
+    $pred['insights'] = $insights;
+    $pred['sources'] = [
+        'lastToss' => ['winner' => $histWinner, 'pctA' => $histA, 'pctB' => $histB],
+        'load' => ['winner' => $loadWinner, 'pctA' => $loadA, 'pctB' => $loadB, 'hasMoney' => $hasLoad, 'amountA' => $amtA, 'amountB' => $amtB],
+        'agree' => $agree,
+        'split' => $split,
+    ];
+    $pred['model'] = 'Last 5/10 toss wins + punter load';
+
+    $a = $match['analysis']['teamA'] ?? [];
+    $b = $match['analysis']['teamB'] ?? [];
+    $h2h = $match['form']['h2h'] ?? ($match['analysis']['headToHead'] ?? []);
+    $edge = static function ($av, $bv) use ($teamA, $teamB) {
+        if ((float) $av === (float) $bv) {
+            return 'Even';
+        }
+        return ((float) $av > (float) $bv) ? $teamA : $teamB;
+    };
+    $headline = $winner . ' isliye select kiya: ';
+    if ($hasLoad && $agree) {
+        $headline .= "last-toss aur punter load dono {$winner} pe agree ({$winPct}%).";
+    } elseif ($split) {
+        $headline .= "last-toss {$histWinner} pe hai, load {$loadWinner} pe — combined lean {$winner} ({$winPct}%).";
+    } elseif ($hasLoad) {
+        $headline .= "punter load + last 5/10 toss mix karke {$winner} ({$winPct}%).";
+    } else {
+        $headline .= "last 5/10 toss wins me {$winner} ka edge hai ({$histA}% vs {$histB}%). Is match pe mapped punter money nahi mila.";
+    }
+    $pred['whyPick'] = [
+        'picked' => $winner,
+        'pct' => $winPct,
+        'headline' => $headline,
+        'factors' => [
+            ['name' => 'Last 5 toss', 'a' => ($a['last5Wins'] ?? 0) . '/' . ($a['last5Total'] ?? 0) . ' (' . ($a['last5Pct'] ?? 50) . '%)', 'b' => ($b['last5Wins'] ?? 0) . '/' . ($b['last5Total'] ?? 0) . ' (' . ($b['last5Pct'] ?? 50) . '%)', 'edge' => $edge($a['last5Pct'] ?? 50, $b['last5Pct'] ?? 50)],
+            ['name' => 'Last 10 toss', 'a' => ($a['last10Wins'] ?? 0) . '/' . ($a['last10Total'] ?? 0) . ' (' . ($a['last10Pct'] ?? 50) . '%)', 'b' => ($b['last10Wins'] ?? 0) . '/' . ($b['last10Total'] ?? 0) . ' (' . ($b['last10Pct'] ?? 50) . '%)', 'edge' => $edge($a['last10Pct'] ?? 50, $b['last10Pct'] ?? 50)],
+            ['name' => 'Career toss', 'a' => ($a['record']['won'] ?? 0) . '/' . ($a['record']['played'] ?? 0) . ' (' . ($a['record']['pct'] ?? 50) . '%)', 'b' => ($b['record']['won'] ?? 0) . '/' . ($b['record']['played'] ?? 0) . ' (' . ($b['record']['pct'] ?? 50) . '%)', 'edge' => $edge($a['record']['pct'] ?? 50, $b['record']['pct'] ?? 50)],
+            ['name' => 'H2H toss', 'a' => (string) ($h2h['teamAWins'] ?? 0), 'b' => (string) ($h2h['teamBWins'] ?? 0), 'edge' => $edge($h2h['teamAWins'] ?? 0, $h2h['teamBWins'] ?? 0)],
+            ['name' => 'Punter load', 'a' => $hasLoad ? ($loadA . '%') : '—', 'b' => $hasLoad ? ($loadB . '%') : '—', 'edge' => $hasLoad ? ($loadWinner ?: 'Even') : 'No money'],
+        ],
+    ];
 
     $match['prediction'] = $pred;
     if ($punter) {
@@ -278,7 +378,17 @@ function history_side_hit(string $side, string $norm): bool
     if (name_side_tags($side) !== name_side_tags($norm)) {
         return false;
     }
-    return $side === $norm || str_contains($side, $norm) || str_contains($norm, $side);
+    if ($side === $norm) {
+        return true;
+    }
+    $short = strlen($side) <= strlen($norm) ? $side : $norm;
+    $long = strlen($side) <= strlen($norm) ? $norm : $side;
+    if ($short === '' || !str_contains($long, $short)) {
+        return false;
+    }
+    $pos = strpos($long, $short);
+    $prefix = $pos === false ? $long : substr($long, 0, $pos);
+    return $prefix === '';
 }
 
 function team_recent(string $norm, int $limit = 10): array
@@ -509,12 +619,13 @@ function analyze_toss(string $teamA, string $teamB, string $venue = '', string $
     $careerSmoothB = $recB['played'] ? (($recB['won'] + 6) / ($recB['played'] + 12)) * 100 : 50.0;
 
     $scoreA = 50.0;
-    $minPlayed = min($recA['played'], $recB['played']);
-    $recentW = ($minPlayed >= 8 && count($recentA) >= 5 && count($recentB) >= 5) ? 0.30 : 0.12;
-    $scoreA += ($recentSmoothA - $recentSmoothB) * $recentW;
-    $scoreA += ($careerSmoothA - $careerSmoothB) * 0.42;
+    $l5SmoothA = count($last5A) ? (($a5 + 2) / (count($last5A) + 4)) * 100 : 50.0;
+    $l5SmoothB = count($last5B) ? (($b5 + 2) / (count($last5B) + 4)) * 100 : 50.0;
+    $scoreA += ($l5SmoothA - $l5SmoothB) * 0.22;
+    $scoreA += ($recentSmoothA - $recentSmoothB) * 0.46;
+    $scoreA += ($careerSmoothA - $careerSmoothB) * 0.16;
     if (count($h2h) >= 1) {
-        $scoreA += ((((($hA + 2) / (count($h2h) + 4)) * 100) - 50) * 0.20);
+        $scoreA += ((((($hA + 2) / (count($h2h) + 4)) * 100) - 50) * 0.18);
     }
     $stA = streak_of($recentA, $nA);
     $stB = streak_of($recentB, $nB);
@@ -540,7 +651,7 @@ function analyze_toss(string $teamA, string $teamB, string $venue = '', string $
         $conf = 'Even 50-50 (thin toss history)';
     } else {
         $pA = (int) round($scoreA);
-        $pA = max(44, min(62, $pA));
+        $pA = max(42, min(68, $pA));
         $pB = 100 - $pA;
         if ($pA === $pB) {
             if ($recA['won'] !== $recB['won']) {
@@ -552,13 +663,13 @@ function analyze_toss(string $teamA, string $teamB, string $venue = '', string $
             }
         }
         $lead = max($pA, $pB);
-        $conf = $lead >= 58 ? 'Stronger toss-win record' : ($lead >= 54 ? 'Clear calling lean' : 'Slight toss-win lean');
+        $conf = $lead >= 58 ? 'Last-toss record is clear' : ($lead >= 54 ? 'Last matches lean this way' : 'Slight last-toss lean');
     }
 
     $favored = $pA >= $pB ? $teamA : $teamB;
     $favP = max($pA, $pB);
     $insights = [];
-    $insights[] = "Ground toss pick: {$favored} ({$favP}%) from career toss wins, last 10, H2H and home calling.";
+    $insights[] = "Last-toss lean: {$favored} ({$favP}%) from last 5 + last 10 toss wins (career/H2H only as backup).";
     $insights[] = "{$teamA} career toss wins {$recA['won']}/{$recA['played']} ({$recA['pct']}%). Last 10: {$a10}/" . count($recentA) . ". Last 5: {$a5}/" . count($last5A) . ".";
     $insights[] = "{$teamB} career toss wins {$recB['won']}/{$recB['played']} ({$recB['pct']}%). Last 10: {$b10}/" . count($recentB) . ". Last 5: {$b5}/" . count($last5B) . ".";
     if ($recA['won'] || $recB['won']) {
@@ -581,6 +692,24 @@ function analyze_toss(string $teamA, string $teamB, string $venue = '', string $
     [$loadA, $loadB] = market_load_share($teamA, $teamB, $date);
 
     $packTeam = function (string $name, array $t, int $p, int $w5, array $last5, int $w10, array $recent, bool $home, array $st, int $load, array $rec) use ($pct) {
+        $norm = normalize_name($name);
+        $last5Rows = [];
+        foreach ($last5 as $m) {
+            if (($m['nW'] ?? '') === '') {
+                continue;
+            }
+            $didWin = toss_won_by($m, $norm);
+            $dec = ($m['tossDecision'] ?? '') === 'bat' ? 'bat' : ((($m['tossDecision'] ?? '') === 'field' || ($m['tossDecision'] ?? '') === 'bowl') ? 'bowl' : '');
+            $last5Rows[] = [
+                'date' => $m['date'] ?? '',
+                'vs' => opponent_name($m, $norm),
+                'won' => $didWin,
+                'decision' => $didWin ? $dec : '',
+            ];
+            if (count($last5Rows) >= 5) {
+                break;
+            }
+        }
         return [
             'name' => $name,
             'badge' => $t['badge'] ?? '🏏',
@@ -591,6 +720,7 @@ function analyze_toss(string $teamA, string $teamB, string $venue = '', string $
             'last5Wins' => $w5,
             'last5Total' => count($last5),
             'last5Pct' => $pct($w5, count($last5)),
+            'last5Rows' => $last5Rows,
             'last10Wins' => $w10,
             'last10Total' => count($recent),
             'last10Pct' => $pct($w10, count($recent)),
@@ -617,7 +747,7 @@ function analyze_toss(string $teamA, string $teamB, string $venue = '', string $
             'likelyDecision' => $venueStats['preferredDecision'],
             'insights' => $insights,
             'lockedPick' => $favored,
-            'model' => 'Career toss wins + last 10 + H2H + home calling',
+            'model' => 'Last 5/10 toss wins + punter load',
         ],
     ];
 }

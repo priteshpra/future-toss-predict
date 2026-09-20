@@ -82,27 +82,96 @@ function patch_date_bucket(array &$bucket, string $oldDate, string $newDate, str
     return false;
 }
 
-function apply_field_override(array $m, array $fields, string $date): array
+function find_field_patch(array $fields, array $m, string $date): ?array
 {
     if (!$fields) {
-        return $m;
+        return null;
     }
     $id = (string) ($m['id'] ?? '');
     $k1 = strtolower(match_key($m['teamA'] ?? '', $m['teamB'] ?? '', $date));
     $k2 = strtolower(match_key($m['teamB'] ?? '', $m['teamA'] ?? '', $date));
-    $patch = null;
     if ($id !== '' && isset($fields[$id]) && is_array($fields[$id])) {
-        $patch = $fields[$id];
-    } elseif (isset($fields[$k1]) && is_array($fields[$k1])) {
-        $patch = $fields[$k1];
-    } elseif (isset($fields[$k2]) && is_array($fields[$k2])) {
-        $patch = $fields[$k2];
+        return $fields[$id];
     }
+    if (isset($fields[$k1]) && is_array($fields[$k1])) {
+        return $fields[$k1];
+    }
+    if (isset($fields[$k2]) && is_array($fields[$k2])) {
+        return $fields[$k2];
+    }
+    foreach ($fields as $patch) {
+        if (!is_array($patch)) {
+            continue;
+        }
+        $pd = (string) ($patch['date'] ?? $patch['origDate'] ?? '');
+        if ($pd !== '' && $pd !== $date) {
+            continue;
+        }
+        if ($id !== '' && (string) ($patch['id'] ?? '') === $id) {
+            return $patch;
+        }
+        $pairs = [
+            [$patch['teamA'] ?? '', $patch['teamB'] ?? ''],
+            [$patch['origTeamA'] ?? '', $patch['origTeamB'] ?? ''],
+        ];
+        foreach ($pairs as [$a, $b]) {
+            if ($a === '' || $b === '') {
+                continue;
+            }
+            if ((sides_match($m['teamA'] ?? '', $a) && sides_match($m['teamB'] ?? '', $b))
+                || (sides_match($m['teamA'] ?? '', $b) && sides_match($m['teamB'] ?? '', $a))) {
+                return $patch;
+            }
+        }
+    }
+    return null;
+}
+
+function apply_field_override(array $m, array $fields, string $date): array
+{
+    $patch = find_field_patch($fields, $m, $date);
     if (!is_array($patch)) {
         return $m;
     }
-    unset($patch['id'], $patch['origDate'], $patch['origTeamA'], $patch['origTeamB']);
-    return array_merge($m, $patch);
+    $keepId = $m['id'] ?? ($patch['id'] ?? null);
+    unset($patch['origDate'], $patch['origTeamA'], $patch['origTeamB']);
+    $out = array_merge($m, $patch);
+    if ($keepId) {
+        $out['id'] = $keepId;
+    }
+    $out['userEdited'] = true;
+    return $out;
+}
+
+function apply_toss_override(array $m, array $tossMap, string $date): array
+{
+    $k1 = strtolower(match_key($m['teamA'] ?? '', $m['teamB'] ?? '', $date));
+    $k2 = strtolower(match_key($m['teamB'] ?? '', $m['teamA'] ?? '', $date));
+    $ovr = ($tossMap[$k1] ?? null) ?: ($tossMap[$k2] ?? null);
+    if (!is_array($ovr)) {
+        foreach ($tossMap as $payload) {
+            if (!is_array($payload) || empty($payload['tossWinner'])) {
+                continue;
+            }
+            if (($payload['date'] ?? '') !== $date) {
+                continue;
+            }
+            if ((sides_match($m['teamA'] ?? '', $payload['teamA'] ?? '') && sides_match($m['teamB'] ?? '', $payload['teamB'] ?? ''))
+                || (sides_match($m['teamA'] ?? '', $payload['teamB'] ?? '') && sides_match($m['teamB'] ?? '', $payload['teamA'] ?? ''))) {
+                $ovr = $payload;
+                break;
+            }
+        }
+    }
+    if (!is_array($ovr) || empty($ovr['tossWinner'])) {
+        return $m;
+    }
+    $m['tossWinner'] = $ovr['tossWinner'];
+    $m['tossDecision'] = $ovr['tossDecision'] ?? ($m['tossDecision'] ?? 'bowl');
+    $m['matchWinner'] = $ovr['matchWinner'] ?? ($m['matchWinner'] ?? $ovr['tossWinner']);
+    $m['status'] = $ovr['status'] ?? 'COMPLETED';
+    $m['userToss'] = true;
+    return $m;
 }
 
 function load_day_log(): array
@@ -134,12 +203,53 @@ function upsert_day_log_match(string $date, array $match): void
     if (!isset($log[$date]) || !is_array($log[$date])) {
         $log[$date] = [];
     }
+    $protected = ['teamA', 'teamB', 'time', 'tossTime', 'venue', 'tournament', 'league', 'format', 'tossWinner', 'tossDecision', 'matchWinner'];
     foreach ($log[$date] as $i => $row) {
-        if (match_pair_key($row['teamA'] ?? '', $row['teamB'] ?? '', $date) === match_pair_key($teamA, $teamB, $date)) {
-            $log[$date][$i] = array_merge($row, $match);
-            save_day_log($log);
-            return;
+        $same = match_pair_key($row['teamA'] ?? '', $row['teamB'] ?? '', $date) === match_pair_key($teamA, $teamB, $date)
+            || (!empty($match['id']) && ($row['id'] ?? '') === $match['id']);
+        if (!$same) {
+            continue;
         }
+        $merged = $row;
+        $incomingEdit = !empty($match['userEdited']);
+        $incomingToss = !empty($match['userToss']);
+        $lock = (!empty($row['userEdited']) || !empty($row['userToss'])) && !$incomingEdit && !$incomingToss;
+        foreach ($match as $k => $v) {
+            if ($v === null || $v === '') {
+                continue;
+            }
+            if ($lock && in_array($k, $protected, true)) {
+                continue;
+            }
+            $merged[$k] = $v;
+        }
+        if ($incomingEdit) {
+            $merged['userEdited'] = true;
+        } elseif (!empty($row['userEdited'])) {
+            $merged['userEdited'] = true;
+            foreach ($protected as $k) {
+                if ($k === 'tossWinner' || $k === 'tossDecision' || $k === 'matchWinner') {
+                    continue;
+                }
+                if (!empty($row[$k])) {
+                    $merged[$k] = $row[$k];
+                }
+            }
+        }
+        if ($incomingToss && !empty($match['tossWinner'])) {
+            $merged['userToss'] = true;
+            $merged['tossWinner'] = $match['tossWinner'];
+            $merged['tossDecision'] = $match['tossDecision'] ?? ($row['tossDecision'] ?? 'bowl');
+        } elseif (!empty($row['tossWinner'])) {
+            $merged['userToss'] = true;
+            $merged['tossWinner'] = $row['tossWinner'];
+            if (!empty($row['tossDecision'])) {
+                $merged['tossDecision'] = $row['tossDecision'];
+            }
+        }
+        $log[$date][$i] = $merged;
+        save_day_log($log);
+        return;
     }
     $log[$date][] = $match;
     save_day_log($log);
@@ -340,26 +450,49 @@ function is_overnight_ist_fixture(array $m): bool
 
 function collect_source_rows(array $store, array $log, string $date): array
 {
+    $fields = $store['overrides']['fields'] ?? [];
     $rows = [];
-    foreach (($store['fixtures'][$date] ?? []) as $m) {
+    $push = function (array $m) use (&$rows, $fields, $date) {
+        if (skip_slate_match($m)) {
+            return;
+        }
+        $m = apply_field_override($m, $fields, $date);
+        foreach ($rows as $i => $ex) {
+            $same = (sides_match($ex['teamA'] ?? '', $m['teamA'] ?? '') && sides_match($ex['teamB'] ?? '', $m['teamB'] ?? ''))
+                || (sides_match($ex['teamA'] ?? '', $m['teamB'] ?? '') && sides_match($ex['teamB'] ?? '', $m['teamA'] ?? ''))
+                || (!empty($m['id']) && ($ex['id'] ?? '') === $m['id']);
+            if (!$same) {
+                continue;
+            }
+            if (!empty($m['userEdited']) || !empty($m['userToss'])) {
+                $rows[$i] = array_merge($ex, $m);
+            } elseif (!empty($ex['userEdited']) || !empty($ex['userToss'])) {
+                if (!empty($m['liveScore'])) {
+                    $rows[$i]['liveScore'] = $m['liveScore'];
+                }
+            }
+            return;
+        }
         $rows[] = $m;
+    };
+    foreach (($store['fixtures'][$date] ?? []) as $m) {
+        $push($m);
     }
     foreach (($store['custom'][$date] ?? []) as $m) {
         $m['custom'] = true;
         $m['league'] = $m['league'] ?: 'custom';
-        $rows[] = $m;
+        $push($m);
     }
     foreach (($log[$date] ?? []) as $m) {
-        if (!is_array($m) || rows_cover_live_match($rows, $m)) {
-            continue;
+        if (is_array($m)) {
+            $push($m);
         }
-        $rows[] = $m;
     }
     foreach (toss_overrides_as_matches($store['overrides']['toss'] ?? [], $date) as $m) {
-        if (rows_cover_live_match($rows, $m)) {
-            continue;
-        }
-        $rows[] = $m;
+        $push($m);
+    }
+    foreach (schedule_rows_for_date($date) as $m) {
+        $push($m);
     }
     return $rows;
 }
@@ -391,7 +524,7 @@ function guess_live_league(array $lm): string
     if (str_contains($blob, 'women') && (str_contains($blob, 'trinbago') || str_contains($blob, 'guyana') || str_contains($blob, 'barbados') || str_contains($blob, 'empress') || str_contains($blob, 'wcpl'))) {
         return 'wcpl';
     }
-    if (str_contains($blob, 'knight riders') || str_contains($blob, 'amazon warriors') || str_contains($blob, 'kingsmen') || str_contains($blob, 'tridents') || str_contains($blob, 'patriots') || str_contains($blob, ' cpl')) {
+    if (str_contains($blob, 'knight riders') || str_contains($blob, 'amazon warriors') || str_contains($blob, 'kingsmen') || str_contains($blob, 'falcons') || str_contains($blob, 'tridents') || str_contains($blob, 'patriots') || str_contains($blob, ' cpl')) {
         return 'cpl';
     }
     if (str_contains($blob, 'belfast') || str_contains($blob, 'rotterdam') || str_contains($blob, 'dublin') || str_contains($blob, 'glasgow') || str_contains($blob, 'amsterdam') || str_contains($blob, 'edinburgh')) {
@@ -426,11 +559,7 @@ function should_list_live_match(array $lm): bool
     if ($a === '' || $b === '' || is_placeholder_team($a) || is_placeholder_team($b)) {
         return false;
     }
-    $blob = strtolower(($lm['title'] ?? '') . ' ' . $a . ' ' . $b);
-    if (preg_match('/cpl|wcpl|caribbean|etpl|european t20|punjab|pca|sher-e|t20i|odi|women/', $blob)) {
-        return true;
-    }
-    return is_indexed_team($a) && is_indexed_team($b);
+    return !skip_slate_match($lm);
 }
 
 function live_row_as_fixture(array $lm, string $date): array
@@ -453,11 +582,21 @@ function live_row_as_fixture(array $lm, string $date): array
     ];
 }
 
+function sides_match(string $a, string $b): bool
+{
+    if (names_match($a, $b)) {
+        return true;
+    }
+    $ca = normalize_name(find_team($a)['name'] ?? $a);
+    $cb = normalize_name(find_team($b)['name'] ?? $b);
+    return $ca !== '' && $ca === $cb;
+}
+
 function rows_cover_live_match(array $rows, array $lm): bool
 {
     foreach ($rows as $m) {
-        $same = (names_match($m['teamA'] ?? '', $lm['teamA'] ?? '') && names_match($m['teamB'] ?? '', $lm['teamB'] ?? ''))
-            || (names_match($m['teamA'] ?? '', $lm['teamB'] ?? '') && names_match($m['teamB'] ?? '', $lm['teamA'] ?? ''));
+        $same = (sides_match($m['teamA'] ?? '', $lm['teamA'] ?? '') && sides_match($m['teamB'] ?? '', $lm['teamB'] ?? ''))
+            || (sides_match($m['teamA'] ?? '', $lm['teamB'] ?? '') && sides_match($m['teamB'] ?? '', $lm['teamA'] ?? ''));
         if ($same) {
             return true;
         }
@@ -476,18 +615,8 @@ function collect_day(string $date, string $league = 'all'): array
     }
 
     $today = ist_today();
-    if ($date === $today) {
-        $tomorrow = ist_shift($date, 1);
-        $plain = array_map(static fn($t) => $t[0], $tagged);
-        foreach (collect_source_rows($store, $log, $tomorrow) as $m) {
-            if (!is_overnight_ist_fixture($m) || rows_cover_live_match($plain, $m)) {
-                continue;
-            }
-            $tagged[] = [$m, $tomorrow];
-            $plain[] = $m;
-        }
-    }
-
+    $plain = array_map(static fn($t) => $t[0], $tagged);
+    $tomorrowRows = $date === $today ? collect_source_rows($store, $log, ist_shift($date, 1)) : [];
     $live = [];
     if ($date === $today) {
         try {
@@ -495,15 +624,25 @@ function collect_day(string $date, string $league = 'all'): array
         } catch (Throwable $e) {
             $live = [];
         }
-        $plain = array_map(static fn($t) => $t[0], $tagged);
         foreach ($live as $lm) {
             if (!should_list_live_match($lm) || rows_cover_live_match($plain, $lm)) {
                 continue;
             }
+            $liveStatus = strtoupper((string) ($lm['status'] ?? 'UPCOMING'));
+            if ($liveStatus !== 'LIVE' && $liveStatus !== 'COMPLETED' && rows_cover_live_match($tomorrowRows, $lm)) {
+                continue;
+            }
             $fx = live_row_as_fixture($lm, $date);
+            if (skip_slate_match($fx)) {
+                continue;
+            }
+            $fx = apply_field_override($fx, $store['overrides']['fields'] ?? [], $date);
+            $fx = apply_toss_override($fx, $store['overrides']['toss'] ?? [], $date);
             $tagged[] = [$fx, $date];
             $plain[] = $fx;
-            upsert_day_log_match($date, $fx);
+            if (empty($fx['userEdited']) && empty($fx['userToss'])) {
+                upsert_day_log_match($date, $fx);
+            }
         }
     }
 
@@ -515,14 +654,23 @@ function collect_day(string $date, string $league = 'all'): array
         if (in_array(strtolower($k1), $deleted, true) || in_array(strtolower($k2), $deleted, true)) {
             continue;
         }
-        $ovr = ($store['overrides']['toss'][strtolower($k1)] ?? null) ?: ($store['overrides']['toss'][strtolower($k2)] ?? null);
-        if (is_array($ovr)) {
-            $m = array_merge($m, $ovr);
-        }
-        if ($live) {
+        if ($live && empty($m['userEdited'])) {
             $m = merge_live($m, $live);
+        } elseif ($live) {
+            foreach ($live as $lm) {
+                $same = (sides_match($m['teamA'] ?? '', $lm['teamA'] ?? '') && sides_match($m['teamB'] ?? '', $lm['teamB'] ?? ''))
+                    || (sides_match($m['teamA'] ?? '', $lm['teamB'] ?? '') && sides_match($m['teamB'] ?? '', $lm['teamA'] ?? ''));
+                if ($same && !empty($lm['liveScore'])) {
+                    $m['liveScore'] = $lm['liveScore'];
+                    break;
+                }
+            }
         }
         $m = apply_field_override($m, $store['overrides']['fields'] ?? [], $rowDate);
+        $m = apply_toss_override($m, $store['overrides']['toss'] ?? [], $rowDate);
+        if (skip_slate_match($m)) {
+            continue;
+        }
         if (is_placeholder_team($m['teamA'] ?? '') || is_placeholder_team($m['teamB'] ?? '')) {
             $round = placeholder_round($m);
             $hasNamed = false;
@@ -585,17 +733,10 @@ function count_day_matches(string $date, array $store, array $log): int
         $add($m['teamA'] ?? '', $m['teamB'] ?? '', $keyDate);
     };
     foreach (collect_source_rows($store, $log, $date) as $m) {
-        $include($m, $date);
-    }
-    if ($date === ist_today()) {
-        $tomorrow = ist_shift($date, 1);
-        $plain = collect_source_rows($store, $log, $date);
-        foreach (collect_source_rows($store, $log, $tomorrow) as $m) {
-            if (!is_overnight_ist_fixture($m) || rows_cover_live_match($plain, $m)) {
-                continue;
-            }
-            $include($m, $tomorrow);
+        if (skip_slate_match($m) || is_placeholder_team($m['teamA'] ?? '') || is_placeholder_team($m['teamB'] ?? '')) {
+            continue;
         }
+        $include($m, $date);
     }
     return count($seen);
 }
@@ -606,38 +747,9 @@ function calendar_days(int $span = 1): array
     $log = load_day_log();
     $today = ist_now();
     $todayStr = $today->format('Y-m-d');
-    $ahead = max(1, $span);
-    $horizon = 10;
-    $from = ist_shift($todayStr, -2);
-    $to = ist_shift($todayStr, $horizon);
-
     $wanted = [];
-    for ($i = -1; $i <= $ahead; $i++) {
+    for ($i = -1; $i <= 1; $i++) {
         $wanted[ist_shift($todayStr, $i)] = $i;
-    }
-    $scanDates = [];
-    foreach (array_keys($store['fixtures'] ?? []) as $d) {
-        $scanDates[$d] = true;
-    }
-    foreach (array_keys($store['custom'] ?? []) as $d) {
-        $scanDates[$d] = true;
-    }
-    foreach (array_keys($log) as $d) {
-        $scanDates[$d] = true;
-    }
-    foreach (array_keys($store['overrides']['toss'] ?? []) as $k) {
-        if (preg_match('/(\d{4}-\d{2}-\d{2})$/', (string) $k, $m)) {
-            $scanDates[$m[1]] = true;
-        }
-    }
-    foreach (array_keys($scanDates) as $d) {
-        if ($d < $from || $d > $to || isset($wanted[$d])) {
-            continue;
-        }
-        if (count_day_matches($d, $store, $log) < 1) {
-            continue;
-        }
-        $wanted[$d] = (int) ((new DateTimeImmutable($todayStr))->diff(new DateTimeImmutable($d))->format('%r%a'));
     }
 
     ksort($wanted);
@@ -797,6 +909,7 @@ try {
                 'time' => $time,
                 'tossTime' => toss_time_from_match($time),
                 'venue' => trim((string) ($body['venue'] ?? '')) ?: 'International Cricket Ground',
+                'userEdited' => true,
             ];
             if ($id !== '') {
                 $patch['id'] = $id;
@@ -810,6 +923,15 @@ try {
                 save_fixtures($fixtures);
             }
             if ($hitCustom) {
+                save_custom($custom);
+            } elseif (!$hitFx) {
+                if (!isset($custom[$newDate]) || !is_array($custom[$newDate])) {
+                    $custom[$newDate] = [];
+                }
+                $custom[$newDate][] = array_merge($patch, [
+                    'custom' => true,
+                    'id' => $id !== '' ? $id : ('custom_' . time()),
+                ]);
                 save_custom($custom);
             }
 
@@ -837,6 +959,10 @@ try {
             }
             $stored = $patch;
             $stored['date'] = $newDate;
+            $stored['origDate'] = $origDate;
+            $stored['origTeamA'] = $origA;
+            $stored['origTeamB'] = $origB;
+            $stored['userEdited'] = true;
             if ($id !== '') {
                 $ovr['fields'][$id] = $stored;
             }
@@ -952,11 +1078,19 @@ try {
                 'tossDecision' => $body['tossDecision'] ?? 'bowl',
                 'matchWinner' => $body['matchWinner'] ?? $winner,
                 'status' => $winner ? 'COMPLETED' : 'UPCOMING',
+                'userToss' => true,
             ];
             $ovr['toss'][strtolower(match_key($teamA, $teamB, $date))] = $payload;
             $ovr['toss'][strtolower(match_key($teamB, $teamA, $date))] = $payload;
             save_overrides($ovr);
-            upsert_day_log_match($date, array_merge(['id' => $body['id'] ?? ('saved_' . md5($teamA . $teamB . $date))], $payload));
+            $tossRow = array_merge(['id' => $body['id'] ?? ('saved_' . md5($teamA . $teamB . $date))], $payload);
+            upsert_day_log_match($date, $tossRow);
+            $fx = $store['fixtures'];
+            $cu = $store['custom'];
+            patch_date_bucket($fx, $date, $date, (string) ($body['id'] ?? ''), $teamA, $teamB, $payload);
+            patch_date_bucket($cu, $date, $date, (string) ($body['id'] ?? ''), $teamA, $teamB, $payload);
+            save_fixtures($fx);
+            save_custom($cu);
             json_ok(['ok' => true, 'data' => $payload]);
             break;
 

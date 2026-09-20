@@ -323,26 +323,160 @@
   "2026-09-19": [
     {
       "id": "cpl_q2",
-      "teamA": "Eliminator Winner",
-      "teamB": "Qualifier 1 Loser",
+      "teamA": "Guyana Amazon Warriors",
+      "teamB": "Jamaica Kingsmen",
       "league": "cpl",
       "tournament": "Qualifier 2, Caribbean Premier League 2026",
       "format": "T20",
       "time": "04:30 AM IST",
       "venue": "Kensington Oval, Bridgetown, Barbados",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "etpl_qf",
+      "teamA": "Amsterdam Flames",
+      "teamB": "Belfast Wolves",
+      "league": "etpl",
+      "tournament": "Qualifier, European T20 Premier League 2026",
+      "format": "T20",
+      "time": "07:30 PM IST",
+      "venue": "The Village, Dublin",
+      "status": "COMPLETED"
+    }
+  ],
+  "2026-09-20": [
+    {
+      "id": "indw_banw_sf",
+      "teamA": "India Women",
+      "teamB": "Bangladesh Women",
+      "league": "women_t20i",
+      "tournament": "Women's Asian Games 2026 · 2nd Semi Final",
+      "format": "T20",
+      "time": "07:30 AM IST",
+      "venue": "Korogi Sports Park, Nisshin",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "pakw_slw_sf",
+      "teamA": "Pakistan Women",
+      "teamB": "Sri Lanka Women",
+      "league": "women_t20i",
+      "tournament": "Women's Asian Games 2026 · 1st Semi Final",
+      "format": "T20",
+      "time": "11:00 AM IST",
+      "venue": "Korogi Sports Park, Nisshin",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "inda_w_ausa_w",
+      "teamA": "India A Women",
+      "teamB": "Australia A Women",
+      "league": "women_odi",
+      "tournament": "Australia A Women tour of India 2026 · 1st unofficial ODI",
+      "format": "ODI",
+      "time": "09:00 AM IST",
+      "venue": "Punjab Cricket Association IS Bindra Stadium, Mohali",
+      "status": "UPCOMING"
+    },
+    {
+      "id": "wa_tas_od",
+      "teamA": "Western Australia",
+      "teamB": "Tasmania",
+      "league": "odi",
+      "tournament": "Australia Domestic One-Day Cup 2026-27 · 3rd Match",
+      "format": "ODI",
+      "time": "05:30 AM IST",
+      "venue": "WACA Ground, Perth",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "zim_aus_odi3",
+      "teamA": "Zimbabwe",
+      "teamB": "Australia",
+      "league": "odi",
+      "tournament": "Australia tour of Zimbabwe 2026 · 3rd ODI",
+      "format": "ODI",
+      "time": "12:30 PM IST",
+      "venue": "Harare Sports Club, Harare",
+      "status": "UPCOMING"
+    },
+    {
+      "id": "leic_mdx_final",
+      "teamA": "Leicestershire",
+      "teamB": "Middlesex",
+      "league": "odi",
+      "tournament": "England Domestic One-Day Cup 2026 · Final",
+      "format": "ODI",
+      "time": "03:00 PM IST",
+      "venue": "Trent Bridge, Nottingham",
+      "status": "UPCOMING"
+    },
+    {
+      "id": "estorm_border",
+      "teamA": "Eastern Storm",
+      "teamB": "Border",
+      "league": "odi",
+      "tournament": "CSA Provincial One-Day Challenge Division Two 2026-27 · 6th Match",
+      "format": "ODI",
+      "time": "05:00 PM IST",
+      "venue": "Willowmoore Park, Benoni",
+      "status": "UPCOMING"
+    },
+    {
+      "id": "etpl_final",
+      "teamA": "Edinburgh Castle Rockers",
+      "teamB": "Belfast Wolves",
+      "league": "etpl",
+      "tournament": "European T20 Premier League 2026 · Final",
+      "format": "T20",
+      "time": "07:30 PM IST",
+      "venue": "The Village, Dublin",
       "status": "UPCOMING"
     }
   ],
   "2026-09-21": [
     {
       "id": "cpl_final",
-      "teamA": "Qualifier 1 Winner",
-      "teamB": "Qualifier 2 Winner",
+      "teamA": "Antigua and Barbuda Falcons",
+      "teamB": "Jamaica Kingsmen",
       "league": "cpl",
       "tournament": "Grand Final, Caribbean Premier League 2026",
       "format": "T20",
       "time": "04:30 AM IST",
       "venue": "Kensington Oval, Bridgetown, Barbados",
+      "status": "UPCOMING"
+    },
+    {
+      "id": "indu19_ausu19",
+      "teamA": "India Under-19s",
+      "teamB": "Australia Under-19s",
+      "league": "odi",
+      "tournament": "Australia U19 tour of India 2026 · 2nd unofficial ODI",
+      "format": "ODI",
+      "time": "09:00 AM IST",
+      "venue": "Niranjan Shah Stadium, Khandheri, Rajkot",
+      "status": "UPCOMING"
+    },
+    {
+      "id": "nga_gha",
+      "teamA": "Nigeria",
+      "teamB": "Ghana",
+      "league": "t20i",
+      "tournament": "Quadrangular T20I Series in Nigeria, 2026 · 1st Match",
+      "format": "T20",
+      "time": "06:30 PM IST",
+      "venue": "Tafawa Balewa Square Cricket Oval, Lagos",
+      "status": "UPCOMING"
+    },
+    {
+      "id": "caym_ber",
+      "teamA": "Cayman Islands",
+      "teamB": "Bermuda",
+      "league": "t20i",
+      "tournament": "North American Cup, 2026 · 1st Match",
+      "format": "T20",
+      "time": "08:30 PM IST",
+      "venue": "Jimmy Powell Oval, George Town",
       "status": "UPCOMING"
     }
   ]

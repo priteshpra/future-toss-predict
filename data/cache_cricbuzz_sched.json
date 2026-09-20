@@ -1,0 +1,457 @@
+{
+    "ts": 1789916870,
+    "data": {
+        "2026-09-20": [
+            {
+                "id": "cb_152753",
+                "teamA": "Zimbabwe",
+                "teamB": "Australia",
+                "league": "odi",
+                "tournament": "Australia tour of Zimbabwe 2026 · 3rd ODI",
+                "format": "ODI",
+                "time": "01:00 PM IST",
+                "venue": "Harare Sports Club , Harare",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_172397",
+                "teamA": "Eastern Storm",
+                "teamB": "Border",
+                "league": "odi",
+                "tournament": "CSA Provincial One-Day Challenge Division Two 2026-27 · 6th Match",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Willowmoore Park , Benoni",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_144090",
+                "teamA": "Leicestershire",
+                "teamB": "Middlesex",
+                "league": "odi",
+                "tournament": "England Domestic One-Day Cup 2026 · Final",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Trent Bridge , Nottingham",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_169440",
+                "teamA": "Edinburgh Castle Rockers",
+                "teamB": "Belfast Wolves",
+                "league": "etpl",
+                "tournament": "European T20 Premier League 2026 · Final",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "The Village , Dublin",
+                "status": "UPCOMING"
+            }
+        ],
+        "2026-09-21": [
+            {
+                "id": "cb_170770",
+                "teamA": "Cayman Islands",
+                "teamB": "Bermuda",
+                "league": "t20i",
+                "tournament": "North American Cup, 2026 · 1st Match",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Jimmy Powell Oval , George Town",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_154711",
+                "teamA": "Antigua and Barbuda Falcons",
+                "teamB": "Jamaica Kingsmen",
+                "league": "cpl",
+                "tournament": "Caribbean Premier League 2026 · Final",
+                "format": "T20",
+                "time": "04:30 AM IST",
+                "venue": "Kensington Oval , Bridgetown, Barbados",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_155477",
+                "teamA": "India Under-19s",
+                "teamB": "Australia Under-19s",
+                "league": "odi",
+                "tournament": "Australia U19 tour of India 2026 · 2nd unofficial ODI",
+                "format": "ODI",
+                "time": "01:00 PM IST",
+                "venue": "Niranjan Shah Stadium, Khandheri , Rajkot",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_173631",
+                "teamA": "Nigeria",
+                "teamB": "Ghana",
+                "league": "t20i",
+                "tournament": "Quadrangular T20I Series in Nigeria, 2026 · 1st Match",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Tafawa Balewa Square Cricket Oval , Lagos",
+                "status": "UPCOMING"
+            }
+        ],
+        "2026-09-22": [
+            {
+                "id": "cb_170780",
+                "teamA": "Bahamas",
+                "teamB": "Cayman Islands",
+                "league": "t20i",
+                "tournament": "North American Cup, 2026 · 2nd Match",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Jimmy Powell Oval , George Town",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_170960",
+                "teamA": "Pakistan Women",
+                "teamB": "Bangladesh Women",
+                "league": "women_t20i",
+                "tournament": "Women's Asian Games 2026 · Bronze Medal Match",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Korogi Sports Park , Nisshin",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_170963",
+                "teamA": "India Women",
+                "teamB": "Sri Lanka Women",
+                "league": "women_t20i",
+                "tournament": "PAKW vs BANW, Bronze Medal Match Live Cricket Score · Final",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Korogi Sports Park , Nisshin",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_167060",
+                "teamA": "Queensland",
+                "teamB": "New South Wales",
+                "league": "international",
+                "tournament": "Australia Domestic One-Day Cup 2026-27 · 4th Match",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Allan Border Field , Brisbane",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_171477",
+                "teamA": "Japan",
+                "teamB": "India",
+                "league": "t20i",
+                "tournament": "India tour of Japan, 2026 · One-off T20I",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Sano International Cricket Ground , Sano, Kanto",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_155411",
+                "teamA": "India A",
+                "teamB": "Australia A",
+                "league": "test",
+                "tournament": "Australia A tour of India 2026 · 1st unofficial Test, Day 1",
+                "format": "Test",
+                "time": "07:30 PM IST",
+                "venue": "Cricket Association Puducherry Siechem Ground , Puducherry",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_173647",
+                "teamA": "Ghana",
+                "teamB": "Sierra Leone",
+                "league": "t20i",
+                "tournament": "Quadrangular T20I Series in Nigeria, 2026 · 2nd Match",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Tafawa Balewa Square Cricket Oval , Lagos",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_172971",
+                "teamA": "Northern Cape",
+                "teamB": "Limpopo",
+                "league": "t20i",
+                "tournament": "CSA T20 Challenge 2026 · 1st Match",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Diamond Oval , Kimberley",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_129634",
+                "teamA": "England",
+                "teamB": "Sri Lanka",
+                "league": "odi",
+                "tournament": "Sri Lanka tour of England, 2026 · 1st ODI",
+                "format": "ODI",
+                "time": "01:00 PM IST",
+                "venue": "Riverside Ground , Chester-le-Street",
+                "status": "UPCOMING"
+            }
+        ],
+        "2026-09-23": [
+            {
+                "id": "cb_170790",
+                "teamA": "Bermuda",
+                "teamB": "Bahamas",
+                "league": "t20i",
+                "tournament": "North American Cup, 2026 · 3rd Match",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Jimmy Powell Oval , George Town",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_167063",
+                "teamA": "South Australia",
+                "teamB": "Tasmania",
+                "league": "international",
+                "tournament": "Australia Domestic One-Day Cup 2026-27 · 5th Match",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Karen Rolton Oval , Adelaide, South Australia",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_155628",
+                "teamA": "India A Women",
+                "teamB": "Australia A Women",
+                "league": "women_odi",
+                "tournament": "Australia A Women tour of India 2026 · 2nd unofficial ODI",
+                "format": "ODI",
+                "time": "01:00 PM IST",
+                "venue": "Punjab Cricket Association IS Bindra Stadium , Mohali",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_155488",
+                "teamA": "India Under-19s",
+                "teamB": "Australia Under-19s",
+                "league": "odi",
+                "tournament": "Australia U19 tour of India 2026 · 3rd unofficial ODI",
+                "format": "ODI",
+                "time": "01:00 PM IST",
+                "venue": "Niranjan Shah Stadium, Khandheri , Rajkot",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_173657",
+                "teamA": "Nigeria",
+                "teamB": "Sierra Leone",
+                "league": "t20i",
+                "tournament": "Quadrangular T20I Series in Nigeria, 2026 · 3rd Match",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Tafawa Balewa Square Cricket Oval , Lagos",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_173621",
+                "teamA": "Chile Women",
+                "teamB": "Costa Rica Women",
+                "league": "women_t20i",
+                "tournament": "Chile Women and Costa Rica Women tour of Brazil, 2026 · 1st Match",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Pocos Oval , Pocos de Caldas",
+                "status": "UPCOMING"
+            }
+        ],
+        "2026-09-24": [
+            {
+                "id": "cb_170800",
+                "teamA": "Cayman Islands",
+                "teamB": "Bermuda",
+                "league": "t20i",
+                "tournament": "North American Cup, 2026 · 4th Match",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Jimmy Powell Oval , George Town",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_170973",
+                "teamA": "Japan",
+                "teamB": "Afghanistan",
+                "league": "t20i",
+                "tournament": "Asian Games 2026 · 1st Match, Group A",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Korogi Sports Park , Nisshin",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_170983",
+                "teamA": "Hong Kong, China",
+                "teamB": "Malaysia",
+                "league": "odi",
+                "tournament": "JPN vs AFG, 1st Match, Group A Live Cricket Score · 2nd Match, Group B",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Korogi Sports Park , Nisshin",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_173083",
+                "teamA": "Zimbabwe Women",
+                "teamB": "West Indies Women",
+                "league": "women_odi",
+                "tournament": "West Indies Women tour of Zimbabwe, 2026 · 1st ODI",
+                "format": "ODI",
+                "time": "01:00 PM IST",
+                "venue": "Harare Sports Club , Harare",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_147895",
+                "teamA": "South Africa",
+                "teamB": "Australia",
+                "league": "odi",
+                "tournament": "Australia tour of South Africa, 2026 · 1st ODI",
+                "format": "ODI",
+                "time": "01:00 PM IST",
+                "venue": "Kingsmead , Durban",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_142739",
+                "teamA": "Somerset",
+                "teamB": "Surrey",
+                "league": "t20i",
+                "tournament": "County Championship Division One 2026 · 70th Match, Day 1",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "The Cooper Associates County Ground , Taunton",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_142728",
+                "teamA": "Glamorgan",
+                "teamB": "Essex",
+                "league": "upt20",
+                "tournament": "SOM vs SUR, 70th Match, Day 1 Live Cricket Score · 69th Match, Day 1",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Sophia Gardens , Cardiff",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_142717",
+                "teamA": "Hampshire",
+                "teamB": "Sussex",
+                "league": "international",
+                "tournament": "GLAM vs ESS, 69th Match, Day 1 Live Cricket Score · 68th Match, Day 1",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "The Rose Bowl , Southampton",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_142706",
+                "teamA": "Nottinghamshire",
+                "teamB": "Yorkshire",
+                "league": "international",
+                "tournament": "HAM vs SUS, 68th Match, Day 1 Live Cricket Score · 67th Match, Day 1",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Trent Bridge , Nottingham",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_142695",
+                "teamA": "Warwickshire",
+                "teamB": "Leicestershire",
+                "league": "international",
+                "tournament": "NOTTS vs YORKS, 67th Match, Day 1 Live Cricket Score · 66th Match, Day 1",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Edgbaston , Birmingham",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_143317",
+                "teamA": "Lancashire",
+                "teamB": "Durham",
+                "league": "international",
+                "tournament": "County Championship Division Two 2026 · 56th Match, Day 1",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Emirates Old Trafford , Manchester",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_143306",
+                "teamA": "Worcestershire",
+                "teamB": "Derbyshire",
+                "league": "international",
+                "tournament": "LANCS vs DUR, 56th Match, Day 1 Live Cricket Score · 55th Match, Day 1",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "New Road , Worcester",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_143295",
+                "teamA": "Middlesex",
+                "teamB": "Northamptonshire",
+                "league": "odi",
+                "tournament": "WORCS vs DERBY, 55th Match, Day 1 Live Cricket Score · 54th Match, Day 1",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Lord's , London",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_143284",
+                "teamA": "Kent",
+                "teamB": "Gloucestershire",
+                "league": "international",
+                "tournament": "MDX vs NHNTS, 54th Match, Day 1 Live Cricket Score · 53rd Match, Day 1",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "St Lawrence Ground , Canterbury",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_129640",
+                "teamA": "England",
+                "teamB": "Sri Lanka",
+                "league": "odi",
+                "tournament": "Sri Lanka tour of England, 2026 · 2nd ODI",
+                "format": "ODI",
+                "time": "01:00 PM IST",
+                "venue": "Headingley , Leeds",
+                "status": "UPCOMING"
+            },
+            {
+                "id": "cb_173623",
+                "teamA": "Costa Rica Women",
+                "teamB": "Chile Women",
+                "league": "women_t20i",
+                "tournament": "Chile Women and Costa Rica Women tour of Brazil, 2026 · 2nd Match",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Pocos Oval , Pocos de Caldas",
+                "status": "UPCOMING"
+            }
+        ],
+        "2026-09-25": [
+            {
+                "id": "cb_170810",
+                "teamA": "Bahamas",
+                "teamB": "Cayman Islands",
+                "league": "t20i",
+                "tournament": "North American Cup, 2026 · 5th Match",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Jimmy Powell Oval , George Town",
+                "status": "UPCOMING"
+            }
+        ]
+    }
+}

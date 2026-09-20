@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Future Toss AI · 30-min Toss Portal</title>
-  <link rel="stylesheet" href="assets/app.css?v=8">
+  <title>Toss Desk · Load + Last Matches</title>
+  <link rel="stylesheet" href="assets/app.css?v=11">
 </head>
 <body>
   <div class="orb a"></div>
@@ -14,8 +14,8 @@
       <div class="brand">
         <div class="logo">🪙</div>
         <div>
-          <h1>Future<span>Toss</span> AI</h1>
-          <p class="tagline">Date-wise live schedule · home/calling · venue · 30-min toss lock</p>
+          <h1>Future<span>Toss</span> Desk</h1>
+          <p class="tagline">Personal toss desk · punter load + last-match toss wins</p>
         </div>
       </div>
       <div class="clock">
@@ -45,8 +45,8 @@
     </section>
 
     <section id="view-sim" class="hidden panel" style="text-align:left">
-      <h2>Custom AI toss laboratory</h2>
-      <p style="color:#94a3b8">Koi bhi do teams + venue daalo. Model historical toss, home ground, captain streak aur venue bowl/bat lean use karta hai.</p>
+      <h2>Last-toss + load laboratory</h2>
+      <p style="color:#94a3b8">Do teams daalo. Model last 5/10 toss wins dekhta hai. Live matches par Telegram punter load bhi milake combined lean nikalta hai — yeh analysis desk hai, betting app nahi.</p>
       <form id="simForm" class="form">
         <div class="two">
           <label>Team A
@@ -61,7 +61,7 @@
         <label>Venue
           <input id="sVenue" placeholder="e.g. PCA IS Bindra Stadium, Mohali" value="PCA IS Bindra Stadium, Mohali">
         </label>
-        <button class="btn mint" type="submit">Generate future toss pick</button>
+        <button class="btn mint" type="submit">Generate toss lean</button>
       </form>
       <div id="simOut" style="margin-top:16px"></div>
     </section>
@@ -150,8 +150,24 @@
     </div>
   </div>
 
-  <div class="drawer-bg" id="drawerBg"></div>
+  <div class="modal-bg" id="tossModal">
+    <div class="modal">
+      <h2>Ground toss</h2>
+      <p id="tossTitle" style="margin:0 0 6px;font-weight:700"></p>
+      <p id="tossSub" class="tg-hint"></p>
+      <div class="two" style="margin:12px 0">
+        <button class="btn mint" type="button" id="tossWinnerA">Team A</button>
+        <button class="btn mint" type="button" id="tossWinnerB">Team B</button>
+      </div>
+      <p style="margin:0 0 8px;color:#94a3b8;font-size:13px">Decision after winning toss</p>
+      <label class="tg-check"><input type="radio" name="tossDec" id="tossDecBowl" checked> Bowl / field first</label>
+      <label class="tg-check"><input type="radio" name="tossDec" id="tossDecBat"> Bat first</label>
+      <div class="actions" style="margin-top:14px">
+        <button class="btn ghost" type="button" id="tossClose">Cancel</button>
+      </div>
+    </div>
+  </div>
   <aside class="drawer" id="drawer"></aside>
-  <script src="assets/app.js?v=15"></script>
+  <script src="assets/app.js?v=18"></script>
 </body>
 </html>

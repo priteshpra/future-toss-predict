@@ -154,8 +154,16 @@ function merge_live(array $match, array $liveRows): array
         if (!empty($lm['liveScore'])) {
             $match['liveScore'] = $lm['liveScore'];
         }
+        if (!empty($match['userEdited']) || !empty($match['userToss'])) {
+            $match['liveLinked'] = true;
+            break;
+        }
         if (!empty($lm['venue']) && (empty($match['venue']) || str_contains($match['venue'], 'International'))) {
             $match['venue'] = $lm['venue'];
+        }
+        if (!empty($match['tossWinner'])) {
+            $match['liveLinked'] = true;
+            break;
         }
         if (!empty($lm['tossWinner'])) {
             $match['tossWinner'] = $lm['tossWinner'];
@@ -170,4 +178,174 @@ function merge_live(array $match, array $liveRows): array
         break;
     }
     return $match;
+}
+
+function canonical_schedule_team(string $name): string
+{
+    $name = trim(preg_replace('/\s+/', ' ', $name));
+    if (!function_exists('load_teams_index') || !function_exists('normalize_name')) {
+        return $name;
+    }
+    $pack = load_teams_index();
+    $try = [$name];
+    if (preg_match('/u[- ]?19s?$/i', $name) || preg_match('/under[- ]?19s?$/i', $name)) {
+        $try[] = preg_replace('/u[- ]?19s?$/i', 'Under-19s', $name);
+        $try[] = preg_replace('/under[- ]?19s?$/i', 'U19', $name);
+    }
+    foreach ($try as $cand) {
+        $n = normalize_name($cand);
+        if ($n !== '' && isset($pack['index'][$n])) {
+            return $pack['index'][$n]['name'] ?? $name;
+        }
+    }
+    return $name;
+}
+
+function skip_slate_match(array $m): bool
+{
+    $blob = strtolower(implode(' ', [
+        $m['tournament'] ?? '',
+        $m['title'] ?? '',
+        $m['format'] ?? '',
+        $m['liveScore'] ?? '',
+        $m['teamA'] ?? '',
+        $m['teamB'] ?? '',
+    ]));
+    return (bool) preg_match('/\bday\s*[2-5]\b/', $blob);
+}
+
+function schedule_rows_for_date(string $date): array
+{
+    $byDate = fetch_cricbuzz_schedule();
+    $rows = $byDate[$date] ?? [];
+    return is_array($rows) ? array_values($rows) : [];
+}
+
+function fetch_cricbuzz_schedule(): array
+{
+    $cached = cache_get('cricbuzz_sched', 900);
+    if (is_array($cached)) {
+        return $cached;
+    }
+    $html = http_get('https://www.cricbuzz.com/cricket-schedule/upcoming-series/all', 10);
+    if (!$html) {
+        $html = http_get('https://www.cricbuzz.com/cricket-schedule/upcoming-series/international', 8);
+    }
+    $parsed = is_string($html) && $html !== '' ? parse_cricbuzz_schedule_html($html) : [];
+    if (!$parsed) {
+        $stale = cache_get('cricbuzz_sched', 86400);
+        if (is_array($stale)) {
+            return $stale;
+        }
+        return [];
+    }
+    cache_set('cricbuzz_sched', $parsed);
+    return $parsed;
+}
+
+function parse_cricbuzz_schedule_html(string $html): array
+{
+    $html = preg_replace('/<!-- -->/', ' ', $html);
+    $html = html_entity_decode($html, ENT_QUOTES | ENT_HTML5);
+    $months = [
+        'JAN' => 1, 'FEB' => 2, 'MAR' => 3, 'APR' => 4, 'MAY' => 5, 'JUN' => 6,
+        'JUL' => 7, 'AUG' => 8, 'SEP' => 9, 'OCT' => 10, 'NOV' => 11, 'DEC' => 12,
+    ];
+    if (!preg_match_all('/<h3[^>]*>\s*([A-Z]{3}),\s*([A-Z]{3})\s+(\d{1,2})\s+(\d{4})\s*<\/h3>(.*?)(?=<h3[^>]*>\s*[A-Z]{3},|$)/is', $html, $blocks, PREG_SET_ORDER)) {
+        return [];
+    }
+    $byDate = [];
+    foreach ($blocks as $block) {
+        $mon = $months[strtoupper($block[2])] ?? 0;
+        if (!$mon) {
+            continue;
+        }
+        $date = sprintf('%04d-%02d-%02d', (int) $block[4], $mon, (int) $block[3]);
+        $chunk = $block[5];
+        if (!preg_match_all('/href="\/live-cricket-scores\/(\d+)\/[^"]*"[^>]*>(.*?)<\/a>/is', $chunk, $ms, PREG_SET_ORDER)) {
+            continue;
+        }
+        $series = '';
+        if (preg_match('/title="([^"]+)"[^>]*>[^<]*<\/a><\/div><div class="w-\[67%\]/is', $chunk, $sm)) {
+            $series = trim($sm[1]);
+        }
+        foreach ($ms as $m) {
+            $sid = $m[1];
+            $inner = $m[2];
+            $venue = '';
+            if (preg_match('/<div[^>]*>(.*?)<\/div>/is', $inner, $vm)) {
+                $venue = trim(preg_replace('/\s+/', ' ', strip_tags($vm[1])));
+                $inner = preg_replace('/<div[^>]*>.*?<\/div>/is', '', $inner);
+            }
+            $text = trim(preg_replace('/\s+/', ' ', strip_tags($inner)));
+            $text = preg_replace('/\s*,\s*Live Cricket Score.*/i', '', $text);
+            if (!preg_match('/^(.+?)\s+vs\s+(.+?)(?:,\s*(.+))?$/i', $text, $tm)) {
+                continue;
+            }
+            $teamA = trim($tm[1]);
+            $teamB = trim($tm[2]);
+            $label = trim($tm[3] ?? '');
+            if ($teamA === '' || $teamB === '' || preg_match('/\bday\s*[2-5]\b/i', $label)) {
+                continue;
+            }
+            $teamA = canonical_schedule_team($teamA);
+            $teamB = canonical_schedule_team($teamB);
+            $nearSeries = $series;
+            $pos = strpos($chunk, $m[0]);
+            if ($pos !== false) {
+                $before = substr($chunk, max(0, $pos - 1200), min(1200, $pos));
+                if (preg_match_all('/title="([^"]+)"/', $before, $titles) && !empty($titles[1])) {
+                    $nearSeries = html_entity_decode(end($titles[1]), ENT_QUOTES | ENT_HTML5);
+                }
+            }
+            $league = function_exists('guess_live_league')
+                ? guess_live_league(['teamA' => $teamA, 'teamB' => $teamB, 'title' => $nearSeries . ' ' . $label])
+                : 't20i';
+            $row = [
+                'id' => 'cb_' . $sid,
+                'teamA' => $teamA,
+                'teamB' => $teamB,
+                'league' => $league,
+                'tournament' => trim($nearSeries . ($label !== '' ? ' · ' . $label : '')),
+                'format' => guess_format_label($label . ' ' . $nearSeries),
+                'time' => default_slate_time($label . ' ' . $nearSeries),
+                'venue' => $venue !== '' ? $venue : 'International Cricket Ground',
+                'status' => 'UPCOMING',
+            ];
+            $pair = strtolower(trim($teamA) . '|' . trim($teamB) . '|' . $date);
+            $rev = strtolower(trim($teamB) . '|' . trim($teamA) . '|' . $date);
+            if (isset($byDate[$date][$pair]) || isset($byDate[$date][$rev])) {
+                continue;
+            }
+            $byDate[$date][$pair] = $row;
+        }
+    }
+    foreach ($byDate as $date => $rows) {
+        $byDate[$date] = array_values($rows);
+    }
+    return $byDate;
+}
+
+function guess_format_label(string $blob): string
+{
+    $b = strtolower($blob);
+    if (str_contains($b, 'test')) {
+        return 'Test';
+    }
+    if (str_contains($b, 'odi')) {
+        return 'ODI';
+    }
+    return 'T20';
+}
+
+function default_slate_time(string $blob): string
+{
+    $b = strtolower($blob);
+    if (str_contains($b, 'caribbean premier') || str_contains($b, ' cpl')) {
+        return '04:30 AM IST';
+    }
+    if (str_contains($b, 'odi')) {
+        return '01:00 PM IST';
+    }
+    return '07:30 PM IST';
 }

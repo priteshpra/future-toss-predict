@@ -96,5 +96,91 @@
             "liveScore": "Barbados Tridents v Jamaica Kingsmen",
             "tossTime": "07:00 PM IST"
         }
+    ],
+    "2026-09-20": [
+        {
+            "id": "live_1550478",
+            "teamA": "Pakistan Women",
+            "teamB": "Sri Lanka Women",
+            "league": "women_t20i",
+            "tournament": "Pakistan Women 177\/4  v Sri Lanka Women 178\/2 *",
+            "format": "T20",
+            "time": "10:00 AM IST",
+            "venue": "International Cricket Ground",
+            "status": "LIVE",
+            "tossWinner": null,
+            "tossDecision": null,
+            "liveScore": "Pakistan Women 177\/4  v Sri Lanka Women 178\/2 *"
+        },
+        {
+            "id": "live_1550479",
+            "teamA": "Bangladesh Women",
+            "teamB": "India Women",
+            "league": "women_t20i",
+            "tournament": "Bangladesh Women 81\/10 * v India Women 195\/4",
+            "format": "T20",
+            "time": "10:00 AM IST",
+            "venue": "International Cricket Ground",
+            "status": "LIVE",
+            "tossWinner": null,
+            "tossDecision": null,
+            "liveScore": "Bangladesh Women 81\/10 * v India Women 195\/4"
+        },
+        {
+            "id": "live_1530205",
+            "teamA": "Zimbabwe",
+            "teamB": "Australia",
+            "league": "international",
+            "tournament": "Zimbabwe 271\/8  v Australia 227\/8 *",
+            "format": "T20",
+            "time": "10:00 AM IST",
+            "venue": "International Cricket Ground",
+            "status": "LIVE",
+            "tossWinner": null,
+            "tossDecision": null,
+            "liveScore": "Zimbabwe 271\/8  v Australia 227\/8 *"
+        },
+        {
+            "id": "live_1552024",
+            "teamA": "India A Women",
+            "teamB": "Australia A Women",
+            "league": "women_t20i",
+            "tournament": "India A Women 239\/6 * v Australia A Women 235\/10",
+            "format": "T20",
+            "time": "10:00 AM IST",
+            "venue": "International Cricket Ground",
+            "status": "LIVE",
+            "tossWinner": null,
+            "tossDecision": null,
+            "liveScore": "India A Women 239\/6 * v Australia A Women 235\/10"
+        },
+        {
+            "id": "live_1547903",
+            "teamA": "Belfast Wolves",
+            "teamB": "Edinburgh Castle Rockers",
+            "league": "etpl",
+            "tournament": "Belfast Wolves 150\/5  v Edinburgh Castle Rockers 12 *",
+            "format": "T20",
+            "time": "10:00 AM IST",
+            "venue": "International Cricket Ground",
+            "status": "LIVE",
+            "tossWinner": null,
+            "tossDecision": null,
+            "liveScore": "Belfast Wolves 150\/5  v Edinburgh Castle Rockers 12 *"
+        },
+        {
+            "id": "live_1544844",
+            "teamA": "Western Australia",
+            "teamB": "Tasmania",
+            "league": "odi",
+            "tournament": "Western Australia 115\/10  v Tasmania 117\/1 *",
+            "format": "T20",
+            "time": "10:00 AM IST",
+            "venue": "International Cricket Ground",
+            "status": "LIVE",
+            "tossWinner": null,
+            "tossDecision": null,
+            "liveScore": "Western Australia 115\/10  v Tasmania 117\/1 *"
+        }
     ]
 }
