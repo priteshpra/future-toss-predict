@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Toss Desk · Load + Last Matches</title>
-  <link rel="stylesheet" href="assets/app.css?v=12">
+  <link rel="stylesheet" href="assets/app.css?v=15">
 </head>
 <body>
   <div class="orb a"></div>
@@ -100,6 +100,7 @@
     </section>
 
     <section id="view-board" class="hidden panel" style="text-align:left">
+      <div id="bookBoard" class="book-board" hidden></div>
       <h2>Who wins more tosses</h2>
       <label>League filter
         <select id="lbLeague" onchange="loadBoard()"></select>
@@ -169,6 +170,6 @@
     </div>
   </div>
   <aside class="drawer" id="drawer"></aside>
-  <script src="assets/app.js?v=19"></script>
+  <script src="assets/app.js?v=29"></script>
 </body>
 </html>

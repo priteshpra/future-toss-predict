@@ -1,0 +1,93 @@
+{
+    "ts": 1789919620,
+    "data": [
+        {
+            "matchId": "170943",
+            "seriesId": "12602",
+            "series": "Women's Asian Games 2026",
+            "desc": "1st Semi Final",
+            "format": "T20",
+            "date": "2026-09-20",
+            "state": "Complete",
+            "teamA": "Pakistan Women",
+            "teamB": "Sri Lanka Women"
+        },
+        {
+            "matchId": "170951",
+            "seriesId": "12602",
+            "series": "Women's Asian Games 2026",
+            "desc": "2nd Semi Final",
+            "format": "T20",
+            "date": "2026-09-20",
+            "state": "Complete",
+            "teamA": "India Women",
+            "teamB": "Bangladesh Women"
+        },
+        {
+            "matchId": "170911",
+            "seriesId": "12602",
+            "series": "Women's Asian Games 2026",
+            "desc": "1st Quarter Final",
+            "format": "T20",
+            "date": "2026-09-17",
+            "state": "Abandon",
+            "teamA": "Bangladesh Women",
+            "teamB": "China Women"
+        },
+        {
+            "matchId": "170920",
+            "seriesId": "12602",
+            "series": "Women's Asian Games 2026",
+            "desc": "2nd Quarter Final",
+            "format": "T20",
+            "date": "2026-09-17",
+            "state": "Complete",
+            "teamA": "Thailand Women",
+            "teamB": "Pakistan Women"
+        },
+        {
+            "matchId": "170930",
+            "seriesId": "12602",
+            "series": "Women's Asian Games 2026",
+            "desc": "3rd Quarter Final",
+            "format": "T20",
+            "date": "2026-09-18",
+            "state": "Complete",
+            "teamA": "Sri Lanka Women",
+            "teamB": "Malaysia Women"
+        },
+        {
+            "matchId": "170933",
+            "seriesId": "12602",
+            "series": "Women's Asian Games 2026",
+            "desc": "4th Quarter Final",
+            "format": "T20",
+            "date": "2026-09-18",
+            "state": "Complete",
+            "teamA": "Japan Women",
+            "teamB": "India Women"
+        },
+        {
+            "matchId": "170960",
+            "seriesId": "12602",
+            "series": "Women's Asian Games 2026",
+            "desc": "Bronze Medal Match",
+            "format": "T20",
+            "date": "2026-09-22",
+            "state": "Upcoming",
+            "teamA": "Pakistan Women",
+            "teamB": "Bangladesh Women"
+        },
+        {
+            "matchId": "170963",
+            "seriesId": "12602",
+            "series": "Women's Asian Games 2026",
+            "desc": "Final",
+            "format": "T20",
+            "date": "2026-09-22",
+            "state": "Upcoming",
+            "teamA": "India Women",
+            "teamB": "Sri Lanka Women"
+        }
+    ]
+}

@@ -1,18 +1,7 @@
 {
-    "ts": 1789918678,
+    "ts": 1789919590,
     "data": {
         "2026-09-20": [
-            {
-                "id": "cb_152753",
-                "teamA": "Zimbabwe",
-                "teamB": "Australia",
-                "league": "odi",
-                "tournament": "Australia tour of Zimbabwe 2026 · 3rd ODI",
-                "format": "ODI",
-                "time": "01:00 PM IST",
-                "venue": "Harare Sports Club , Harare",
-                "status": "UPCOMING"
-            },
             {
                 "id": "cb_172397",
                 "teamA": "Eastern Storm",
@@ -22,7 +11,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Willowmoore Park , Benoni",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "13160",
+                "seriesSlug": "csa-provincial-one-day-challenge-division-two-2026-27"
             },
             {
                 "id": "cb_144090",
@@ -33,7 +24,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Trent Bridge , Nottingham",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "11418",
+                "seriesSlug": "england-domestic-one-day-cup-2026"
             },
             {
                 "id": "cb_169440",
@@ -44,7 +37,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "The Village , Dublin",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "12870",
+                "seriesSlug": "european-t20-premier-league-2026"
             }
         ],
         "2026-09-21": [
@@ -57,7 +52,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Jimmy Powell Oval , George Town",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "13053",
+                "seriesSlug": "north-american-cup-2026"
             },
             {
                 "id": "cb_154711",
@@ -68,7 +65,9 @@
                 "format": "T20",
                 "time": "04:30 AM IST",
                 "venue": "Kensington Oval , Bridgetown, Barbados",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "12123",
+                "seriesSlug": "caribbean-premier-league-2026"
             },
             {
                 "id": "cb_155477",
@@ -79,7 +78,9 @@
                 "format": "ODI",
                 "time": "01:00 PM IST",
                 "venue": "Niranjan Shah Stadium, Khandheri , Rajkot",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "12191",
+                "seriesSlug": "australia-u19-tour-of-india-2026"
             },
             {
                 "id": "cb_173631",
@@ -90,7 +91,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Tafawa Balewa Square Cricket Oval , Lagos",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "13240",
+                "seriesSlug": "quadrangular-t20i-series-in-nigeria-2026"
             }
         ],
         "2026-09-22": [
@@ -103,7 +106,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Jimmy Powell Oval , George Town",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "13053",
+                "seriesSlug": "north-american-cup-2026"
             },
             {
                 "id": "cb_170960",
@@ -114,7 +119,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Korogi Sports Park , Nisshin",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "12602",
+                "seriesSlug": "womens-asian-games-2026"
             },
             {
                 "id": "cb_170963",
@@ -125,7 +132,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Korogi Sports Park , Nisshin",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "12602",
+                "seriesSlug": "womens-asian-games-2026"
             },
             {
                 "id": "cb_167060",
@@ -136,7 +145,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Allan Border Field , Brisbane",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "12723",
+                "seriesSlug": "australia-domestic-one-day-cup-2026-27"
             },
             {
                 "id": "cb_171477",
@@ -147,7 +158,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Sano International Cricket Ground , Sano, Kanto",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "13110",
+                "seriesSlug": "india-tour-of-japan-2026"
             },
             {
                 "id": "cb_155411",
@@ -158,7 +171,9 @@
                 "format": "Test",
                 "time": "07:30 PM IST",
                 "venue": "Cricket Association Puducherry Siechem Ground , Puducherry",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "12184",
+                "seriesSlug": "australia-a-tour-of-india-2026"
             },
             {
                 "id": "cb_173647",
@@ -169,7 +184,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Tafawa Balewa Square Cricket Oval , Lagos",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "13240",
+                "seriesSlug": "quadrangular-t20i-series-in-nigeria-2026"
             },
             {
                 "id": "cb_172971",
@@ -180,7 +197,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Diamond Oval , Kimberley",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "13180",
+                "seriesSlug": "csa-t20-challenge-2026"
             },
             {
                 "id": "cb_129634",
@@ -191,7 +210,9 @@
                 "format": "ODI",
                 "time": "01:00 PM IST",
                 "venue": "Riverside Ground , Chester-le-Street",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "10576",
+                "seriesSlug": "sri-lanka-tour-of-england-2026"
             }
         ],
         "2026-09-23": [
@@ -204,7 +225,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Jimmy Powell Oval , George Town",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "13053",
+                "seriesSlug": "north-american-cup-2026"
             },
             {
                 "id": "cb_167063",
@@ -215,7 +238,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Karen Rolton Oval , Adelaide, South Australia",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "12723",
+                "seriesSlug": "australia-domestic-one-day-cup-2026-27"
             },
             {
                 "id": "cb_155628",
@@ -226,7 +251,9 @@
                 "format": "ODI",
                 "time": "01:00 PM IST",
                 "venue": "Punjab Cricket Association IS Bindra Stadium , Mohali",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "12210",
+                "seriesSlug": "australia-a-women-tour-of-india-2026"
             },
             {
                 "id": "cb_155488",
@@ -237,7 +264,9 @@
                 "format": "ODI",
                 "time": "01:00 PM IST",
                 "venue": "Niranjan Shah Stadium, Khandheri , Rajkot",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "12191",
+                "seriesSlug": "australia-u19-tour-of-india-2026"
             },
             {
                 "id": "cb_173657",
@@ -248,7 +277,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Tafawa Balewa Square Cricket Oval , Lagos",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "13240",
+                "seriesSlug": "quadrangular-t20i-series-in-nigeria-2026"
             },
             {
                 "id": "cb_173621",
@@ -259,7 +290,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Pocos Oval , Pocos de Caldas",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "13231",
+                "seriesSlug": "chile-women-and-costa-rica-women-tour-of-brazil-2026"
             }
         ],
         "2026-09-24": [
@@ -272,7 +305,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Jimmy Powell Oval , George Town",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "13053",
+                "seriesSlug": "north-american-cup-2026"
             },
             {
                 "id": "cb_170973",
@@ -283,7 +318,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Korogi Sports Park , Nisshin",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "12563",
+                "seriesSlug": "asian-games-2026"
             },
             {
                 "id": "cb_170983",
@@ -294,7 +331,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Korogi Sports Park , Nisshin",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "12563",
+                "seriesSlug": "asian-games-2026"
             },
             {
                 "id": "cb_173083",
@@ -305,7 +344,9 @@
                 "format": "ODI",
                 "time": "01:00 PM IST",
                 "venue": "Harare Sports Club , Harare",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "13217",
+                "seriesSlug": "west-indies-women-tour-of-zimbabwe-2026"
             },
             {
                 "id": "cb_147895",
@@ -316,7 +357,9 @@
                 "format": "ODI",
                 "time": "01:00 PM IST",
                 "venue": "Kingsmead , Durban",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "11595",
+                "seriesSlug": "australia-tour-of-south-africa-2026"
             },
             {
                 "id": "cb_142739",
@@ -327,7 +370,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "The Cooper Associates County Ground , Taunton",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "11408",
+                "seriesSlug": "county-championship-division-one-2026"
             },
             {
                 "id": "cb_142728",
@@ -338,7 +383,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Sophia Gardens , Cardiff",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "11408",
+                "seriesSlug": "county-championship-division-one-2026"
             },
             {
                 "id": "cb_142717",
@@ -349,7 +396,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "The Rose Bowl , Southampton",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "11408",
+                "seriesSlug": "county-championship-division-one-2026"
             },
             {
                 "id": "cb_142706",
@@ -360,7 +409,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Trent Bridge , Nottingham",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "",
+                "seriesSlug": ""
             },
             {
                 "id": "cb_142695",
@@ -371,7 +422,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Edgbaston , Birmingham",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "",
+                "seriesSlug": ""
             },
             {
                 "id": "cb_143317",
@@ -382,7 +435,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Emirates Old Trafford , Manchester",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "11416",
+                "seriesSlug": "county-championship-division-two-2026"
             },
             {
                 "id": "cb_143306",
@@ -393,7 +448,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "New Road , Worcester",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "11416",
+                "seriesSlug": "county-championship-division-two-2026"
             },
             {
                 "id": "cb_143295",
@@ -404,7 +461,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Lord's , London",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "11416",
+                "seriesSlug": "county-championship-division-two-2026"
             },
             {
                 "id": "cb_143284",
@@ -415,7 +474,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "St Lawrence Ground , Canterbury",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "",
+                "seriesSlug": ""
             },
             {
                 "id": "cb_129640",
@@ -426,7 +487,9 @@
                 "format": "ODI",
                 "time": "01:00 PM IST",
                 "venue": "Headingley , Leeds",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "10576",
+                "seriesSlug": "sri-lanka-tour-of-england-2026"
             },
             {
                 "id": "cb_173623",
@@ -437,7 +500,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Pocos Oval , Pocos de Caldas",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "13231",
+                "seriesSlug": "chile-women-and-costa-rica-women-tour-of-brazil-2026"
             }
         ],
         "2026-09-25": [
@@ -450,7 +515,9 @@
                 "format": "T20",
                 "time": "07:30 PM IST",
                 "venue": "Jimmy Powell Oval , George Town",
-                "status": "UPCOMING"
+                "status": "UPCOMING",
+                "seriesId": "13053",
+                "seriesSlug": "north-american-cup-2026"
             }
         ]
     }

@@ -1,0 +1,247 @@
+{
+    "ts": 1789922168,
+    "data": [
+        {
+            "matchId": "167057",
+            "seriesId": "12723",
+            "series": "Australia Domestic One-Day Cup 2026-27",
+            "desc": "3rd Match",
+            "format": "ODI",
+            "date": "2026-09-20",
+            "state": "Complete",
+            "teamA": "Western Australia",
+            "teamB": "Tasmania"
+        },
+        {
+            "matchId": "167050",
+            "seriesId": "12723",
+            "series": "Australia Domestic One-Day Cup 2026-27",
+            "desc": "1st Match",
+            "format": "ODI",
+            "date": "2026-09-18",
+            "state": "Complete",
+            "teamA": "Western Australia",
+            "teamB": "South Australia"
+        },
+        {
+            "matchId": "167053",
+            "seriesId": "12723",
+            "series": "Australia Domestic One-Day Cup 2026-27",
+            "desc": "2nd Match",
+            "format": "ODI",
+            "date": "2026-09-19",
+            "state": "Complete",
+            "teamA": "Queensland",
+            "teamB": "Victoria"
+        },
+        {
+            "matchId": "167060",
+            "seriesId": "12723",
+            "series": "Australia Domestic One-Day Cup 2026-27",
+            "desc": "4th Match",
+            "format": "ODI",
+            "date": "2026-09-22",
+            "state": "Upcoming",
+            "teamA": "Queensland",
+            "teamB": "New South Wales"
+        },
+        {
+            "matchId": "167063",
+            "seriesId": "12723",
+            "series": "Australia Domestic One-Day Cup 2026-27",
+            "desc": "5th Match",
+            "format": "ODI",
+            "date": "2026-09-23",
+            "state": "Upcoming",
+            "teamA": "South Australia",
+            "teamB": "Tasmania"
+        },
+        {
+            "matchId": "167067",
+            "seriesId": "12723",
+            "series": "Australia Domestic One-Day Cup 2026-27",
+            "desc": "6th Match",
+            "format": "ODI",
+            "date": "2026-09-25",
+            "state": "Upcoming",
+            "teamA": "Victoria",
+            "teamB": "New South Wales"
+        },
+        {
+            "matchId": "167077",
+            "seriesId": "12723",
+            "series": "Australia Domestic One-Day Cup 2026-27",
+            "desc": "7th Match",
+            "format": "ODI",
+            "date": "2026-10-12",
+            "state": "Upcoming",
+            "teamA": "Victoria",
+            "teamB": "South Australia"
+        },
+        {
+            "matchId": "167087",
+            "seriesId": "12723",
+            "series": "Australia Domestic One-Day Cup 2026-27",
+            "desc": "8th Match",
+            "format": "ODI",
+            "date": "2026-10-13",
+            "state": "Upcoming",
+            "teamA": "New South Wales",
+            "teamB": "Tasmania"
+        },
+        {
+            "matchId": "167093",
+            "seriesId": "12723",
+            "series": "Australia Domestic One-Day Cup 2026-27",
+            "desc": "9th Match",
+            "format": "ODI",
+            "date": "2026-10-13",
+            "state": "Upcoming",
+            "teamA": "Western Australia",
+            "teamB": "Queensland"
+        },
+        {
+            "matchId": "167103",
+            "seriesId": "12723",
+            "series": "Australia Domestic One-Day Cup 2026-27",
+            "desc": "10th Match",
+            "format": "ODI",
+            "date": "2026-10-17",
+            "state": "Upcoming",
+            "teamA": "South Australia",
+            "teamB": "Queensland"
+        },
+        {
+            "matchId": "167113",
+            "seriesId": "12723",
+            "series": "Australia Domestic One-Day Cup 2026-27",
+            "desc": "11th Match",
+            "format": "ODI",
+            "date": "2026-10-24",
+            "state": "Upcoming",
+            "teamA": "Tasmania",
+            "teamB": "Victoria"
+        },
+        {
+            "matchId": "167123",
+            "seriesId": "12723",
+            "series": "Australia Domestic One-Day Cup 2026-27",
+            "desc": "12th Match",
+            "format": "ODI",
+            "date": "2026-10-24",
+            "state": "Upcoming",
+            "teamA": "Western Australia",
+            "teamB": "New South Wales"
+        },
+        {
+            "matchId": "167133",
+            "seriesId": "12723",
+            "series": "Australia Domestic One-Day Cup 2026-27",
+            "desc": "13th Match",
+            "format": "ODI",
+            "date": "2026-11-16",
+            "state": "Upcoming",
+            "teamA": "New South Wales",
+            "teamB": "South Australia"
+        },
+        {
+            "matchId": "167143",
+            "seriesId": "12723",
+            "series": "Australia Domestic One-Day Cup 2026-27",
+            "desc": "14th Match",
+            "format": "ODI",
+            "date": "2026-11-16",
+            "state": "Upcoming",
+            "teamA": "Queensland",
+            "teamB": "Tasmania"
+        },
+        {
+            "matchId": "167150",
+            "seriesId": "12723",
+            "series": "Australia Domestic One-Day Cup 2026-27",
+            "desc": "15th Match",
+            "format": "ODI",
+            "date": "2026-11-16",
+            "state": "Upcoming",
+            "teamA": "Victoria",
+            "teamB": "Western Australia"
+        },
+        {
+            "matchId": "167153",
+            "seriesId": "12723",
+            "series": "Australia Domestic One-Day Cup 2026-27",
+            "desc": "16th Match",
+            "format": "ODI",
+            "date": "2027-02-02",
+            "state": "Upcoming",
+            "teamA": "New South Wales",
+            "teamB": "Victoria"
+        },
+        {
+            "matchId": "167160",
+            "seriesId": "12723",
+            "series": "Australia Domestic One-Day Cup 2026-27",
+            "desc": "17th Match",
+            "format": "ODI",
+            "date": "2027-02-02",
+            "state": "Upcoming",
+            "teamA": "South Australia",
+            "teamB": "Western Australia"
+        },
+        {
+            "matchId": "167170",
+            "seriesId": "12723",
+            "series": "Australia Domestic One-Day Cup 2026-27",
+            "desc": "18th Match",
+            "format": "ODI",
+            "date": "2027-02-02",
+            "state": "Upcoming",
+            "teamA": "Tasmania",
+            "teamB": "Queensland"
+        },
+        {
+            "matchId": "167173",
+            "seriesId": "12723",
+            "series": "Australia Domestic One-Day Cup 2026-27",
+            "desc": "19th Match",
+            "format": "ODI",
+            "date": "2027-02-05",
+            "state": "Upcoming",
+            "teamA": "South Australia",
+            "teamB": "Victoria"
+        },
+        {
+            "matchId": "167180",
+            "seriesId": "12723",
+            "series": "Australia Domestic One-Day Cup 2026-27",
+            "desc": "20th Match",
+            "format": "ODI",
+            "date": "2027-02-05",
+            "state": "Upcoming",
+            "teamA": "Tasmania",
+            "teamB": "New South Wales"
+        },
+        {
+            "matchId": "167183",
+            "seriesId": "12723",
+            "series": "Australia Domestic One-Day Cup 2026-27",
+            "desc": "21st Match",
+            "format": "ODI",
+            "date": "2027-02-05",
+            "state": "Upcoming",
+            "teamA": "Queensland",
+            "teamB": "Western Australia"
+        },
+        {
+            "matchId": "167193",
+            "seriesId": "12723",
+            "series": "Australia Domestic One-Day Cup 2026-27",
+            "desc": "Final",
+            "format": "ODI",
+            "date": "2027-02-14",
+            "state": "Upcoming",
+            "teamA": "TBC",
+            "teamB": "TBC"
+        }
+    ]
+}

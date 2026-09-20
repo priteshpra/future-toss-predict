@@ -183,6 +183,8 @@ function leagues(): array
         ['id' => 'etpl', 'name' => 'European League', 'icon' => '🇪🇺'],
         ['id' => 'cpl', 'name' => 'CPL', 'icon' => '🏝️'],
         ['id' => 'wcpl', 'name' => 'CPL Women', 'icon' => '🌺'],
+        ['id' => 'odisha', 'name' => 'Odisha T20', 'icon' => '🟠'],
+        ['id' => 'wapl', 'name' => 'WAPL', 'icon' => '🦅'],
         ['id' => 'test', 'name' => 'Test', 'icon' => '📜'],
         ['id' => 'custom', 'name' => 'My Custom', 'icon' => '✨'],
     ];

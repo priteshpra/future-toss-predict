@@ -1,0 +1,169 @@
+{
+    "ts": 1789926122,
+    "data": {
+        "matches": [
+            {
+                "id": "tb_9be2d6b6f7bf68bc7db1a289fe868005",
+                "date": "2026-09-16",
+                "teamA": "Punakha",
+                "teamB": "Dragon",
+                "league": "Bhutan",
+                "time": "08:01 AM IST",
+                "status": "OPEN",
+                "open": true
+            },
+            {
+                "id": "tb_552139e499f709d60a3378cd759da7d2",
+                "date": "2026-09-16",
+                "teamA": "Maiwand",
+                "teamB": "Hindukush",
+                "league": "",
+                "time": "10:01 AM IST",
+                "status": "OPEN",
+                "open": true
+            },
+            {
+                "id": "tb_566bbc3b10ffbd67a10185db3c2b11e6",
+                "date": "2026-09-16",
+                "teamA": "Pamir",
+                "teamB": "Mah E",
+                "league": "",
+                "time": "10:01 AM IST",
+                "status": "OPEN",
+                "open": true
+            },
+            {
+                "id": "tb_3f8f3391a075b04646e71379c5618cbe",
+                "date": "2026-09-16",
+                "teamA": "Botswana",
+                "teamB": "Uganda",
+                "league": "",
+                "time": "12:26 PM IST",
+                "status": "OPEN",
+                "open": true
+            },
+            {
+                "id": "tb_1b1cd60b8f9aeed78731f68ddf3f806e",
+                "date": "2026-09-16",
+                "teamA": "Royal Tiger",
+                "teamB": "Budapest",
+                "league": "",
+                "time": "01:31 PM IST",
+                "status": "OPEN",
+                "open": true
+            },
+            {
+                "id": "tb_3dc53cb18d466654dc85d0b4c0d8ea36",
+                "date": "2026-09-16",
+                "teamA": "Middlesex",
+                "teamB": "Essex",
+                "league": "",
+                "time": "02:26 PM IST",
+                "status": "OPEN",
+                "open": true
+            },
+            {
+                "id": "tb_a1d2487c55c7f6b203ec43983e93ddc7",
+                "date": "2026-09-16",
+                "teamA": "England 19",
+                "teamB": "Pakistan 19",
+                "league": "",
+                "time": "02:26 PM IST",
+                "status": "OPEN",
+                "open": true
+            },
+            {
+                "id": "tb_b5fdd0bc1ac007e951935a8dfdcc4254",
+                "date": "2026-09-16",
+                "teamA": "Royal Tiger",
+                "teamB": "Budapest",
+                "league": "",
+                "time": "03:21 PM IST",
+                "status": "OPEN",
+                "open": true
+            },
+            {
+                "id": "tb_7359e07c77871c8c99bb969989927a80",
+                "date": "2026-09-16",
+                "teamA": "Hampshire W",
+                "teamB": "Surrey W",
+                "league": "",
+                "time": "04:26 PM IST",
+                "status": "OPEN",
+                "open": true
+            },
+            {
+                "id": "tb_552cb970886fa5f93ecb7f0edd14bcbd",
+                "date": "2026-09-16",
+                "teamA": "Sierra",
+                "teamB": "Rwanada",
+                "league": "",
+                "time": "04:26 PM IST",
+                "status": "OPEN",
+                "open": true
+            },
+            {
+                "id": "tb_a87c49b3cfcbd659d62808f22237ee13",
+                "date": "2026-09-16",
+                "teamA": "Super Kings",
+                "teamB": "Blinders",
+                "league": "",
+                "time": "05:21 PM IST",
+                "status": "OPEN",
+                "open": true
+            },
+            {
+                "id": "tb_2c0200f28a383184a2ecd71e5d1060cc",
+                "date": "2026-09-16",
+                "teamA": "Abu Dhabi",
+                "teamB": "Gulf",
+                "league": "",
+                "time": "05:56 PM IST",
+                "status": "OPEN",
+                "open": true
+            },
+            {
+                "id": "tb_a81533433f2b8d24d3999ef76aad7748",
+                "date": "2026-09-16",
+                "teamA": "Glasgow",
+                "teamB": "Amsterdam",
+                "league": "",
+                "time": "06:11 PM IST",
+                "status": "OPEN",
+                "open": true
+            },
+            {
+                "id": "tb_601c1176aa9884759b8b687175f977ee",
+                "date": "2026-09-16",
+                "teamA": "Barbados W",
+                "teamB": "Guyana W",
+                "league": "",
+                "time": "06:41 PM IST",
+                "status": "OPEN",
+                "open": true
+            },
+            {
+                "id": "tb_0072c458c6e06a0a8399fd5238a0bcf1",
+                "date": "2026-09-16",
+                "teamA": "Evergreen",
+                "teamB": "Nordic",
+                "league": "Sweden",
+                "time": "06:46 PM IST",
+                "status": "OPEN",
+                "open": true
+            },
+            {
+                "id": "tb_e30a31df4a4d3414ff82eadefe2a6c00",
+                "date": "2026-09-16",
+                "teamA": "Desert",
+                "teamB": "Sharjha",
+                "league": "4 match(es) already settled today.",
+                "time": "09:56 PM IST",
+                "status": "OPEN",
+                "open": true
+            }
+        ],
+        "fetchedAt": "11:12:02 PM IST",
+        "pages": 0
+    }
+}

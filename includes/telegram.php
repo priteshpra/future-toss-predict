@@ -117,6 +117,9 @@ function parse_tg_html(string $html): array
         if (!$teamName && $userName && preg_match('/TOSS|WINNER|BET/i', $rawText)) {
             $type = 'BET_PLACED';
         }
+        if (preg_match('/UPCOMING MATCHES/i', $rawText)) {
+            $type = 'SCHEDULE';
+        }
 
         $posts[] = [
             'postId' => $postId,
@@ -152,7 +155,7 @@ function save_stored_bets(array $posts): void
 function fetch_telegram_bets(bool $force = false): array
 {
     if (!$force) {
-        $cached = cache_get('tg_feed', 12);
+        $cached = cache_get('tg_feed', 30);
         if (is_array($cached)) {
             return $cached;
         }
@@ -166,7 +169,7 @@ function fetch_telegram_bets(bool $force = false): array
         }
     }
 
-    $html = http_get('https://t.me/s/BetfairTossbookOrignal', 10);
+    $html = http_get('https://t.me/s/BetfairTossbookOrignal', 5);
     $fresh = $html ? parse_tg_html($html) : [];
     foreach ($fresh as $p) {
         if (empty($known[$p['postId']])) {
@@ -248,6 +251,54 @@ function team_aliases(): array
         'guyanaw' => ['guyanaamazonwarriorswomen'],
         'pakistan' => ['pakistan'],
         'england' => ['england'],
+        'antigua' => ['antiguaandbarbudafalcons', 'falcons'],
+        'falcons' => ['antiguaandbarbudafalcons'],
+        'jamaica' => ['jamaicakingsmen', 'kingsmen'],
+        'kingsmen' => ['jamaicakingsmen'],
+        'sharjha' => ['sharjah', 'sharjahwarriors'],
+        'sharjah' => ['sharjahwarriors', 'sharjha'],
+        'sharjahwarriors' => ['sharjah', 'sharjha'],
+        'miemirates' => ['emirates'],
+        'desertvipers' => ['vipers'],
+        'gulfgiants' => ['giants', 'gulf'],
+        'abudhabiknightriders' => ['knightriders', 'adkr'],
+        'dubaicapitals' => ['capitals'],
+        'sambalpur' => ['sambalpurwarriors'],
+        'sambalpurwarriors' => ['sambalpur'],
+        'kataka' => ['katakapanthers', 'cuttackpanthers', 'cuttack'],
+        'katakapanthers' => ['kataka', 'cuttackpanthers', 'cuttack'],
+        'cuttack' => ['cuttackpanthers', 'kataka', 'katakapanthers'],
+        'cuttackpanthers' => ['cuttack', 'kataka', 'katakapanthers'],
+        'keonjhar' => ['keonjharminers'],
+        'keonjharminers' => ['keonjhar'],
+        'bhubaneswar' => ['bhubaneswartigers'],
+        'bhubaneswartigers' => ['bhubaneswar'],
+        'rourkela' => ['rourkelasuperstars'],
+        'rourkelasuperstars' => ['rourkela'],
+        'puri' => ['purititans'],
+        'purititans' => ['puri'],
+        'godavari' => ['godavarigoldeneagles', 'godavarieagles'],
+        'godavarigoldeneagles' => ['godavari'],
+        'vizag' => ['vizagfirebirds', 'firebirds'],
+        'vizagfirebirds' => ['vizag', 'firebirds'],
+        'amaravati' => ['amaravatiechampions', 'amravati'],
+        'amravati' => ['amaravati', 'amaravatiechampions'],
+        'amaravatiechampions' => ['amaravati', 'amravati'],
+        'rayalsema' => ['rayalaseema', 'rayalaseemaxenstars'],
+        'rayalaseema' => ['rayalsema', 'rayalaseemaxenstars'],
+        'rayalaseemaxenstars' => ['rayalaseema', 'rayalsema'],
+        'cayman' => ['caymanislands'],
+        'caymanislands' => ['cayman'],
+        'bermuda' => ['bermuda'],
+        'nigeria' => ['nigeria'],
+        'ghana' => ['ghana'],
+        'indiau19' => ['indiaunder19s', 'indiaunder19'],
+        'indiaunder19s' => ['indiau19', 'indiaunder19'],
+        'australiau19' => ['australiaunder19s'],
+        'leicestershire' => ['leics'],
+        'middlesex' => ['middx'],
+        'tasmania' => ['tasmania'],
+        'zimbabwe' => ['zimbabwe'],
     ];
 }
 
@@ -275,22 +326,24 @@ function team_hits_name(string $betTeam, string $fixtureTeam): bool
     if (team_age_gender_tags($betTeam) !== team_age_gender_tags($fixtureTeam)) {
         return false;
     }
-    if ($a === $b || str_contains($b, $a) || str_contains($a, $b)) {
+    if (function_exists('history_side_hit')) {
+        if (history_side_hit($a, $b) || history_side_hit($b, $a)) {
+            return true;
+        }
+    } elseif ($a === $b) {
         return true;
     }
     $aliases = team_aliases();
-    $aKeys = $aliases[$a] ?? [];
-    foreach ($aKeys as $alias) {
-        if ($alias === $b || str_contains($b, $alias) || str_contains($alias, $b)) {
+    foreach ($aliases[$a] ?? [] as $alias) {
+        $alias = normalize_name($alias);
+        if ($alias !== '' && (history_side_hit($alias, $b) || history_side_hit($b, $alias))) {
             return true;
         }
     }
-    $words = preg_split('/[\s,&-]+/', strtolower($fixtureTeam)) ?: [];
-    foreach ($words as $w) {
-        if (strlen($w) >= 4 && !in_array($w, ['team', 'women', 'cricket', 'club', 'kings'], true)) {
-            if (str_contains($a, normalize_name($w))) {
-                return true;
-            }
+    foreach ($aliases[$b] ?? [] as $alias) {
+        $alias = normalize_name($alias);
+        if ($alias !== '' && (history_side_hit($alias, $a) || history_side_hit($a, $alias))) {
+            return true;
         }
     }
     return false;

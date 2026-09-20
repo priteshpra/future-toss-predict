@@ -4,6 +4,7 @@ require_once __DIR__ . '/includes/helpers.php';
 require_once __DIR__ . '/includes/predictor.php';
 require_once __DIR__ . '/includes/live.php';
 require_once __DIR__ . '/includes/telegram.php';
+require_once __DIR__ . '/includes/tossbook.php';
 
 $action = $_GET['action'] ?? $_POST['action'] ?? 'health';
 
@@ -388,6 +389,9 @@ function enrich_match(array $m, string $date): array
             'tossLoadB' => $loadB,
             'insights' => $analysis['prediction']['insights'],
             'locked' => $mins <= 30,
+            'last5Winner' => $analysis['prediction']['last5Winner'] ?? null,
+            'last5Gap' => $analysis['prediction']['last5Gap'] ?? 0,
+            'last10Winner' => $analysis['prediction']['last10Winner'] ?? null,
         ],
         'form' => [
             'aLast5' => $tA['last5Wins'] . '/' . $tA['last5Total'],
@@ -533,6 +537,12 @@ function guess_live_league(array $lm): string
     if (str_contains($blob, 'ludhiana') || str_contains($blob, 'mohali') || str_contains($blob, 'amritsar') || str_contains($blob, 'jalandhar') || str_contains($blob, 'punjab')) {
         return 'pca';
     }
+    if (str_contains($blob, 'odisha') || str_contains($blob, 'sambalpur') || str_contains($blob, 'kataka') || str_contains($blob, 'cuttack panthers') || str_contains($blob, 'keonjhar') || str_contains($blob, 'rourkela') || str_contains($blob, 'puri titans') || str_contains($blob, 'bhubaneswar tigers')) {
+        return 'odisha';
+    }
+    if (str_contains($blob, 'wapl') || str_contains($blob, 'andhra premier') || str_contains($blob, 'godavari') || str_contains($blob, 'vizag fire') || str_contains($blob, 'rayalaseema') || str_contains($blob, 'amaravati') || str_contains($blob, 'amravati')) {
+        return 'wapl';
+    }
     if (str_contains($blob, 'women') && str_contains($blob, 'odi')) {
         return 'women_odi';
     }
@@ -647,6 +657,13 @@ function collect_day(string $date, string $league = 'all'): array
     }
 
     $rowsForPlaceholder = array_map(static fn($t) => $t[0], $tagged);
+    $plainForHist = array_map(static fn($t) => array_merge($t[0], ['date' => $t[1]]), $tagged);
+    $cbToss = [];
+    try {
+        $cbToss = hydrate_cricbuzz_toss_history($plainForHist);
+    } catch (Throwable $e) {
+        $cbToss = ['byId' => [], 'byPair' => []];
+    }
     $out = [];
     foreach ($tagged as [$m, $rowDate]) {
         $k1 = match_key($m['teamA'] ?? '', $m['teamB'] ?? '', $rowDate);
@@ -668,6 +685,10 @@ function collect_day(string $date, string $league = 'all'): array
         }
         $m = apply_field_override($m, $store['overrides']['fields'] ?? [], $rowDate);
         $m = apply_toss_override($m, $store['overrides']['toss'] ?? [], $rowDate);
+        if (empty($m['date'])) {
+            $m['date'] = $rowDate;
+        }
+        $m = apply_cricbuzz_ground_toss($m, $cbToss);
         if (skip_slate_match($m)) {
             continue;
         }
@@ -806,16 +827,31 @@ try {
                 $matches = collect_day(ist_shift($date, 1), $league);
             }
             $loadMap = [];
+            $websiteBoard = ['date' => $date, 'matches' => [], 'listed' => 0];
+            $tgFeed = ['posts' => []];
+            $nearToss = false;
+            foreach ($matches as $mm0) {
+                if (!empty($mm0['tossWinner'])) {
+                    continue;
+                }
+                $mins = (int) ($mm0['minutesToToss'] ?? 99999);
+                if ($mins <= 15 && $mins >= -8) {
+                    $nearToss = true;
+                    break;
+                }
+            }
             try {
-                $tgFeed = fetch_telegram_bets();
+                $tgFeed = fetch_telegram_bets($nearToss);
                 foreach (build_punter_load($tgFeed['posts'] ?? [], $matches, $date)['matches'] as $row) {
                     $loadMap[$row['id']] = $row;
                 }
+                $websiteBoard = build_tossbook_board($tgFeed['posts'] ?? [], $date, $matches);
             } catch (Throwable $e) {
                 $loadMap = [];
             }
             foreach ($matches as &$mm) {
-                $mm = apply_live_toss_markets($mm, $loadMap[$mm['id']] ?? null);
+                $web = website_load_for_match($mm, $websiteBoard['matches'] ?? []);
+                $mm = apply_live_toss_markets($mm, $loadMap[$mm['id']] ?? null, $web);
             }
             unset($mm);
             $alerts = array_values(array_filter($matches, fn($m) => in_array($m['phase'], ['alert_30', 'toss_now'], true) && empty($m['tossWinner'])));
@@ -826,6 +862,7 @@ try {
                 'total' => count($matches),
                 'alerts' => $alerts,
                 'matches' => $matches,
+                'websiteBoard' => $websiteBoard,
             ]);
             break;
 
@@ -840,7 +877,16 @@ try {
             break;
 
         case 'leaderboard':
-            json_ok(['teams' => toss_leaderboard($_GET['league'] ?? 'all')]);
+            $websiteBoard = ['date' => ist_today(), 'matches' => [], 'listed' => 0];
+            try {
+                $tgFeed = fetch_telegram_bets();
+                $websiteBoard = build_tossbook_board($tgFeed['posts'] ?? [], ist_today(), []);
+            } catch (Throwable $e) {
+            }
+            json_ok([
+                'teams' => toss_leaderboard($_GET['league'] ?? 'all'),
+                'websiteBoard' => $websiteBoard,
+            ]);
             break;
 
         case 'live':

@@ -1,0 +1,82 @@
+{
+    "ts": 1789919622,
+    "data": [
+        {
+            "matchId": "155617",
+            "seriesId": "12210",
+            "series": "Australia A Women tour of India 2026",
+            "desc": "1st unofficial ODI",
+            "format": "ODI",
+            "date": "2026-09-20",
+            "state": "Complete",
+            "teamA": "Australia A Women",
+            "teamB": "India A Women"
+        },
+        {
+            "matchId": "155584",
+            "seriesId": "12210",
+            "series": "Australia A Women tour of India 2026",
+            "desc": "1st unofficial T20",
+            "format": "T20",
+            "date": "2026-09-12",
+            "state": "Complete",
+            "teamA": "India A Women",
+            "teamB": "Australia A Women"
+        },
+        {
+            "matchId": "155595",
+            "seriesId": "12210",
+            "series": "Australia A Women tour of India 2026",
+            "desc": "2nd unofficial T20",
+            "format": "T20",
+            "date": "2026-09-15",
+            "state": "Complete",
+            "teamA": "Australia A Women",
+            "teamB": "India A Women"
+        },
+        {
+            "matchId": "155606",
+            "seriesId": "12210",
+            "series": "Australia A Women tour of India 2026",
+            "desc": "3rd unofficial T20",
+            "format": "T20",
+            "date": "2026-09-17",
+            "state": "Complete",
+            "teamA": "Australia A Women",
+            "teamB": "India A Women"
+        },
+        {
+            "matchId": "155628",
+            "seriesId": "12210",
+            "series": "Australia A Women tour of India 2026",
+            "desc": "2nd unofficial ODI",
+            "format": "ODI",
+            "date": "2026-09-23",
+            "state": "Upcoming",
+            "teamA": "India A Women",
+            "teamB": "Australia A Women"
+        },
+        {
+            "matchId": "155639",
+            "seriesId": "12210",
+            "series": "Australia A Women tour of India 2026",
+            "desc": "3rd unofficial ODI",
+            "format": "ODI",
+            "date": "2026-09-25",
+            "state": "Upcoming",
+            "teamA": "India A Women",
+            "teamB": "Australia A Women"
+        },
+        {
+            "matchId": "155650",
+            "seriesId": "12210",
+            "series": "Australia A Women tour of India 2026",
+            "desc": "Only unofficial Test",
+            "format": "TEST",
+            "date": "2026-09-29",
+            "state": "Upcoming",
+            "teamA": "India A Women",
+            "teamB": "Australia A Women"
+        }
+    ]
+}

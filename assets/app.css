@@ -235,7 +235,7 @@ button { touch-action: manipulation; }
 }
 .meta > * { min-width: 0; }
 .meta-left { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.meta-right { flex-shrink: 0; text-align: right; }
+.meta-right { flex-shrink: 0; text-align: right; display: flex; gap: 6px; align-items: center; justify-content: flex-end; flex-wrap: wrap; }
 .tourney {
   margin: 8px 0 0;
   color: #94a3b8;
@@ -250,6 +250,7 @@ button { touch-action: manipulation; }
 .badge.live { background: rgba(52,211,153,.18); color: #6ee7b7; }
 .badge.soon { background: rgba(251,191,36,.18); color: #fcd34d; animation: pulse 1.4s infinite; }
 .badge.done { background: rgba(148,163,184,.18); color: #94a3b8; }
+.badge.book { background: rgba(56,189,248,.16); color: #7dd3fc; }
 
 @keyframes pulse { 50% { opacity: .55; } }
 
@@ -276,6 +277,8 @@ button { touch-action: manipulation; }
 .track { height: 8px; border-radius: 999px; background: #0f172a; overflow: hidden; display: flex; }
 .track i:first-child { background: linear-gradient(90deg, #22d3ee, #6366f1); }
 .track i:last-child { background: linear-gradient(90deg, #f59e0b, #fb7185); }
+.track.web i:first-child { background: linear-gradient(90deg, #38bdf8, #22c55e); }
+.track.web i:last-child { background: linear-gradient(90deg, #fbbf24, #f97316); }
 
 .pick {
   margin-top: 12px;
@@ -290,6 +293,37 @@ button { touch-action: manipulation; }
 .pick b { color: #a5f3fc; }
 .pick.locked { background: rgba(251,191,36,.1); border-color: rgba(251,191,36,.3); }
 .pick.locked b { color: var(--gold); }
+.pick.strong {
+  background: rgba(52,211,153,.16);
+  border-color: rgba(52,211,153,.5);
+  color: #bbf7d0;
+  font-weight: 700;
+}
+.pick.strong b { color: #ecfdf5; }
+.pick.skip { background: rgba(251,113,133,.1); border-color: rgba(251,113,133,.32); color: #fda4af; }
+.pick.wait { background: rgba(251,191,36,.08); border-color: rgba(251,191,36,.28); color: #fde68a; }
+.tipper {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.tipper-kicker {
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-weight: 800;
+  margin-bottom: 4px;
+  opacity: .85;
+}
+.tipper p { margin: 0; }
+.tipper small { display: block; margin-top: 6px; color: var(--muted); font-size: 11px; }
+.tipper.play { background: rgba(52,211,153,.12); border: 1px solid rgba(52,211,153,.35); color: #6ee7b7; }
+.tipper.wait { background: rgba(251,191,36,.1); border: 1px solid rgba(251,191,36,.3); color: #fde68a; }
+.tipper.skip { background: rgba(251,113,133,.12); border: 1px solid rgba(251,113,133,.35); color: #fda4af; }
+.tipper.lean { background: rgba(56,189,248,.1); border: 1px solid rgba(56,189,248,.28); color: #7dd3fc; }
 .live-line { font-size: 12px; color: #6ee7b7; margin: 8px 0 0; overflow-wrap: anywhere; }
 
 .facts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
@@ -490,6 +524,44 @@ body.drawer-open { overflow: hidden; }
   color: #fde68a;
   overflow-wrap: anywhere;
 }
+.web-line {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  font-size: 12px;
+  color: #7dd3fc;
+  overflow-wrap: anywhere;
+}
+.book-board {
+  margin: 0 0 14px;
+  display: grid;
+  gap: 8px;
+}
+.book-head {
+  font-weight: 800;
+  font-size: 14px;
+  color: #e2e8f0;
+}
+.book-head small {
+  display: block;
+  font-weight: 500;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+.book-row {
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: rgba(8, 16, 32, 0.7);
+}
+.book-row.hot { border-color: rgba(56, 189, 248, 0.4); }
+.book-meta { font-size: 11px; color: #94a3b8; }
+.book-teams { margin: 6px 0 4px; font-size: 14px; }
+.book-teams span { color: var(--cyan); font-weight: 800; padding: 0 6px; }
+.book-label { font-size: 12px; color: #7dd3fc; margin-bottom: 8px; }
+.book-money { font-size: 12px; color: #fde68a; margin-top: 6px; }
 .split-note {
   margin-top: 10px;
   padding: 8px 10px;

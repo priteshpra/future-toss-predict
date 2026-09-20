@@ -1,0 +1,93 @@
+{
+    "ts": 1789921157,
+    "data": [
+        {
+            "matchId": "170770",
+            "seriesId": "13053",
+            "series": "North American Cup, 2026",
+            "desc": "1st Match",
+            "format": "T20",
+            "date": "2026-09-21",
+            "state": "Preview",
+            "teamA": "Cayman Islands",
+            "teamB": "Bermuda"
+        },
+        {
+            "matchId": "170780",
+            "seriesId": "13053",
+            "series": "North American Cup, 2026",
+            "desc": "2nd Match",
+            "format": "T20",
+            "date": "2026-09-22",
+            "state": "Upcoming",
+            "teamA": "Bahamas",
+            "teamB": "Cayman Islands"
+        },
+        {
+            "matchId": "170790",
+            "seriesId": "13053",
+            "series": "North American Cup, 2026",
+            "desc": "3rd Match",
+            "format": "T20",
+            "date": "2026-09-23",
+            "state": "Upcoming",
+            "teamA": "Bermuda",
+            "teamB": "Bahamas"
+        },
+        {
+            "matchId": "170800",
+            "seriesId": "13053",
+            "series": "North American Cup, 2026",
+            "desc": "4th Match",
+            "format": "T20",
+            "date": "2026-09-24",
+            "state": "Upcoming",
+            "teamA": "Cayman Islands",
+            "teamB": "Bermuda"
+        },
+        {
+            "matchId": "170810",
+            "seriesId": "13053",
+            "series": "North American Cup, 2026",
+            "desc": "5th Match",
+            "format": "T20",
+            "date": "2026-09-25",
+            "state": "Upcoming",
+            "teamA": "Bahamas",
+            "teamB": "Cayman Islands"
+        },
+        {
+            "matchId": "170811",
+            "seriesId": "13053",
+            "series": "North American Cup, 2026",
+            "desc": "6th Match",
+            "format": "T20",
+            "date": "2026-09-26",
+            "state": "Upcoming",
+            "teamA": "Bermuda",
+            "teamB": "Bahamas"
+        },
+        {
+            "matchId": "170821",
+            "seriesId": "13053",
+            "series": "North American Cup, 2026",
+            "desc": "2\/3 Place Play off",
+            "format": "T20",
+            "date": "2026-09-27",
+            "state": "Upcoming",
+            "teamA": "TBC",
+            "teamB": "TBC"
+        },
+        {
+            "matchId": "170831",
+            "seriesId": "13053",
+            "series": "North American Cup, 2026",
+            "desc": "Final",
+            "format": "T20",
+            "date": "2026-09-28",
+            "state": "Upcoming",
+            "teamA": "TBC",
+            "teamB": "TBC"
+        }
+    ]
+}

@@ -1,0 +1,71 @@
+{
+    "ts": 1789919621,
+    "data": [
+        {
+            "matchId": "129623",
+            "seriesId": "10576",
+            "series": "England vs Sri Lanka, 2026",
+            "desc": "3rd T20I",
+            "format": "T20",
+            "date": "2026-09-19",
+            "state": "Complete",
+            "teamA": "Sri Lanka",
+            "teamB": "England"
+        },
+        {
+            "matchId": "129607",
+            "seriesId": "10576",
+            "series": "Sri Lanka tour of England, 2026",
+            "desc": "1st T20I",
+            "format": "T20",
+            "date": "2026-09-15",
+            "state": "Complete",
+            "teamA": "England",
+            "teamB": "Sri Lanka"
+        },
+        {
+            "matchId": "129618",
+            "seriesId": "10576",
+            "series": "Sri Lanka tour of England, 2026",
+            "desc": "2nd T20I",
+            "format": "T20",
+            "date": "2026-09-17",
+            "state": "Complete",
+            "teamA": "Sri Lanka",
+            "teamB": "England"
+        },
+        {
+            "matchId": "129634",
+            "seriesId": "10576",
+            "series": "Sri Lanka tour of England, 2026",
+            "desc": "1st ODI",
+            "format": "ODI",
+            "date": "2026-09-22",
+            "state": "Upcoming",
+            "teamA": "England",
+            "teamB": "Sri Lanka"
+        },
+        {
+            "matchId": "129640",
+            "seriesId": "10576",
+            "series": "Sri Lanka tour of England, 2026",
+            "desc": "2nd ODI",
+            "format": "ODI",
+            "date": "2026-09-24",
+            "state": "Upcoming",
+            "teamA": "England",
+            "teamB": "Sri Lanka"
+        },
+        {
+            "matchId": "129651",
+            "seriesId": "10576",
+            "series": "Sri Lanka tour of England, 2026",
+            "desc": "3rd ODI",
+            "format": "ODI",
+            "date": "2026-09-27",
+            "state": "Upcoming",
+            "teamA": "England",
+            "teamB": "Sri Lanka"
+        }
+    ]
+}

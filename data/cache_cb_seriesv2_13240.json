@@ -1,0 +1,71 @@
+{
+    "ts": 1789921157,
+    "data": [
+        {
+            "matchId": "173631",
+            "seriesId": "13240",
+            "series": "Quadrangular T20I Series in Nigeria, 2026",
+            "desc": "1st Match",
+            "format": "T20",
+            "date": "2026-09-21",
+            "state": "Upcoming",
+            "teamA": "Nigeria",
+            "teamB": "Ghana"
+        },
+        {
+            "matchId": "173647",
+            "seriesId": "13240",
+            "series": "Quadrangular T20I Series in Nigeria, 2026",
+            "desc": "2nd Match",
+            "format": "T20",
+            "date": "2026-09-22",
+            "state": "Upcoming",
+            "teamA": "Ghana",
+            "teamB": "Sierra Leone"
+        },
+        {
+            "matchId": "173657",
+            "seriesId": "13240",
+            "series": "Quadrangular T20I Series in Nigeria, 2026",
+            "desc": "3rd Match",
+            "format": "T20",
+            "date": "2026-09-23",
+            "state": "Upcoming",
+            "teamA": "Nigeria",
+            "teamB": "Sierra Leone"
+        },
+        {
+            "matchId": "173667",
+            "seriesId": "13240",
+            "series": "Quadrangular T20I Series in Nigeria, 2026",
+            "desc": "4th Match",
+            "format": "T20",
+            "date": "2026-09-25",
+            "state": "Upcoming",
+            "teamA": "Ghana",
+            "teamB": "Sierra Leone"
+        },
+        {
+            "matchId": "173677",
+            "seriesId": "13240",
+            "series": "Quadrangular T20I Series in Nigeria, 2026",
+            "desc": "5th Match",
+            "format": "T20",
+            "date": "2026-09-26",
+            "state": "Upcoming",
+            "teamA": "Nigeria",
+            "teamB": "Ghana"
+        },
+        {
+            "matchId": "173683",
+            "seriesId": "13240",
+            "series": "Quadrangular T20I Series in Nigeria, 2026",
+            "desc": "6th Match",
+            "format": "T20",
+            "date": "2026-09-27",
+            "state": "Upcoming",
+            "teamA": "Nigeria",
+            "teamB": "Sierra Leone"
+        }
+    ]
+}

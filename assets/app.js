@@ -75,9 +75,11 @@ function fillTeams(selectId) {
 }
 
 function tossDots(team) {
-  const rec = team?.record?.recent || [];
+  const rec = (team?.last5Rows && team.last5Rows.length)
+    ? team.last5Rows
+    : (team?.record?.recent || []);
   if (!rec.length) return '';
-  return `<div class="toss-dots">${rec.slice(0, 8).map((r) => `<em class="${r.won ? 'w' : 'l'}">${r.won ? 'W' : 'L'}</em>`).join('')}</div>`;
+  return `<div class="toss-dots">${rec.slice(0, 5).map((r) => `<em class="${r.won ? 'w' : 'l'}">${r.won ? 'W' : 'L'}</em>`).join('')}</div>`;
 }
 
 function cardHTML(m) {
@@ -86,6 +88,7 @@ function cardHTML(m) {
   const venue = m.venueStats || {};
   const h2h = form.h2h || {};
   const src = pred.sources || {};
+  const report = pred.tipperReport || {};
   const aPct = pred.teamAPct ?? 50;
   const bPct = pred.teamBPct ?? 50;
   const loadA = pred.tossLoadA ?? 50;
@@ -105,7 +108,29 @@ function cardHTML(m) {
         : m.status === 'COMPLETED'
           ? '<span class="badge done">DONE</span>'
           : '<span class="badge">UPCOMING</span>';
-  const pickClass = pred.locked ? 'pick locked' : 'pick';
+  const pickClass = report.action === 'PLAY'
+    ? 'pick strong'
+    : report.action === 'SKIP'
+      ? 'pick skip'
+      : report.action === 'WAIT'
+        ? 'pick wait'
+        : (pred.locked ? 'pick locked' : 'pick');
+  const pickLabel = report.action === 'PLAY'
+    ? (src.triple || pred.pickStrength === 'best' ? 'BEST PICK' : (src.loadOnly ? 'LOAD PICK' : 'STRONG PICK'))
+    : report.action === 'SKIP'
+      ? 'NO PICK'
+      : report.action === 'WAIT'
+        ? 'WAIT'
+        : report.action === 'LEAN'
+          ? 'SOFT LEAN'
+          : (pred.locked ? 'Locked lean' : 'Toss lean');
+  const pickBody = report.action === 'SKIP'
+    ? `${pickLabel}: last 5 vs load split — skip`
+    : report.action === 'WAIT'
+      ? (report.pick
+        ? `${pickLabel}: <b>${esc(report.pick)}</b> last-5 note (${pred.probability || 50}%) · load pending`
+        : `${pickLabel}: last 5 even · load pending`)
+      : `${pickLabel}: <b>${esc(report.pick || pred.winner)}</b> (${pred.probability || 50}%)  ·  ${esc(pred.confidence || '')}`;
   const actual = m.tossWinner
     ? `<div class="insight">Ground toss: <b>${esc(m.tossWinner)}</b> chose ${esc(m.tossDecision || '—')}  ·  AI ${result === 'pass' ? '<b class="hit">PASS</b>' : result === 'fail' ? '<b class="miss">FAIL</b>' : 'pending'}</div>`
     : '';
@@ -113,20 +138,42 @@ function cardHTML(m) {
   const dateBit = (m.date && m.date !== state.date)
     ? `  ·  ${Number(m.date.slice(8, 10))} ${months[Number(m.date.slice(5, 7)) - 1] || m.date}`
     : '';
-  const loadLabel = hasLoad
-    ? `${loadA}% — ${loadB}%`
-    : 'No punter money yet';
-  const signalNote = src.split
-    ? `<div class="split-note">SPLIT: last toss <b>${esc(src.lastToss?.winner)}</b>  ·  load <b>${esc(src.load?.winner)}</b> — dono check karo</div>`
-    : (src.agree ? `<div class="agree-note">Load aur last toss dono <b>${esc(pred.winner)}</b> pe agree</div>` : '');
-  const money = m.punterLoad && (m.punterLoad.amountA + m.punterLoad.amountB) > 0
-    ? `<div class="punter-line">Punter toss money: <b>${esc(m.punterLoad.leader || 'Even')}</b> ${m.punterLoad.leader ? m.punterLoad.leaderPct + '%' : ''}  ·  ${esc(m.teamA)} ${esc(m.punterLoad.amountALabel)} vs ${esc(m.teamB)} ${esc(m.punterLoad.amountBLabel)}</div>`
-    : `<div class="punter-line">Punter toss money: abhi is match pe mapped load nahi mila</div>`;
-  return `
+    const last5A = form.aLast5 && form.aLast5 !== '0/0' ? form.aLast5 : '—';
+    const last5B = form.bLast5 && form.bLast5 !== '0/0' ? form.bLast5 : '—';
+    const hasTg = !!(pred.hasTgLoad || (m.punterLoad && (m.punterLoad.amountA + m.punterLoad.amountB) > 0));
+    const web = m.websiteLoad || src.website || {};
+    const onBook = !!(pred.onBook || web.onBook);
+    const hasWeb = !!(pred.hasWebLoad || web.hasLean);
+    const tgLabel = hasTg
+      ? `${loadA}% — ${loadB}%`
+      : 'No TG money yet';
+    const webA = pred.webLoadA ?? web.pctA ?? 50;
+    const webB = pred.webLoadB ?? web.pctB ?? 50;
+    const webLabel = onBook
+      ? (hasWeb ? `${webA}% — ${webB}%` : 'Listed · no load yet')
+      : 'Not on toss-book';
+    const signalNote = src.split
+      ? `<div class="split-note">SPLIT: last 5 <b>${esc(src.lastToss?.winner)}</b>  ·  load <b>${esc(src.load?.winner)}</b> — skip</div>`
+      : (src.triple
+        ? `<div class="agree-note">BEST: last 5 + Telegram + website teeno <b>${esc(pred.winner)}</b> pe agree</div>`
+        : (src.agree ? `<div class="agree-note">STRONG: last 5 aur load dono <b>${esc(pred.winner)}</b> pe agree</div>` : ''));
+    const money = hasTg
+      ? `<div class="punter-line">Telegram ₹: <b>${esc(m.punterLoad?.leader || 'Even')}</b> ${m.punterLoad?.leader ? m.punterLoad.leaderPct + '%' : ''}  ·  ${esc(m.teamA)} ${esc(m.punterLoad?.amountALabel || '')} vs ${esc(m.teamB)} ${esc(m.punterLoad?.amountBLabel || '')}</div>`
+      : `<div class="punter-line">Telegram ₹: is match pe mapped toss money nahi mila</div>`;
+    const webLine = `<div class="web-line">${esc(web.label || (onBook ? (hasWeb ? ('Website load favouring ' + (web.leanTeam || '')) : 'Toss-book pe listed · no load yet') : 'Website load: toss-book pe listed nahi'))}</div>`;
+    const bookBadge = onBook ? '<span class="badge book">ON BOOK</span>' : '';
+    const reportBox = report.headline
+      ? `<div class="tipper ${esc(report.grade || 'wait')}">
+          <div class="tipper-kicker">Tipper report · ${esc(report.action || 'WAIT')}</div>
+          <p>${esc(report.headline)}</p>
+          <small>${esc(report.when || '')}</small>
+        </div>`
+      : '';
+    return `
     <article class="card ${m.phase === 'alert_30' || m.phase === 'toss_now' ? 'alert30' : ''} ${m.status === 'LIVE' ? 'live' : ''}">
       <div class="meta">
         <div class="meta-left">${esc(m.format)}  ·  ${esc(leagueName(m.league))}</div>
-        ${phaseBadge}
+        <div class="meta-right">${bookBadge}${phaseBadge}</div>
       </div>
       <div class="meta" style="margin-top:6px">
         <span class="meta-left">${esc(m.time)}${dateBit}  ·  toss ${esc(m.tossTime)}</span>
@@ -137,30 +184,31 @@ function cardHTML(m) {
         <div class="team">
           <div class="ico">${m.teamABadge || '🏏'}</div>
           <h3>${esc(m.teamA)}</h3>
-          <small>Last 5 toss ${form.aLast5 || '—'}  ·  ${m.teamAHome ? 'Home' : esc(m.teamACaptain || 'Away')}</small>
+          <small>Last 5 toss ${last5A}${m.teamAHome ? '  ·  Home' : (m.teamACaptain ? '  ·  ' + esc(m.teamACaptain) : '')}</small>
           ${tossDots(m.analysis?.teamA)}
         </div>
         <div class="vs-mid">VS</div>
         <div class="team">
           <div class="ico">${m.teamBBadge || '🏏'}</div>
           <h3>${esc(m.teamB)}</h3>
-          <small>Last 5 toss ${form.bLast5 || '—'}  ·  ${m.teamBHome ? 'Home' : esc(m.teamBCaptain || 'Away')}</small>
+          <small>Last 5 toss ${last5B}${m.teamBHome ? '  ·  Home' : (m.teamBCaptain ? '  ·  ' + esc(m.teamBCaptain) : '')}</small>
           ${tossDots(m.analysis?.teamB)}
         </div>
       </div>
       <div class="bars">
         <div class="bar-row"><span>Last-match toss %</span><span>${aPct}% — ${bPct}%</span></div>
         <div class="track"><i style="width:${aPct}%"></i><i style="width:${bPct}%"></i></div>
-        <div class="bar-row"><span>Punter load</span><span>${esc(loadLabel)}</span></div>
-        <div class="track"><i style="width:${hasLoad ? loadA : 50}%"></i><i style="width:${hasLoad ? loadB : 50}%"></i></div>
+        <div class="bar-row"><span>Telegram ₹</span><span>${esc(tgLabel)}</span></div>
+        <div class="track"><i style="width:${hasTg ? loadA : 50}%"></i><i style="width:${hasTg ? loadB : 50}%"></i></div>
+        <div class="bar-row"><span>Website load</span><span>${esc(webLabel)}</span></div>
+        <div class="track web"><i style="width:${onBook && hasWeb ? webA : 50}%"></i><i style="width:${onBook && hasWeb ? webB : 50}%"></i></div>
       </div>
-      <div class="${pickClass}">
-        ${pred.locked ? 'Locked lean' : 'Toss lean'}:
-        <b>${esc(pred.winner)}</b> (${pred.probability || 50}%)  ·  ${esc(pred.confidence || '')}
-      </div>
+      ${reportBox}
+      <div class="${pickClass}">${pickBody}</div>
       ${m.liveScore ? `<p class="live-line">${esc(m.liveScore)}</p>` : ''}
       ${actual}
       ${money}
+      ${webLine}
       ${signalNote}
       <div class="facts">
         <span>📍 ${esc(m.venue)}</span>
@@ -185,8 +233,9 @@ function namesClose(a, b) {
 }
 
 function tossResult(m) {
-  const pick = m?.prediction?.winner;
-  if (!m?.tossWinner || !pick) return 'pending';
+  if (!m?.tossWinner) return 'pending';
+  const pick = m?.prediction?.tipperReport?.pick || m?.prediction?.winner || '';
+  if (!pick) return 'pending';
   return namesClose(m.tossWinner, pick) ? 'pass' : 'fail';
 }
 
@@ -246,6 +295,34 @@ function renderMatches(payload) {
   } else {
     box.classList.remove('show');
   }
+  scheduleMatchPoll();
+}
+
+function renderBookBoard(board) {
+  const box = $('bookBoard');
+  if (!box) return;
+  const rows = board?.matches || [];
+  if (!rows.length) {
+    box.hidden = true;
+    box.innerHTML = '';
+    return;
+  }
+  const inferred = board?.inferred ? ' · live sides (schedule post nahi mila)' : '';
+  box.hidden = false;
+  box.innerHTML = `<div class="book-head">Toss-book website load <small>${esc(board.fetchedAt || '')} · ${rows.length} listed${inferred}</small></div>
+    <p class="tg-hint">Yahi board tipper log website pe check karte hain — listed match + favouring side.</p>
+    ${rows.map((r) => {
+      const hot = !!r.hasLean;
+      const pctA = r.pctA ?? 50;
+      const pctB = r.pctB ?? 50;
+      return `<article class="book-row ${hot ? 'hot' : ''}">
+        <div class="book-meta">${esc(r.time || '')}${r.league ? ' · ' + esc(r.league) : ''} · ${esc(r.status || 'LISTED')}</div>
+        <div class="book-teams"><b>${esc(r.teamA)}</b> <span>vs</span> <b>${esc(r.teamB)}</b></div>
+        <div class="book-label">${esc(r.label || 'No load yet')}</div>
+        <div class="track web"><i style="width:${hot ? pctA : 50}%"></i><i style="width:${hot ? pctB : 50}%"></i></div>
+        <div class="book-money">${esc(r.amountALabel || '₹0')} vs ${esc(r.amountBLabel || '₹0')}</div>
+      </article>`;
+    }).join('')}`;
 }
 
 function headingFor(date) {
@@ -257,26 +334,71 @@ function headingFor(date) {
   return `${row.weekday}, ${row.pretty} ke matches`;
 }
 
+const matchCache = {};
+function matchCacheKey(date, league) {
+  return `${date || ''}|${league || 'all'}`;
+}
+
+function bustMatchCache() {
+  Object.keys(matchCache).forEach((k) => { delete matchCache[k]; });
+}
+
+function nearTossWindow(matches) {
+  return (matches || []).some((m) => {
+    if (m.tossWinner) return false;
+    const mins = Number(m.minutesToToss);
+    return Number.isFinite(mins) && mins <= 15 && mins >= -8;
+  });
+}
+
+let matchPollTimer = null;
+function scheduleMatchPoll() {
+  if (matchPollTimer) clearInterval(matchPollTimer);
+  const ms = nearTossWindow(state.matches) ? 10000 : 45000;
+  matchPollTimer = setInterval(() => loadMatches(true), ms);
+}
+
 async function loadMatches(silent = false) {
   if (silent && ($('addModal')?.classList.contains('show') || $('tossModal')?.classList.contains('show'))) {
     return;
   }
-  if (!silent) {
+  const key = matchCacheKey(state.date, state.league);
+  const cached = matchCache[key];
+  if (cached && !silent) {
+    renderMatches(cached);
+  } else if (!silent) {
     $('grid').innerHTML = `<div class="empty">Live feeds + historical toss model load ho raha hai…</div>`;
   }
   try {
     const data = await api('matches', { date: state.date, league: state.league });
     if (!data || data.error) {
-      $('grid').innerHTML = `<div class="empty">Is date par scheduled match nahi mila. Niche se custom match add karo.</div>`;
+      if (!cached) {
+        $('grid').innerHTML = `<div class="empty">Is date par scheduled match nahi mila. Niche se custom match add karo.</div>`;
+      }
       return;
     }
-    renderMatches(data);
+    matchCache[key] = data;
+    if (matchCacheKey(state.date, state.league) === key) {
+      renderMatches(data);
+    }
   } catch (e) {
-    if (!silent) {
+    if (!silent && !cached) {
       $('grid').innerHTML = `<div class="empty">Is date par scheduled match nahi mila. Niche se custom match add karo.</div>`;
     }
   }
   renderDates();
+}
+
+async function prefetchMatchDay(date) {
+  if (!date || !state.league) return;
+  const key = matchCacheKey(date, state.league);
+  if (matchCache[key]) return;
+  try {
+    const data = await api('matches', { date, league: state.league });
+    if (data && !data.error) {
+      matchCache[key] = data;
+    }
+  } catch (e) {}
 }
 
 function lastTossTable(team) {
@@ -333,7 +455,8 @@ function whyPickHTML(a, teamAName, teamBName, extra = {}) {
     { name: 'Last 10 toss', a: `${tA.last10Wins || 0}/${tA.last10Total || 0} (${tA.last10Pct || 50}%)`, b: `${tB.last10Wins || 0}/${tB.last10Total || 0} (${tB.last10Pct || 50}%)`, edge: (tA.last10Pct || 50) === (tB.last10Pct || 50) ? 'Even' : ((tA.last10Pct || 50) > (tB.last10Pct || 50) ? teamAName : teamBName) },
     { name: 'Career toss', a: `${tA.record?.won || 0}/${tA.record?.played || 0} (${tA.record?.pct || 50}%)`, b: `${tB.record?.won || 0}/${tB.record?.played || 0} (${tB.record?.pct || 50}%)`, edge: (tA.record?.pct || 50) === (tB.record?.pct || 50) ? 'Even' : ((tA.record?.pct || 50) > (tB.record?.pct || 50) ? teamAName : teamBName) },
     { name: 'H2H toss', a: String(h2h.teamAWins ?? 0), b: String(h2h.teamBWins ?? 0), edge: (h2h.teamAWins ?? 0) === (h2h.teamBWins ?? 0) ? 'Even' : ((h2h.teamAWins ?? 0) > (h2h.teamBWins ?? 0) ? teamAName : teamBName) },
-    { name: 'Punter load', a: load.hasMoney ? `${load.pctA}%` : '—', b: load.hasMoney ? `${load.pctB}%` : '—', edge: load.hasMoney ? (load.winner || 'Even') : 'No money' },
+    { name: 'Telegram ₹', a: src.telegram?.hasMoney ? `${src.telegram.pctA}%` : '—', b: src.telegram?.hasMoney ? `${src.telegram.pctB}%` : '—', edge: src.telegram?.hasMoney ? (src.load?.winner || 'Even') : 'No TG money' },
+    { name: 'Website load', a: src.website?.onBook ? `${src.website.pctA}%` : '—', b: src.website?.onBook ? `${src.website.pctB}%` : '—', edge: !src.website?.onBook ? 'Not listed' : (src.website?.hasLean ? (src.website.winner || 'Even') : 'No load yet') },
   ];
   const rows = factors.map((f) => `<tr><td>${esc(f.name)}</td><td>${esc(f.a)}</td><td>${esc(f.b)}</td><td class="${f.edge === winner ? 'w' : ''}">${esc(f.edge)}</td></tr>`).join('');
   const bullets = [];
@@ -348,16 +471,37 @@ function whyPickHTML(a, teamAName, teamBName, extra = {}) {
     bullets.push(`H2H toss: ${esc(teamAName)} ${h2h.teamAWins ?? 0} – ${h2h.teamBWins ?? 0} ${esc(teamBName)}.`);
   }
   if (src.split) {
-    bullets.push(`SPLIT: last toss <b>${esc(last.winner)}</b> kehta hai, load <b>${esc(load.winner)}</b> kehta hai. Combined lean <b>${esc(winner)}</b> hai.`);
+    bullets.push(`SPLIT: last 5 <b>${esc(last.winner)}</b>, load <b>${esc(load.winner)}</b>. Best tipper skip karta hai — NO PICK.`);
+  } else if (src.triple) {
+    bullets.push(`BEST: last 5 + Telegram + website teeno <b>${esc(winner)}</b> pe agree.`);
   } else if (src.agree) {
-    bullets.push(`Last toss aur load dono <b>${esc(winner)}</b> pe agree karte hain.`);
+    bullets.push(`STRONG: last 5 toss aur load dono <b>${esc(winner)}</b> pe agree.`);
+  } else if (src.loadOnly) {
+    bullets.push(`Last 5 even hai, isliye pick load se <b>${esc(winner)}</b> hai.`);
   }
-  bullets.push(`Isliye model ne <b>${esc(winner)}</b> select kiya (${pct}%). Toss phir bhi coin hai — yeh lean hai, guarantee nahi.`);
-  const headline = why.headline || `Selected: ${winner} (${pct}%)`;
+  const report = pick.tipperReport || extra.prediction?.tipperReport || {};
+  if (report.action === 'PLAY') {
+    bullets.push(`Isliye STRONG PICK <b>${esc(winner)}</b> (${pct}%). Toss phir bhi coin hai — best available call, guarantee nahi.`);
+  } else if (report.action === 'SKIP') {
+    bullets.push('Split signals — AI yahan winner lock nahi karta.');
+  } else {
+    bullets.push(`Abhi strong pick nahi: ${esc(winner || '—')} (${pct}%) sirf early note hai. Load 5–10 min pehle confirm hota hai.`);
+  }
+  const headline = why.headline || (report.action === 'PLAY'
+    ? `${winner} (${pct}%)`
+    : report.action === 'SKIP' ? 'NO PICK — split skip' : `WAIT: ${winner || 'even'} (${pct}%)`);
+  const reportBox = report.headline
+    ? `<div class="tipper ${esc(report.grade || 'wait')}" style="margin-bottom:12px">
+        <div class="tipper-kicker">Tipper report · ${esc(report.action || 'WAIT')}</div>
+        <p>${esc(report.headline)}</p>
+        <small>${esc(report.when || '')}</small>
+      </div>`
+    : '';
   return `
     <div class="verdict">
+      ${reportBox}
       <div class="verdict-kicker">Kyun ye team</div>
-      <div class="pick locked">${esc(headline)}</div>
+      <div class="pick ${report.action === 'PLAY' ? 'strong' : (report.action === 'SKIP' ? 'skip' : (report.action === 'WAIT' ? 'wait' : 'locked'))}">${esc(headline)}</div>
       <ul class="why-list">${bullets.map((b) => `<li>${b}</li>`).join('')}</ul>
       <table class="toss-table">
         <caption>Factor comparison</caption>
@@ -469,6 +613,7 @@ async function saveToss(winner) {
     format: m.format,
     id: m.id,
   }, 'POST');
+  bustMatchCache();
   loadMatches();
 }
 
@@ -479,6 +624,7 @@ async function promptToss(m) {
 async function removeMatch(m) {
   if (!confirm(`Remove ${m.teamA} vs ${m.teamB}?`)) return;
   await api('delete_match', { date: m.date, teamA: m.teamA, teamB: m.teamB, id: m.id }, 'POST');
+  bustMatchCache();
   loadMatches();
 }
 
@@ -577,6 +723,7 @@ async function submitCustom(e) {
   closeModal();
   state.date = payload.date;
   await bootMeta();
+  bustMatchCache();
   loadMatches();
 }
 
@@ -595,6 +742,7 @@ async function runSim(e) {
 
 async function loadBoard() {
   const data = await api('leaderboard', { league: $('lbLeague').value });
+  renderBookBoard(data.websiteBoard);
   $('lbBody').innerHTML = (data.teams || []).map((t, i) => `
     <tr>
       <td>${i + 1}</td>
@@ -652,12 +800,18 @@ async function bootMeta() {
 async function boot() {
   await bootMeta();
   await loadMatches();
+  const cal = state.meta?.calendar || [];
+  (async () => {
+    for (const d of cal) {
+      if (d.date && d.date !== state.date) await prefetchMatchDay(d.date);
+    }
+  })();
   if ('Notification' in window && Notification.permission === 'default') {
     $('notifyBtn').classList.remove('hidden');
   }
   loadTelegram(false);
-  setInterval(() => loadMatches(true), 45000);
-  setInterval(() => loadTelegram(false), 12000);
+  scheduleMatchPoll();
+  setInterval(() => loadTelegram(false), 20000);
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) loadTelegram(false);
   });

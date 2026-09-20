@@ -231,6 +231,54 @@
             "matchWinner": "Eastern Storm",
             "status": "COMPLETED",
             "userToss": true
+        },
+        {
+            "id": "dom_wapl_2026_3",
+            "teamA": "Amaravati E Champions",
+            "teamB": "Rayalaseema XEN Stars",
+            "date": "2026-09-20",
+            "league": "wapl",
+            "tournament": "WAPL 2026 · 3rd T20",
+            "format": "T20",
+            "time": "01:30 PM IST",
+            "venue": "ACA International Cricket Stadium, Mangalagiri",
+            "tossWinner": "Rayalaseema XEN Stars",
+            "tossDecision": "bowl",
+            "matchWinner": "Rayalaseema XEN Stars",
+            "status": "COMPLETED",
+            "userToss": true
+        },
+        {
+            "id": "dom_wapl_2026_4",
+            "teamA": "Godavari Golden Eagles",
+            "teamB": "Vizag Fire Birds",
+            "date": "2026-09-20",
+            "league": "wapl",
+            "tournament": "WAPL 2026 · 4th T20",
+            "format": "T20",
+            "time": "05:30 PM IST",
+            "venue": "ACA International Cricket Stadium, Mangalagiri",
+            "tossWinner": "Godavari Golden Eagles",
+            "tossDecision": "bowl",
+            "matchWinner": "Godavari Golden Eagles",
+            "status": "COMPLETED",
+            "userToss": true
+        },
+        {
+            "id": "dom_odisha_2026_1",
+            "teamA": "Sambalpur Warriors",
+            "teamB": "Cuttack Panthers",
+            "date": "2026-09-20",
+            "league": "odisha",
+            "tournament": "Odisha T20 2026 · 1st T20",
+            "format": "T20",
+            "time": "07:30 PM IST",
+            "venue": "Barabati Stadium, Cuttack",
+            "tossWinner": "Cuttack Panthers",
+            "tossDecision": "bowl",
+            "matchWinner": "Cuttack Panthers",
+            "status": "COMPLETED",
+            "userToss": true
         }
     ]
 }

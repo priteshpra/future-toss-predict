@@ -1,0 +1,60 @@
+{
+    "ts": 1789922168,
+    "data": [
+        {
+            "matchId": "155411",
+            "seriesId": "12184",
+            "series": "Australia A tour of India 2026",
+            "desc": "1st unofficial Test",
+            "format": "TEST",
+            "date": "2026-09-22",
+            "state": "Upcoming",
+            "teamA": "India A",
+            "teamB": "Australia A"
+        },
+        {
+            "matchId": "155422",
+            "seriesId": "12184",
+            "series": "Australia A tour of India 2026",
+            "desc": "2nd unofficial Test",
+            "format": "TEST",
+            "date": "2026-09-29",
+            "state": "Upcoming",
+            "teamA": "India A",
+            "teamB": "Australia A"
+        },
+        {
+            "matchId": "155433",
+            "seriesId": "12184",
+            "series": "Australia A tour of India 2026",
+            "desc": "1st unofficial ODI",
+            "format": "ODI",
+            "date": "2026-10-06",
+            "state": "Upcoming",
+            "teamA": "India A",
+            "teamB": "Australia A"
+        },
+        {
+            "matchId": "155444",
+            "seriesId": "12184",
+            "series": "Australia A tour of India 2026",
+            "desc": "2nd unofficial ODI",
+            "format": "ODI",
+            "date": "2026-10-09",
+            "state": "Upcoming",
+            "teamA": "India A",
+            "teamB": "Australia A"
+        },
+        {
+            "matchId": "155455",
+            "seriesId": "12184",
+            "series": "Australia A tour of India 2026",
+            "desc": "3rd unofficial ODI",
+            "format": "ODI",
+            "date": "2026-10-11",
+            "state": "Upcoming",
+            "teamA": "India A",
+            "teamB": "Australia A"
+        }
+    ]
+}

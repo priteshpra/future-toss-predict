@@ -1,0 +1,71 @@
+{
+    "ts": 1789919623,
+    "data": [
+        {
+            "matchId": "147895",
+            "seriesId": "11595",
+            "series": "Australia tour of South Africa, 2026",
+            "desc": "1st ODI",
+            "format": "ODI",
+            "date": "2026-09-24",
+            "state": "Upcoming",
+            "teamA": "South Africa",
+            "teamB": "Australia"
+        },
+        {
+            "matchId": "147898",
+            "seriesId": "11595",
+            "series": "Australia tour of South Africa, 2026",
+            "desc": "2nd ODI",
+            "format": "ODI",
+            "date": "2026-09-27",
+            "state": "Upcoming",
+            "teamA": "South Africa",
+            "teamB": "Australia"
+        },
+        {
+            "matchId": "147909",
+            "seriesId": "11595",
+            "series": "Australia tour of South Africa, 2026",
+            "desc": "3rd ODI",
+            "format": "ODI",
+            "date": "2026-09-30",
+            "state": "Upcoming",
+            "teamA": "South Africa",
+            "teamB": "Australia"
+        },
+        {
+            "matchId": "147920",
+            "seriesId": "11595",
+            "series": "Australia tour of South Africa, 2026",
+            "desc": "1st Test",
+            "format": "TEST",
+            "date": "2026-10-09",
+            "state": "Upcoming",
+            "teamA": "South Africa",
+            "teamB": "Australia"
+        },
+        {
+            "matchId": "147931",
+            "seriesId": "11595",
+            "series": "Australia tour of South Africa, 2026",
+            "desc": "2nd Test",
+            "format": "TEST",
+            "date": "2026-10-18",
+            "state": "Upcoming",
+            "teamA": "South Africa",
+            "teamB": "Australia"
+        },
+        {
+            "matchId": "147942",
+            "seriesId": "11595",
+            "series": "Australia tour of South Africa, 2026",
+            "desc": "3rd Test",
+            "format": "TEST",
+            "date": "2026-10-27",
+            "state": "Upcoming",
+            "teamA": "South Africa",
+            "teamB": "Australia"
+        }
+    ]
+}

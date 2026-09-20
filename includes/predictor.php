@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/helpers.php';
+require_once __DIR__ . '/domestic.php';
 
 function extra_teams(): array
 {
@@ -26,6 +27,16 @@ function extra_teams(): array
         ['name' => 'Bermuda', 'short' => 'BER', 'type' => 't20i', 'badge' => '🇧🇲', 'color' => '#2563eb', 'captain' => ''],
         ['name' => 'Nigeria', 'short' => 'NGA', 'type' => 't20i', 'badge' => '🇳🇬', 'color' => '#16a34a', 'captain' => ''],
         ['name' => 'Ghana', 'short' => 'GH', 'type' => 't20i', 'badge' => '🇬🇭', 'color' => '#f97316', 'captain' => ''],
+        ['name' => 'Sambalpur Warriors', 'short' => 'SW', 'type' => 'odisha', 'badge' => '🟠', 'color' => '#ea580c', 'captain' => 'Gaurav Choudhury', 'aliases' => ['Sambalpur']],
+        ['name' => 'Cuttack Panthers', 'short' => 'CP', 'type' => 'odisha', 'badge' => '🐆', 'color' => '#0f172a', 'captain' => 'Biplab Samantaray', 'aliases' => ['Kataka Panthers', 'Kataka', 'Cuttack']],
+        ['name' => 'Keonjhar Miners', 'short' => 'KM', 'type' => 'odisha', 'badge' => '⛏️', 'color' => '#b45309', 'captain' => 'Subhranshu Senapati', 'aliases' => ['Keonjhar']],
+        ['name' => 'Bhubaneswar Tigers', 'short' => 'BT', 'type' => 'odisha', 'badge' => '🐯', 'color' => '#f59e0b', 'captain' => 'Swastik Samal', 'aliases' => ['Bhubaneswar']],
+        ['name' => 'Rourkela Superstars', 'short' => 'RS', 'type' => 'odisha', 'badge' => '⭐', 'color' => '#2563eb', 'captain' => 'Govinda Poddar', 'aliases' => ['Rourkela']],
+        ['name' => 'Puri Titans', 'short' => 'PT', 'type' => 'odisha', 'badge' => '🔱', 'color' => '#7c3aed', 'captain' => 'Aditya Rout', 'aliases' => ['Puri']],
+        ['name' => 'Godavari Golden Eagles', 'short' => 'GGE', 'type' => 'wapl', 'badge' => '🦅', 'color' => '#d97706', 'captain' => '', 'aliases' => ['Godavari', 'Godavari Eagles']],
+        ['name' => 'Vizag Fire Birds', 'short' => 'VFB', 'type' => 'wapl', 'badge' => '🔥', 'color' => '#ef4444', 'captain' => '', 'aliases' => ['Vizag', 'Fire Birds']],
+        ['name' => 'Amaravati E Champions', 'short' => 'AEC', 'type' => 'wapl', 'badge' => '🏆', 'color' => '#16a34a', 'captain' => '', 'aliases' => ['Amaravati', 'Amravati', 'E Champions']],
+        ['name' => 'Rayalaseema XEN Stars', 'short' => 'RXS', 'type' => 'wapl', 'badge' => '✨', 'color' => '#7c3aed', 'captain' => '', 'aliases' => ['Rayalaseema', 'Rayalsema', 'XEN Stars']],
         ['name' => 'Eastern Storm', 'short' => 'ESTORM', 'type' => 'odi', 'badge' => '⚡', 'color' => '#7c3aed', 'captain' => ''],
         ['name' => 'Border', 'short' => 'BOR', 'type' => 'odi', 'badge' => '🛡️', 'color' => '#0f766e', 'captain' => ''],
         ['name' => 'Uganda', 'short' => 'UGA', 'type' => 'international', 'badge' => '🇺🇬', 'color' => '#eab308', 'captain' => 'Riazat Ali Shah'],
@@ -132,7 +143,17 @@ function same_fixture_row(array $m, string $nA, string $nB, string $date): bool
     }
     $a = $m['nA'] ?? '';
     $b = $m['nB'] ?? '';
-    return ($a === $nA && $b === $nB) || ($a === $nB && $b === $nA);
+    if ($a === '' || $b === '' || $nA === '' || $nB === '') {
+        return false;
+    }
+    if (($a === $nA && $b === $nB) || ($a === $nB && $b === $nA)) {
+        return true;
+    }
+    if (!function_exists('history_side_hit')) {
+        return false;
+    }
+    return (history_side_hit($a, $nA) && history_side_hit($b, $nB))
+        || (history_side_hit($a, $nB) && history_side_hit($b, $nA));
 }
 
 function local_completed_history_rows(): array
@@ -169,29 +190,65 @@ function local_completed_history_rows(): array
     return $rows;
 }
 
-function load_history(): array
+function load_history(bool $reset = false): array
 {
     static $rows = null;
+    if ($reset) {
+        $rows = null;
+        return [];
+    }
     if ($rows !== null) {
         return $rows;
     }
-    $raw = read_json(historical_toss_path(), []);
+    $localFile = data_path('historical_toss.json');
+    $sibling = sibling_path('src/data/historical_toss.json');
+    $chunks = [local_completed_history_rows()];
+    if (function_exists('featured_domestic_history')) {
+        $chunks[] = featured_domestic_history();
+    }
+    $local = read_json($localFile, []);
+    if (is_array($local) && $local) {
+        $chunks[] = $local;
+    }
+    $fallbackPath = historical_toss_path();
+    foreach ([$sibling, $fallbackPath] as $path) {
+        if (!is_string($path) || $path === '' || !is_file($path)) {
+            continue;
+        }
+        if (is_file($localFile) && realpath($path) === realpath($localFile)) {
+            continue;
+        }
+        $raw = read_json($path, []);
+        if (is_array($raw) && $raw) {
+            $chunks[] = $raw;
+        }
+    }
     $rows = [];
     $seen = [];
-    foreach (array_merge(local_completed_history_rows(), is_array($raw) ? $raw : []) as $m) {
-        $row = isset($m['nA']) ? $m : history_row_from_match($m, $m['date'] ?? '');
-        if (($row['nW'] ?? '') === '') {
-            continue;
+    foreach ($chunks as $chunk) {
+        foreach ($chunk as $m) {
+            if (!is_array($m)) {
+                continue;
+            }
+            $row = isset($m['nA']) ? $m : history_row_from_match($m, $m['date'] ?? '');
+            if (($row['nW'] ?? '') === '') {
+                continue;
+            }
+            $fp = history_fingerprint($row);
+            if (isset($seen[$fp])) {
+                continue;
+            }
+            $seen[$fp] = true;
+            $rows[] = $row;
         }
-        $fp = history_fingerprint($row);
-        if (isset($seen[$fp])) {
-            continue;
-        }
-        $seen[$fp] = true;
-        $rows[] = $row;
     }
     usort($rows, fn($a, $b) => strcmp($b['date'], $a['date']));
     return $rows;
+}
+
+function history_invalidate(): void
+{
+    load_history(true);
 }
 
 function market_load_share(string $teamA, string $teamB, string $date = '', string $league = '', int $minutesToToss = 99999): array
@@ -237,7 +294,7 @@ function market_load_share(string $teamA, string $teamB, string $date = '', stri
     return [$loadA, 100 - $loadA];
 }
 
-function apply_live_toss_markets(array $match, ?array $punter = null): array
+function apply_live_toss_markets(array $match, ?array $punter = null, ?array $website = null): array
 {
     $pred = $match['prediction'] ?? [];
     $teamA = $match['teamA'] ?? '';
@@ -245,15 +302,31 @@ function apply_live_toss_markets(array $match, ?array $punter = null): array
     $histA = (int) ($pred['teamAPct'] ?? 50);
     $histB = 100 - $histA;
 
-    $amtA = $punter ? (float) ($punter['amountA'] ?? 0) : 0.0;
-    $amtB = $punter ? (float) ($punter['amountB'] ?? 0) : 0.0;
-    $punterTotal = $amtA + $amtB;
-    $hasLoad = $punterTotal > 0;
+    $punter = is_array($punter) ? $punter : null;
+    $website = is_array($website) ? $website : [];
+
+    $tgA = $punter ? (float) ($punter['amountA'] ?? 0) : 0.0;
+    $tgB = $punter ? (float) ($punter['amountB'] ?? 0) : 0.0;
+    $tgTotal = $tgA + $tgB;
+    $hasTg = $tgTotal > 0;
+
+    $webA = $website ? (float) ($website['amountA'] ?? 0) : 0.0;
+    $webB = $website ? (float) ($website['amountB'] ?? 0) : 0.0;
+    $webTotal = $webA + $webB;
+    $onBook = !empty($website['onBook']);
+    $hasWeb = $onBook && $webTotal > 0;
+
+    $amtA = $hasTg ? $tgA : $webA;
+    $amtB = $hasTg ? $tgB : $webB;
+    $usedTotal = $amtA + $amtB;
+    $hasLoad = $usedTotal > 0;
+    $loadSrc = $hasTg ? 'telegram' : ($hasWeb ? 'website' : null);
     $loadA = 50;
     $loadB = 50;
     if ($hasLoad) {
+        $srcRow = $hasTg ? $punter : $website;
         if ($amtA > 0 && $amtB > 0) {
-            $loadA = (int) ($punter['pctA'] ?? round($amtA / $punterTotal * 100));
+            $loadA = (int) ($srcRow['pctA'] ?? round($amtA / $usedTotal * 100));
         } else {
             $loadA = $amtA > 0 ? 78 : 22;
         }
@@ -261,63 +334,183 @@ function apply_live_toss_markets(array $match, ?array $punter = null): array
         $loadB = 100 - $loadA;
     }
 
-    if ($punterTotal >= 20000) {
-        $loadW = 0.60;
-    } elseif ($punterTotal >= 3000) {
-        $loadW = 0.50;
-    } elseif ($hasLoad) {
-        $loadW = 0.35;
-    } else {
-        $loadW = 0.0;
+    $last5Winner = $pred['last5Winner'] ?? null;
+    $last10Winner = $pred['last10Winner'] ?? null;
+    $l5Gap = abs((int) ($pred['last5Gap'] ?? 0));
+    $histWinner = $last5Winner ?: ($last10Winner ?: null);
+    if (!$histWinner && abs($histA - 50) >= 6) {
+        $histWinner = $histA >= $histB ? $teamA : $teamB;
     }
-    $histW = 1 - $loadW;
-    $blendA = (int) round(($histA * $histW) + ($loadA * $loadW));
-    $blendA = max(40, min(72, $blendA));
-    $blendB = 100 - $blendA;
-    $winner = $blendA >= $blendB ? $teamA : $teamB;
-    $winPct = max($blendA, $blendB);
-    $histWinner = $histA >= $histB ? $teamA : $teamB;
+    $histHasEdge = (bool) $histWinner;
     $loadWinner = !$hasLoad ? null : ($loadA === $loadB ? null : ($loadA > $loadB ? $teamA : $teamB));
-    $agree = $hasLoad && $loadWinner && strcasecmp($loadWinner, $histWinner) === 0;
-    $split = $hasLoad && $loadWinner && strcasecmp($loadWinner, $histWinner) !== 0;
+    $tgWinner = ($hasTg && $tgA !== $tgB) ? ($tgA > $tgB ? $teamA : $teamB) : null;
+    $webWinner = ($hasWeb && $webA !== $webB) ? ($webA > $webB ? $teamA : $teamB) : null;
+    $same = static function (?string $x, ?string $y): bool {
+        return $x && $y && strcasecmp($x, $y) === 0;
+    };
+    $triple = $same($last5Winner, $tgWinner) && $same($last5Winner, $webWinner);
+    $agree = $hasLoad && $loadWinner && $histHasEdge && $same($loadWinner, $histWinner);
+    $split = $hasLoad && $loadWinner && $histHasEdge && !$same($loadWinner, $histWinner);
+    $loadOnly = $hasLoad && $loadWinner && !$histHasEdge;
+
+    $clampSide = static function (string $winner, string $teamA, int $lo, int $hi) use (&$blendA, &$blendB, &$winPct): void {
+        $winPct = max($lo, min($hi, $winPct));
+        if (strcasecmp($winner, $teamA) === 0) {
+            $blendA = $winPct;
+            $blendB = 100 - $winPct;
+        } else {
+            $blendB = $winPct;
+            $blendA = 100 - $winPct;
+        }
+    };
 
     if ($split) {
-        $conf = 'SPLIT · load vs last-toss disagree — check both';
+        $winner = $histWinner;
+        $blendA = $histA;
+        $blendB = $histB;
+        $winPct = max($blendA, $blendB);
+        $conf = 'SPLIT · last 5 vs load disagree — NO PICK';
+    } elseif ($triple) {
+        $winner = $last5Winner;
+        $blendA = (int) round(($histA * 0.18) + ($loadA * 0.52) + (($hasWeb ? (int) ($website['pctA'] ?? $loadA) : $loadA) * 0.30));
+        $winPct = max($blendA, 100 - $blendA);
+        $clampSide($winner, $teamA, 68, 80);
+        $conf = 'BEST PICK · last 5 + Telegram + website teeno same side';
     } elseif ($agree) {
-        $conf = $winPct >= 60 ? 'Load + last toss AGREE (strong)' : 'Load + last toss agree';
-    } elseif ($hasLoad) {
-        $conf = 'Punter load + last toss blended';
+        $winner = $loadWinner;
+        $loadW = $usedTotal >= 20000 ? 0.74 : ($usedTotal >= 3000 ? 0.66 : 0.58);
+        $blendA = (int) round(($histA * (1 - $loadW)) + ($loadA * $loadW));
+        $winPct = max($blendA, 100 - $blendA);
+        $lo = ($l5Gap >= 3 || $usedTotal >= 3000) ? 64 : 60;
+        $hi = ($l5Gap >= 3 && $usedTotal >= 3000) ? 78 : 74;
+        $clampSide($winner, $teamA, $lo, $hi);
+        $conf = $winPct >= 66 ? 'STRONG PICK · last 5 toss + load AGREE' : 'PLAY · last 5 toss + load agree';
+    } elseif ($loadOnly) {
+        $winner = $loadWinner;
+        $blendA = $loadA;
+        $winPct = max($blendA, 100 - $blendA);
+        $clampSide($winner, $teamA, 58, 70);
+        $conf = $loadSrc === 'website' ? 'LOAD PICK · last 5 even, website load is the call' : 'LOAD PICK · last 5 even, Telegram ₹ is the call';
     } else {
-        $conf = $pred['confidence'] ?? 'Last-toss lean (no punter money yet)';
+        $winner = $histWinner ?: ($histA >= $histB ? $teamA : $teamB);
+        $blendA = $histA;
+        $blendB = $histB;
+        $winPct = max($blendA, $blendB);
+        $conf = $pred['confidence'] ?? 'Last-5 toss note (no load yet)';
     }
+    $blendB = 100 - $blendA;
 
+    $webPctA = (int) ($website['pctA'] ?? 50);
+    $webPctB = (int) ($website['pctB'] ?? (100 - $webPctA));
     $insights = is_array($pred['insights'] ?? null) ? $pred['insights'] : [];
-    array_unshift(
-        $insights,
-        $hasLoad
-            ? ('Punter load: ' . $teamA . ' ' . ($punter['amountALabel'] ?? '') . ' vs ' . $teamB . ' ' . ($punter['amountBLabel'] ?? '') . " ({$loadA}%–{$loadB}%).")
-            : 'Punter load: no toss money mapped to this match yet — pick is last-toss only.',
-        $split
-            ? ("Signals split: last toss → {$histWinner} ({$histA}%) · load → {$loadWinner} ({$loadA}%). Combined lean: {$winner} ({$winPct}%).")
-            : ("Combined toss lean: {$winner} ({$winPct}%) from last matches" . ($hasLoad ? ' + punter load' : '') . '.')
-    );
+    $tgLine = $hasTg
+        ? ('Telegram ₹: ' . $teamA . ' ' . ($punter['amountALabel'] ?? '') . ' vs ' . $teamB . ' ' . ($punter['amountBLabel'] ?? '') . '.')
+        : 'Telegram ₹: is match pe mapped toss money nahi mila.';
+    $webLine = !$onBook
+        ? 'Website load: toss-book board pe ye match listed nahi hai.'
+        : ($hasWeb
+            ? ('Website load: ' . ($website['label'] ?? ('favouring ' . ($website['leanTeam'] ?? ''))) . " ({$webPctA}%–{$webPctB}%).")
+            : 'Website load: toss-book pe listed hai, abhi load nahi aaya.');
+    $comboLine = $triple
+        ? ("BEST PICK: {$winner} ({$winPct}%) — last 5 + Telegram + website teeno same side.")
+        : ($split
+            ? ("NO PICK: last 5 → {$histWinner} ({$histA}%) · load → {$loadWinner} ({$loadA}%). Split pe skip.")
+            : ($agree
+                ? ("STRONG PICK: {$winner} ({$winPct}%) — last 5 toss aur load same side.")
+                : ($loadOnly
+                    ? ("LOAD PICK: {$winner} ({$winPct}%) — last 5 even, load hi call hai.")
+                    : ("Early note: {$winner} ({$winPct}%) last-5 se. Load abhi nahi."))));
+    array_unshift($insights, $tgLine, $webLine, $comboLine);
+
+    $mins = (int) ($match['minutesToToss'] ?? 99999);
+    $histNote = $histWinner ?: 'even';
+    if ($split) {
+        $action = 'SKIP';
+        $grade = 'skip';
+        $reportLine = "SKIP — last 5 {$histWinner}, load {$loadWinner}. Best tipper split pe nahi khelta.";
+        $reportPick = null;
+    } elseif ($triple) {
+        $action = 'PLAY';
+        $grade = 'play';
+        $reportLine = "BEST PICK: {$winner} — last 5 + Telegram + website teeno same side. Strongest available call, lock nahi.";
+        $reportPick = $winner;
+    } elseif ($agree && ($usedTotal >= 3000 || $l5Gap >= 3)) {
+        $action = 'PLAY';
+        $grade = 'play';
+        $reportLine = "STRONG PICK: {$winner} — last 5 toss + load dono same side. Best available lean.";
+        $reportPick = $winner;
+    } elseif ($agree) {
+        $action = 'PLAY';
+        $grade = 'play';
+        $reportLine = "PLAY: {$winner} — last 5 aur load agree. Toss se 5–10 min pehle load ek baar confirm karo.";
+        $reportPick = $winner;
+    } elseif ($loadOnly && $usedTotal >= 3000) {
+        $action = 'PLAY';
+        $grade = 'play';
+        $reportLine = "LOAD PICK: {$winner} — last 5 even hai, isliye load hi strong call hai.";
+        $reportPick = $winner;
+    } elseif ($loadOnly) {
+        $action = 'LEAN';
+        $grade = 'lean';
+        $reportLine = "SOFT LOAD: {$winner} — last 5 even, halka load. Confirm 5–10 min pehle.";
+        $reportPick = $winner;
+    } elseif (!$hasLoad && $mins > 15) {
+        $action = 'WAIT';
+        $grade = 'wait';
+        $reportLine = !$histHasEdge
+            ? 'WAIT — last 5 toss even. Tipper abhi report nahi nikalta. Load 5–10 min pehle aayega.'
+            : ("EARLY NOTE: {$histWinner} last-5 pe lean hai, lekin load nahi. 5–6 hrs pehle yeh lock nahi — 10 min pehle board dekho.");
+        $reportPick = $histHasEdge ? $histWinner : null;
+    } elseif (!$hasLoad) {
+        $action = 'WAIT';
+        $grade = 'wait';
+        $reportLine = "WAIT FOR LOAD — toss window. Last 5 {$histNote}. Telegram/website money aate hi strong pick lock.";
+        $reportPick = $histWinner;
+    } else {
+        $action = 'LEAN';
+        $grade = 'lean';
+        $reportLine = "SOFT LEAN: {$winner} — signals mixed. Halka call, skip bhi valid.";
+        $reportPick = $winner;
+    }
+    $pred['tipperReport'] = [
+        'action' => $action,
+        'grade' => $grade,
+        'pick' => $reportPick,
+        'headline' => $reportLine,
+        'when' => $mins > 15 ? 'Asli load toss se 5–10 min pehle aata hai' : 'Toss window — load ab live check ho raha hai',
+        'lastToss' => $histWinner,
+        'load' => $loadWinner,
+    ];
 
     $pred['teamAPct'] = $histA;
     $pred['teamBPct'] = $histB;
     $pred['tossLoadA'] = $loadA;
     $pred['tossLoadB'] = $loadB;
+    $pred['webLoadA'] = $onBook ? $webPctA : 50;
+    $pred['webLoadB'] = $onBook ? $webPctB : 50;
     $pred['hasLoad'] = $hasLoad;
+    $pred['hasTgLoad'] = $hasTg;
+    $pred['hasWebLoad'] = $hasWeb;
+    $pred['onBook'] = $onBook;
     $pred['winner'] = $winner;
     $pred['probability'] = $winPct;
     $pred['confidence'] = $conf;
+    $pred['strong'] = ($action === 'PLAY' && ($triple || $agree));
+    $pred['pickStrength'] = $triple ? 'best' : ($action === 'PLAY' ? 'strong' : strtolower($action));
     $pred['insights'] = $insights;
+    $pred['last5Winner'] = $last5Winner;
+    $pred['last10Winner'] = $last10Winner;
     $pred['sources'] = [
-        'lastToss' => ['winner' => $histWinner, 'pctA' => $histA, 'pctB' => $histB],
-        'load' => ['winner' => $loadWinner, 'pctA' => $loadA, 'pctB' => $loadB, 'hasMoney' => $hasLoad, 'amountA' => $amtA, 'amountB' => $amtB],
-        'agree' => $agree,
+        'lastToss' => ['winner' => $histWinner, 'pctA' => $histA, 'pctB' => $histB, 'last5' => $last5Winner, 'gap' => $l5Gap],
+        'load' => ['winner' => $loadWinner, 'pctA' => $loadA, 'pctB' => $loadB, 'hasMoney' => $hasLoad, 'amountA' => $amtA, 'amountB' => $amtB, 'source' => $loadSrc],
+        'telegram' => ['hasMoney' => $hasTg, 'pctA' => $hasTg ? (int) ($punter['pctA'] ?? $loadA) : 50, 'pctB' => $hasTg ? (int) ($punter['pctB'] ?? $loadB) : 50, 'amountA' => $tgA, 'amountB' => $tgB],
+        'website' => ['onBook' => $onBook, 'hasLean' => $hasWeb, 'winner' => $website['leanTeam'] ?? null, 'pctA' => $webPctA, 'pctB' => $webPctB],
+        'agree' => $agree || $triple,
         'split' => $split,
+        'triple' => $triple,
+        'loadOnly' => $loadOnly,
     ];
-    $pred['model'] = 'Last 5/10 toss wins + punter load';
+    $pred['model'] = 'Last 5 toss first + load confirm (best of best)';
 
     $a = $match['analysis']['teamA'] ?? [];
     $b = $match['analysis']['teamB'] ?? [];
@@ -329,14 +522,20 @@ function apply_live_toss_markets(array $match, ?array $punter = null): array
         return ((float) $av > (float) $bv) ? $teamA : $teamB;
     };
     $headline = $winner . ' isliye select kiya: ';
-    if ($hasLoad && $agree) {
-        $headline .= "last-toss aur punter load dono {$winner} pe agree ({$winPct}%).";
+    if ($triple) {
+        $headline = "BEST PICK {$winner} ({$winPct}%): last 5 + Telegram + website teeno same side.";
+    } elseif ($agree) {
+        $headline = "STRONG PICK {$winner} ({$winPct}%): last 5 toss aur load dono agree.";
     } elseif ($split) {
-        $headline .= "last-toss {$histWinner} pe hai, load {$loadWinner} pe — combined lean {$winner} ({$winPct}%).";
+        $headline = "NO PICK: last 5 {$histWinner} pe hai, load {$loadWinner} pe — split skip.";
+    } elseif ($loadOnly) {
+        $headline = "LOAD PICK {$winner} ({$winPct}%): last 5 even, isliye load hi call.";
     } elseif ($hasLoad) {
-        $headline .= "punter load + last 5/10 toss mix karke {$winner} ({$winPct}%).";
+        $headline .= ($loadSrc === 'website' ? 'website load' : 'telegram ₹') . " + last 5 toss mix karke {$winner} ({$winPct}%).";
     } else {
-        $headline .= "last 5/10 toss wins me {$winner} ka edge hai ({$histA}% vs {$histB}%). Is match pe mapped punter money nahi mila.";
+        $headline = $histHasEdge
+            ? "EARLY NOTE {$histWinner}: last 5 toss edge ({$histA}% vs {$histB}%). Load nahi mila — strong pick nahi."
+            : 'WAIT: last 5 toss even, mapped load nahi. Strong pick load aane ke baad.';
     }
     $pred['whyPick'] = [
         'picked' => $winner,
@@ -347,7 +546,8 @@ function apply_live_toss_markets(array $match, ?array $punter = null): array
             ['name' => 'Last 10 toss', 'a' => ($a['last10Wins'] ?? 0) . '/' . ($a['last10Total'] ?? 0) . ' (' . ($a['last10Pct'] ?? 50) . '%)', 'b' => ($b['last10Wins'] ?? 0) . '/' . ($b['last10Total'] ?? 0) . ' (' . ($b['last10Pct'] ?? 50) . '%)', 'edge' => $edge($a['last10Pct'] ?? 50, $b['last10Pct'] ?? 50)],
             ['name' => 'Career toss', 'a' => ($a['record']['won'] ?? 0) . '/' . ($a['record']['played'] ?? 0) . ' (' . ($a['record']['pct'] ?? 50) . '%)', 'b' => ($b['record']['won'] ?? 0) . '/' . ($b['record']['played'] ?? 0) . ' (' . ($b['record']['pct'] ?? 50) . '%)', 'edge' => $edge($a['record']['pct'] ?? 50, $b['record']['pct'] ?? 50)],
             ['name' => 'H2H toss', 'a' => (string) ($h2h['teamAWins'] ?? 0), 'b' => (string) ($h2h['teamBWins'] ?? 0), 'edge' => $edge($h2h['teamAWins'] ?? 0, $h2h['teamBWins'] ?? 0)],
-            ['name' => 'Punter load', 'a' => $hasLoad ? ($loadA . '%') : '—', 'b' => $hasLoad ? ($loadB . '%') : '—', 'edge' => $hasLoad ? ($loadWinner ?: 'Even') : 'No money'],
+            ['name' => 'Telegram ₹', 'a' => $hasTg ? ($punter['amountALabel'] ?? ($loadA . '%')) : '—', 'b' => $hasTg ? ($punter['amountBLabel'] ?? ($loadB . '%')) : '—', 'edge' => $hasTg ? ($loadWinner ?: 'Even') : 'No TG money'],
+            ['name' => 'Website load', 'a' => $onBook ? ($webPctA . '%') : '—', 'b' => $onBook ? ($webPctB . '%') : '—', 'edge' => !$onBook ? 'Not listed' : ($hasWeb ? ($website['leanTeam'] ?: 'Even') : 'No load yet')],
         ],
     ];
 
@@ -355,6 +555,7 @@ function apply_live_toss_markets(array $match, ?array $punter = null): array
     if ($punter) {
         $match['punterLoad'] = $punter;
     }
+    $match['websiteLoad'] = $website;
     return $match;
 }
 
@@ -613,37 +814,48 @@ function analyze_toss(string $teamA, string $teamB, string $venue = '', string $
 
     $hasA = $recA['played'] > 0 || count($last5A) > 0;
     $hasB = $recB['played'] > 0 || count($last5B) > 0;
-    $recentSmoothA = count($recentA) ? (($a10 + 4) / (count($recentA) + 8)) * 100 : 50.0;
-    $recentSmoothB = count($recentB) ? (($b10 + 4) / (count($recentB) + 8)) * 100 : 50.0;
+    $l5nA = count($last5A);
+    $l5nB = count($last5B);
+    $l5Gap = $a5 - $b5;
+    $l10Gap = $a10 - $b10;
+    $l5SmoothA = $l5nA >= 3 ? (($a5 + 0.4) / ($l5nA + 0.8)) * 100 : 50.0;
+    $l5SmoothB = $l5nB >= 3 ? (($b5 + 0.4) / ($l5nB + 0.8)) * 100 : 50.0;
+    $recentSmoothA = count($recentA) >= 4 ? (($a10 + 0.8) / (count($recentA) + 1.6)) * 100 : 50.0;
+    $recentSmoothB = count($recentB) >= 4 ? (($b10 + 0.8) / (count($recentB) + 1.6)) * 100 : 50.0;
     $careerSmoothA = $recA['played'] ? (($recA['won'] + 6) / ($recA['played'] + 12)) * 100 : 50.0;
     $careerSmoothB = $recB['played'] ? (($recB['won'] + 6) / ($recB['played'] + 12)) * 100 : 50.0;
 
     $scoreA = 50.0;
-    $l5SmoothA = count($last5A) ? (($a5 + 2) / (count($last5A) + 4)) * 100 : 50.0;
-    $l5SmoothB = count($last5B) ? (($b5 + 2) / (count($last5B) + 4)) * 100 : 50.0;
-    $scoreA += ($l5SmoothA - $l5SmoothB) * 0.22;
-    $scoreA += ($recentSmoothA - $recentSmoothB) * 0.46;
-    $scoreA += ($careerSmoothA - $careerSmoothB) * 0.16;
-    if (count($h2h) >= 1) {
-        $scoreA += ((((($hA + 2) / (count($h2h) + 4)) * 100) - 50) * 0.18);
+    $scoreA += ($l5SmoothA - $l5SmoothB) * 0.62;
+    $scoreA += ($recentSmoothA - $recentSmoothB) * 0.26;
+    $scoreA += ($careerSmoothA - $careerSmoothB) * 0.05;
+    if (count($h2h) >= 3) {
+        $scoreA += ((((($hA + 1) / (count($h2h) + 2)) * 100) - 50) * 0.07);
     }
     $stA = streak_of($recentA, $nA);
     $stB = streak_of($recentB, $nB);
     if ($stA['type'] === 'W' && $stA['count'] >= 2) {
-        $scoreA += min($stA['count'] * 1.1, 4.0);
+        $scoreA += min($stA['count'] * 1.6, 5.5);
     } elseif ($stA['type'] === 'L' && $stA['count'] >= 2) {
-        $scoreA -= min($stA['count'] * 0.9, 3.0);
+        $scoreA -= min($stA['count'] * 1.4, 4.5);
     }
     if ($stB['type'] === 'W' && $stB['count'] >= 2) {
-        $scoreA -= min($stB['count'] * 1.1, 4.0);
+        $scoreA -= min($stB['count'] * 1.6, 5.5);
     } elseif ($stB['type'] === 'L' && $stB['count'] >= 2) {
-        $scoreA += min($stB['count'] * 0.9, 3.0);
+        $scoreA += min($stB['count'] * 1.4, 4.5);
     }
     if ($homeA && !$homeB) {
-        $scoreA += 2.4;
+        $scoreA += 1.4;
     } elseif ($homeB && !$homeA) {
-        $scoreA -= 2.4;
+        $scoreA -= 1.4;
     }
+
+    $last5Winner = ($l5nA >= 2 && $l5nB >= 2 && abs($l5Gap) >= 2)
+        ? ($l5Gap > 0 ? $teamA : $teamB)
+        : null;
+    $last10Winner = (count($recentA) >= 6 && count($recentB) >= 6 && abs($l10Gap) >= 3)
+        ? ($l10Gap > 0 ? $teamA : $teamB)
+        : null;
 
     if (!$hasA && !$hasB) {
         $pA = 50;
@@ -651,25 +863,34 @@ function analyze_toss(string $teamA, string $teamB, string $venue = '', string $
         $conf = 'Even 50-50 (thin toss history)';
     } else {
         $pA = (int) round($scoreA);
-        $pA = max(42, min(68, $pA));
+        $absGap = abs($l5Gap);
+        if ($l5nA >= 4 && $l5nB >= 4 && $absGap >= 3) {
+            $pA = max(34, min(76, $pA));
+        } elseif ($l5nA >= 2 && $l5nB >= 2 && $absGap >= 2) {
+            $pA = max(38, min(72, $pA));
+        } else {
+            $pA = max(44, min(60, $pA));
+        }
         $pB = 100 - $pA;
-        if ($pA === $pB) {
-            if ($recA['won'] !== $recB['won']) {
-                $pA = $recA['won'] > $recB['won'] ? 52 : 48;
-                $pB = 100 - $pA;
-            } elseif ($a10 !== $b10) {
-                $pA = $a10 > $b10 ? 52 : 48;
-                $pB = 100 - $pA;
-            }
+        if ($pA === $pB && $last5Winner) {
+            $pA = strcasecmp($last5Winner, $teamA) === 0 ? 58 : 42;
+            $pB = 100 - $pA;
+        } elseif ($pA === $pB && $last10Winner) {
+            $pA = strcasecmp($last10Winner, $teamA) === 0 ? 56 : 44;
+            $pB = 100 - $pA;
         }
         $lead = max($pA, $pB);
-        $conf = $lead >= 58 ? 'Last-toss record is clear' : ($lead >= 54 ? 'Last matches lean this way' : 'Slight last-toss lean');
+        $conf = $last5Winner && $absGap >= 3
+            ? 'Last 5 toss is a clear edge'
+            : ($last5Winner ? 'Last 5 toss lean is the call' : ($lead >= 54 ? 'Slight last-toss lean' : 'Last 5 toss even — wait for load'));
     }
 
-    $favored = $pA >= $pB ? $teamA : $teamB;
+    $favored = $last5Winner ?: ($last10Winner ?: ($pA >= $pB ? $teamA : $teamB));
     $favP = max($pA, $pB);
     $insights = [];
-    $insights[] = "Last-toss lean: {$favored} ({$favP}%) from last 5 + last 10 toss wins (career/H2H only as backup).";
+    $insights[] = $last5Winner
+        ? "Strong last-5 toss: {$last5Winner} ({$teamA} {$a5}/{$l5nA} vs {$teamB} {$b5}/{$l5nB}). Career/H2H backup only."
+        : "Last-5 toss even/thin — no strong history pick yet ({$teamA} {$a5}/{$l5nA} vs {$teamB} {$b5}/{$l5nB}).";
     $insights[] = "{$teamA} career toss wins {$recA['won']}/{$recA['played']} ({$recA['pct']}%). Last 10: {$a10}/" . count($recentA) . ". Last 5: {$a5}/" . count($last5A) . ".";
     $insights[] = "{$teamB} career toss wins {$recB['won']}/{$recB['played']} ({$recB['pct']}%). Last 10: {$b10}/" . count($recentB) . ". Last 5: {$b5}/" . count($last5B) . ".";
     if ($recA['won'] || $recB['won']) {
@@ -747,7 +968,10 @@ function analyze_toss(string $teamA, string $teamB, string $venue = '', string $
             'likelyDecision' => $venueStats['preferredDecision'],
             'insights' => $insights,
             'lockedPick' => $favored,
-            'model' => 'Last 5/10 toss wins + punter load',
+            'last5Winner' => $last5Winner,
+            'last5Gap' => $l5Gap,
+            'last10Winner' => $last10Winner,
+            'model' => 'Last 5 toss first + last 10 backup + load confirm',
         ],
     ];
 }

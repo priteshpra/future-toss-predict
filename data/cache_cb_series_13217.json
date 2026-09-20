@@ -1,0 +1,71 @@
+{
+    "ts": 1789919622,
+    "data": [
+        {
+            "matchId": "173083",
+            "seriesId": "13217",
+            "series": "West Indies Women tour of Zimbabwe, 2026",
+            "desc": "1st ODI",
+            "format": "ODI",
+            "date": "2026-09-24",
+            "state": "Upcoming",
+            "teamA": "Zimbabwe Women",
+            "teamB": "West Indies Women"
+        },
+        {
+            "matchId": "173090",
+            "seriesId": "13217",
+            "series": "West Indies Women tour of Zimbabwe, 2026",
+            "desc": "2nd ODI",
+            "format": "ODI",
+            "date": "2026-09-27",
+            "state": "Upcoming",
+            "teamA": "Zimbabwe Women",
+            "teamB": "West Indies Women"
+        },
+        {
+            "matchId": "173100",
+            "seriesId": "13217",
+            "series": "West Indies Women tour of Zimbabwe, 2026",
+            "desc": "3rd ODI",
+            "format": "ODI",
+            "date": "2026-09-30",
+            "state": "Upcoming",
+            "teamA": "Zimbabwe Women",
+            "teamB": "West Indies Women"
+        },
+        {
+            "matchId": "173107",
+            "seriesId": "13217",
+            "series": "West Indies Women tour of Zimbabwe, 2026",
+            "desc": "1st T20I",
+            "format": "T20",
+            "date": "2026-10-03",
+            "state": "Upcoming",
+            "teamA": "Zimbabwe Women",
+            "teamB": "West Indies Women"
+        },
+        {
+            "matchId": "173113",
+            "seriesId": "13217",
+            "series": "West Indies Women tour of Zimbabwe, 2026",
+            "desc": "2nd T20I",
+            "format": "T20",
+            "date": "2026-10-05",
+            "state": "Upcoming",
+            "teamA": "Zimbabwe Women",
+            "teamB": "West Indies Women"
+        },
+        {
+            "matchId": "173123",
+            "seriesId": "13217",
+            "series": "West Indies Women tour of Zimbabwe, 2026",
+            "desc": "3rd T20I",
+            "format": "T20",
+            "date": "2026-10-07",
+            "state": "Upcoming",
+            "teamA": "Zimbabwe Women",
+            "teamB": "West Indies Women"
+        }
+    ]
+}
