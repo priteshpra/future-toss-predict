@@ -91,8 +91,13 @@ function cardHTML(m) {
   const loadA = pred.tossLoadA ?? 50;
   const loadB = pred.tossLoadB ?? 50;
   const hasLoad = !!pred.hasLoad;
+  const result = tossResult(m);
   const phaseBadge = m.tossWinner
-    ? '<span class="badge live">TOSS DONE</span>'
+    ? (result === 'pass'
+      ? '<span class="badge live">AI PASS</span>'
+      : result === 'fail'
+        ? '<span class="badge soon">AI FAIL</span>'
+        : '<span class="badge live">TOSS DONE</span>')
     : m.phase === 'alert_30' || m.phase === 'toss_now'
       ? '<span class="badge soon">30-MIN LOCK</span>'
       : m.status === 'LIVE'
@@ -102,7 +107,7 @@ function cardHTML(m) {
           : '<span class="badge">UPCOMING</span>';
   const pickClass = pred.locked ? 'pick locked' : 'pick';
   const actual = m.tossWinner
-    ? `<div class="insight">Ground toss: <b>${esc(m.tossWinner)}</b> chose ${esc(m.tossDecision || '—')} ${pred.winner && namesClose(m.tossWinner, pred.winner) ? ' ·  lean hit' : ' ·  lean miss / pending'}</div>`
+    ? `<div class="insight">Ground toss: <b>${esc(m.tossWinner)}</b> chose ${esc(m.tossDecision || '—')}  ·  AI ${result === 'pass' ? '<b class="hit">PASS</b>' : result === 'fail' ? '<b class="miss">FAIL</b>' : 'pending'}</div>`
     : '';
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const dateBit = (m.date && m.date !== state.date)
@@ -179,12 +184,40 @@ function namesClose(a, b) {
   return x && y && (x === y || x.includes(y) || y.includes(x));
 }
 
+function tossResult(m) {
+  const pick = m?.prediction?.winner;
+  if (!m?.tossWinner || !pick) return 'pending';
+  return namesClose(m.tossWinner, pick) ? 'pass' : 'fail';
+}
+
+function renderScoreboard(matches) {
+  const box = $('scoreboard');
+  if (!box) return;
+  let pass = 0, fail = 0, pending = 0;
+  (matches || []).forEach((m) => {
+    const r = tossResult(m);
+    if (r === 'pass') pass += 1;
+    else if (r === 'fail') fail += 1;
+    else pending += 1;
+  });
+  const graded = pass + fail;
+  const rate = graded ? Math.round((pass / graded) * 100) : 0;
+  box.hidden = false;
+  box.innerHTML = `
+    <span class="score-chip pass"><b>${pass}</b> Pass</span>
+    <span class="score-chip fail"><b>${fail}</b> Fail</span>
+    <span class="score-chip pending"><b>${pending}</b> Pending</span>
+    <span class="score-chip rate"><b>${graded ? rate + '%' : '—'}</b> Hit rate</span>
+  `;
+}
+
 
 function renderMatches(payload) {
   state.matches = payload.matches || [];
   const grid = $('grid');
   $('dayTitle').textContent = headingFor(payload.date);
   $('dayCount').textContent = `${payload.total} matches  ·  updated ${payload.now}`;
+  renderScoreboard(state.matches);
   const calRow = (state.meta?.calendar || []).find((d) => d.date === payload.date);
   if (calRow && typeof payload.total === 'number') {
     calRow.count = payload.total;

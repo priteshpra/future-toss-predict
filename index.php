@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Toss Desk · Load + Last Matches</title>
-  <link rel="stylesheet" href="assets/app.css?v=11">
+  <link rel="stylesheet" href="assets/app.css?v=12">
 </head>
 <body>
   <div class="orb a"></div>
@@ -40,6 +40,7 @@
       <div class="day-head">
         <h2 id="dayTitle">Matches</h2>
         <small id="dayCount"></small>
+        <div id="scoreboard" class="scoreboard" hidden></div>
       </div>
       <div id="grid" class="grid"></div>
     </section>
@@ -168,6 +169,6 @@
     </div>
   </div>
   <aside class="drawer" id="drawer"></aside>
-  <script src="assets/app.js?v=18"></script>
+  <script src="assets/app.js?v=19"></script>
 </body>
 </html>
