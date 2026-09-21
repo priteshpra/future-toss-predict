@@ -290,6 +290,14 @@ function find_day_log_row(string $date, array $match): ?array
 
 function strip_done_prediction(array $pred): array
 {
+    $keep = [
+        'last5Winner' => $pred['last5Winner'] ?? null,
+        'last5Gap' => $pred['last5Gap'] ?? 0,
+        'last10Winner' => $pred['last10Winner'] ?? null,
+        'teamAPct' => $pred['teamAPct'] ?? 50,
+        'teamBPct' => $pred['teamBPct'] ?? 50,
+        'decision' => $pred['decision'] ?? null,
+    ];
     $pred['winner'] = null;
     $pred['probability'] = 50;
     $pred['confidence'] = 'Toss done';
@@ -302,7 +310,39 @@ function strip_done_prediction(array $pred): array
     $pred['strong'] = false;
     $pred['insights'] = [];
     $pred['sources'] = [];
-    return $pred;
+    return array_merge($pred, $keep);
+}
+
+function parse_form_last5(?string $s): ?array
+{
+    if (!preg_match('/^(\d+)\s*\/\s*(\d+)$/', trim((string) $s), $m)) {
+        return null;
+    }
+    return ['w' => (int) $m[1], 'n' => (int) $m[2]];
+}
+
+function match_score_pick(array $match): ?string
+{
+    $pred = is_array($match['prediction'] ?? null) ? $match['prediction'] : [];
+    $report = is_array($pred['tipperReport'] ?? null) ? $pred['tipperReport'] : [];
+    $action = strtoupper((string) ($report['action'] ?? ''));
+    if ($action === 'PLAY' || $action === 'LEAN') {
+        $pick = trim((string) ($report['pick'] ?? ($pred['winner'] ?? '')));
+        return $pick !== '' ? $pick : null;
+    }
+    $last5 = trim((string) ($pred['last5Winner'] ?? ''));
+    if ($last5 !== '') {
+        return $last5;
+    }
+    $form = is_array($match['form'] ?? null) ? $match['form'] : [];
+    $a = parse_form_last5($form['aLast5'] ?? '');
+    $b = parse_form_last5($form['bLast5'] ?? '');
+    if ($a && $b && $a['n'] >= 2 && $b['n'] >= 2 && $a['w'] !== $b['w']) {
+        $side = $a['w'] > $b['w'] ? ($match['teamA'] ?? '') : ($match['teamB'] ?? '');
+        return $side !== '' ? $side : null;
+    }
+    $last10 = trim((string) ($pred['last10Winner'] ?? ''));
+    return $last10 !== '' ? $last10 : null;
 }
 
 function apply_frozen_or_strip(array $match): array
@@ -313,19 +353,31 @@ function apply_frozen_or_strip(array $match): array
     $date = (string) ($match['date'] ?? '');
     $row = $date !== '' ? find_day_log_row($date, $match) : null;
     $lock = is_array($row['liveLock'] ?? null) ? $row['liveLock'] : null;
+    $fresh = is_array($match['prediction'] ?? null) ? $match['prediction'] : [];
     if (is_array($lock) && is_array($lock['prediction'] ?? null)) {
-        $match['prediction'] = $lock['prediction'];
-        if (array_key_exists('punterLoad', $lock)) {
+        $frozen = $lock['prediction'];
+        $action = strtoupper((string) ($frozen['tipperReport']['action'] ?? ''));
+        if ($action !== 'PLAY' && $action !== 'LEAN') {
+            foreach (['last5Winner', 'last5Gap', 'last10Winner', 'teamAPct', 'teamBPct'] as $k) {
+                if (array_key_exists($k, $fresh) && ($frozen[$k] ?? null) === null) {
+                    $frozen[$k] = $fresh[$k];
+                }
+            }
+            $frozen = strip_done_prediction($frozen);
+        }
+        $match['prediction'] = $frozen;
+        if (array_key_exists('punterLoad', $lock) && ($action === 'PLAY' || $action === 'LEAN')) {
             $match['punterLoad'] = $lock['punterLoad'];
         }
-        if (array_key_exists('websiteLoad', $lock)) {
+        if (array_key_exists('websiteLoad', $lock) && ($action === 'PLAY' || $action === 'LEAN')) {
             $match['websiteLoad'] = $lock['websiteLoad'];
         }
     } else {
-        $match['prediction'] = strip_done_prediction(is_array($match['prediction'] ?? null) ? $match['prediction'] : []);
+        $match['prediction'] = strip_done_prediction($fresh);
         $match['punterLoad'] = null;
     }
     $match['predictionFrozen'] = true;
+    $match['scorePick'] = match_score_pick($match);
     if (isset($match['analysis']['prediction']) && is_array($match['analysis']['prediction'])) {
         $match['analysis']['prediction']['favoredWinner'] = null;
         $match['analysis']['prediction']['insights'] = [];

@@ -441,7 +441,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-09-21T18:55:34+05:30"
+                "lockedAt": "2026-09-21T19:29:16+05:30"
             }
         }
     ],
@@ -659,7 +659,7 @@
                     "tournament": "Quadrangular T20I Series in Nigeria, 2026 · 1st Match",
                     "time": "06:30 PM IST",
                     "status": "TOSS_WINDOW",
-                    "phase": "toss_now",
+                    "phase": "done",
                     "matchWinner": null,
                     "tossWinner": null,
                     "amountA": 0,
@@ -687,7 +687,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-09-21T19:04:33+05:30"
+                "lockedAt": "2026-09-21T19:33:53+05:30"
             }
         },
         {
@@ -698,17 +698,17 @@
             "liveLock": {
                 "prediction": {
                     "winner": "Rourkela Superstars",
-                    "probability": 63,
+                    "probability": 64,
                     "confidence": "LOAD PICK · last 5 even, mapped ₹ hi call hai",
                     "decision": "Bowl \/ Field First",
                     "teamAPct": 46,
                     "teamBPct": 54,
-                    "tossLoadA": 63,
-                    "tossLoadB": 37,
+                    "tossLoadA": 64,
+                    "tossLoadB": 36,
                     "insights": [
-                        "Telegram ₹: Rourkela Superstars ₹5,000 vs Sambalpur Warriors ₹3,000.",
-                        "Website load: Website load favouring Rourkela Superstars (63%–37%).",
-                        "LOAD PICK: Rourkela Superstars (63%) — last 5 even, mapped ₹ is side pe hai.",
+                        "Telegram ₹: Rourkela Superstars ₹4,000 vs Sambalpur Warriors ₹2,255.",
+                        "Website load: Website load favouring Rourkela Superstars (64%–36%).",
+                        "LOAD PICK: Rourkela Superstars (64%) — last 5 even, mapped ₹ is side pe hai.",
                         "Last-5 toss even\/thin — no strong history pick yet (Rourkela Superstars 0\/0 vs Sambalpur Warriors 2\/2).",
                         "Rourkela Superstars career toss wins 0\/0 (50%). Last 10: 0\/0. Last 5: 0\/0.",
                         "Sambalpur Warriors career toss wins 2\/2 (100%). Last 10: 2\/2. Last 5: 2\/2.",
@@ -729,8 +729,8 @@
                         "lastToss": null,
                         "load": "Rourkela Superstars"
                     },
-                    "webLoadA": 63,
-                    "webLoadB": 37,
+                    "webLoadA": 64,
+                    "webLoadB": 36,
                     "hasLoad": true,
                     "hasTgLoad": true,
                     "hasWebLoad": true,
@@ -747,26 +747,26 @@
                         },
                         "load": {
                             "winner": "Rourkela Superstars",
-                            "pctA": 63,
-                            "pctB": 37,
+                            "pctA": 64,
+                            "pctB": 36,
                             "hasMoney": true,
-                            "amountA": 5000,
-                            "amountB": 3000,
+                            "amountA": 4000,
+                            "amountB": 2255,
                             "source": "telegram"
                         },
                         "telegram": {
                             "hasMoney": true,
-                            "pctA": 63,
-                            "pctB": 37,
-                            "amountA": 5000,
-                            "amountB": 3000
+                            "pctA": 64,
+                            "pctB": 36,
+                            "amountA": 4000,
+                            "amountB": 2255
                         },
                         "website": {
                             "onBook": true,
                             "hasLean": true,
                             "winner": "Rourkela Superstars",
-                            "pctA": 63,
-                            "pctB": 37
+                            "pctA": 64,
+                            "pctB": 36
                         },
                         "agree": false,
                         "split": false,
@@ -776,8 +776,8 @@
                     "model": "Mapped ₹ first · last 5 confirm",
                     "whyPick": {
                         "picked": "Rourkela Superstars",
-                        "pct": 63,
-                        "headline": "LOAD PICK Rourkela Superstars (63%): last 5 even, mapped ₹ is side pe — yeh AI call hai.",
+                        "pct": 64,
+                        "headline": "LOAD PICK Rourkela Superstars (64%): last 5 even, mapped ₹ is side pe — yeh AI call hai.",
                         "factors": [
                             {
                                 "name": "Last 5 toss",
@@ -805,14 +805,14 @@
                             },
                             {
                                 "name": "Telegram ₹",
-                                "a": "₹5,000",
-                                "b": "₹3,000",
+                                "a": "₹4,000",
+                                "b": "₹2,255",
                                 "edge": "Rourkela Superstars"
                             },
                             {
                                 "name": "Website load",
-                                "a": "63%",
-                                "b": "37%",
+                                "a": "64%",
+                                "b": "36%",
                                 "edge": "Rourkela Superstars"
                             }
                         ]
@@ -828,17 +828,17 @@
                     "phase": "toss_now",
                     "matchWinner": null,
                     "tossWinner": null,
-                    "amountA": 5000,
-                    "amountB": 3000,
-                    "betsA": 4,
-                    "betsB": 2,
-                    "amountALabel": "₹5,000",
-                    "amountBLabel": "₹3,000",
+                    "amountA": 4000,
+                    "amountB": 2255,
+                    "betsA": 5,
+                    "betsB": 3,
+                    "amountALabel": "₹4,000",
+                    "amountBLabel": "₹2,255",
                     "leader": "Rourkela Superstars",
-                    "leaderPct": 63,
-                    "pctA": 63,
-                    "pctB": 37,
-                    "totalLabel": "₹8,000"
+                    "leaderPct": 64,
+                    "pctA": 64,
+                    "pctB": 36,
+                    "totalLabel": "₹6,255"
                 },
                 "websiteLoad": {
                     "onBook": true,
@@ -846,18 +846,18 @@
                     "bookTeamB": "Sambalpur Warriors",
                     "bookTime": "07:30 PM IST",
                     "bookStatus": "OPEN",
-                    "amountA": 5000,
-                    "amountB": 3000,
-                    "amountALabel": "₹5,000",
-                    "amountBLabel": "₹3,000",
-                    "pctA": 63,
-                    "pctB": 37,
+                    "amountA": 4000,
+                    "amountB": 2255,
+                    "amountALabel": "₹4,000",
+                    "amountBLabel": "₹2,255",
+                    "pctA": 64,
+                    "pctB": 36,
                     "lean": "A",
                     "leanTeam": "Rourkela Superstars",
                     "hasLean": true,
                     "label": "Website load favouring Rourkela Superstars"
                 },
-                "lockedAt": "2026-09-21T19:04:33+05:30"
+                "lockedAt": "2026-09-21T19:33:53+05:30"
             }
         },
         {
@@ -884,7 +884,7 @@
                         "Bermuda career toss wins 0\/0 (50%). Last 10: 0\/0. Last 5: 0\/0.",
                         "Ground calling at Jimmy Powell Oval, George Town: toss winners prefer Bowl \/ Field First (bowl 55% \/ bat 45%, dew Medium)."
                     ],
-                    "locked": false,
+                    "locked": true,
                     "last5Winner": null,
                     "last5Gap": 0,
                     "last10Winner": null,
@@ -993,7 +993,7 @@
                     "tournament": "North American Cup, 2026 · 1st Match",
                     "time": "08:30 PM IST",
                     "status": "UPCOMING",
-                    "phase": "warming",
+                    "phase": "alert_30",
                     "matchWinner": null,
                     "tossWinner": null,
                     "amountA": 0,
@@ -1021,7 +1021,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-09-21T19:04:33+05:30"
+                "lockedAt": "2026-09-21T19:33:53+05:30"
             }
         },
         {
@@ -1185,7 +1185,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-09-21T19:04:33+05:30"
+                "lockedAt": "2026-09-21T19:33:53+05:30"
             }
         }
     ],
@@ -1352,7 +1352,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-09-21T18:55:38+05:30"
+                "lockedAt": "2026-09-21T19:29:28+05:30"
             }
         },
         {
@@ -1520,7 +1520,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-09-21T18:55:38+05:30"
+                "lockedAt": "2026-09-21T19:29:28+05:30"
             }
         },
         {
@@ -1686,7 +1686,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-09-21T18:55:38+05:30"
+                "lockedAt": "2026-09-21T19:29:28+05:30"
             }
         },
         {
@@ -1850,7 +1850,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-09-21T18:55:38+05:30"
+                "lockedAt": "2026-09-21T19:29:28+05:30"
             }
         },
         {
@@ -2014,7 +2014,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-09-21T18:55:38+05:30"
+                "lockedAt": "2026-09-21T19:29:28+05:30"
             }
         },
         {
@@ -2180,7 +2180,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-09-21T18:55:38+05:30"
+                "lockedAt": "2026-09-21T19:29:28+05:30"
             }
         },
         {
@@ -2348,7 +2348,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-09-21T18:55:38+05:30"
+                "lockedAt": "2026-09-21T19:29:28+05:30"
             }
         },
         {
@@ -2513,7 +2513,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-09-21T18:55:38+05:30"
+                "lockedAt": "2026-09-21T19:29:28+05:30"
             }
         },
         {
@@ -2677,7 +2677,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-09-21T18:55:38+05:30"
+                "lockedAt": "2026-09-21T19:29:28+05:30"
             }
         },
         {
@@ -2844,7 +2844,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-09-21T18:55:38+05:30"
+                "lockedAt": "2026-09-21T19:29:28+05:30"
             }
         },
         {
@@ -3008,7 +3008,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-09-21T18:55:38+05:30"
+                "lockedAt": "2026-09-21T19:29:28+05:30"
             }
         },
         {
@@ -3172,7 +3172,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-09-21T18:55:38+05:30"
+                "lockedAt": "2026-09-21T19:29:28+05:30"
             }
         }
     ]

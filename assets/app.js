@@ -6,7 +6,9 @@ const state = {
   meta: null,
   matches: [],
   notified: new Set(),
-  deskFilter: localStorage.getItem('ftp_deskFilter') || 'live',
+  deskFilter: ['live', 'done'].includes(localStorage.getItem('ftp_deskFilter') || '')
+    ? 'all'
+    : (localStorage.getItem('ftp_deskFilter') || 'all'),
   prevAct: {},
 };
 
@@ -128,9 +130,9 @@ function isOpenToss(m) {
 }
 
 function punterSort(a, b) {
-  const openA = isOpenToss(a) ? 0 : 1;
-  const openB = isOpenToss(b) ? 0 : 1;
-  if (openA !== openB) return openA - openB;
+  const doneA = a?.tossWinner ? 1 : 0;
+  const doneB = b?.tossWinner ? 1 : 0;
+  if (doneA !== doneB) return doneA - doneB;
   const rank = (m) => {
     const act = matchAction(m);
     const pri = act === 'PLAY' ? 0 : act === 'LEAN' ? 1 : act === 'SKIP' ? 2 : 3;
@@ -143,7 +145,7 @@ function punterSort(a, b) {
 
 function filteredMatches(matches) {
   const list = [...(matches || [])];
-  const f = state.deskFilter || 'live';
+  const f = state.deskFilter || 'all';
   const out = list.filter((m) => {
     if (f === 'all') return true;
     if (f === 'done') return !!m.tossWinner;
@@ -442,12 +444,27 @@ function namesClose(a, b) {
   return x && y && (x === y || x.includes(y) || y.includes(x));
 }
 
+function last5ScorePick(m) {
+  const pred = m?.prediction || {};
+  if (pred.last5Winner) return pred.last5Winner;
+  const parse = (s) => {
+    const hit = String(s || '').match(/^(\d+)\s*\/\s*(\d+)$/);
+    return hit ? { w: Number(hit[1]), n: Number(hit[2]) } : null;
+  };
+  const a = parse(m?.form?.aLast5);
+  const b = parse(m?.form?.bLast5);
+  if (!a || !b || a.n < 2 || b.n < 2 || a.w === b.w) return '';
+  return a.w > b.w ? m.teamA : m.teamB;
+}
+
 function gradedPick(m) {
+  if (m?.scorePick) return m.scorePick;
   const pred = m?.prediction || {};
   const report = pred.tipperReport || {};
   const action = (report.action || '').toUpperCase();
-  if (action !== 'PLAY' && action !== 'LEAN') return '';
-  return report.pick || pred.winner || '';
+  if (action === 'PLAY' || action === 'LEAN') return report.pick || pred.winner || '';
+  if (m?.tossWinner) return last5ScorePick(m);
+  return '';
 }
 
 function tossResult(m) {
