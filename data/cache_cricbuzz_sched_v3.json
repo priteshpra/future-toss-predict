@@ -1,20 +1,7 @@
 {
-    "ts": 1789979561,
+    "ts": 1789992200,
     "data": {
         "2026-09-21": [
-            {
-                "id": "cb_155477",
-                "teamA": "India Under-19s",
-                "teamB": "Australia Under-19s",
-                "league": "odi",
-                "tournament": "Australia U19 tour of India 2026 · 2nd unofficial ODI",
-                "format": "ODI",
-                "time": "01:00 PM IST",
-                "venue": "Niranjan Shah Stadium, Khandheri , Rajkot",
-                "status": "UPCOMING",
-                "seriesId": "12191",
-                "seriesSlug": "australia-u19-tour-of-india-2026"
-            },
             {
                 "id": "cb_173631",
                 "teamA": "Nigeria",
@@ -624,6 +611,19 @@
                 "status": "UPCOMING",
                 "seriesId": "13217",
                 "seriesSlug": "west-indies-women-tour-of-zimbabwe-2026"
+            },
+            {
+                "id": "cb_155499",
+                "teamA": "India Under-19s",
+                "teamB": "Australia Under-19s",
+                "league": "test",
+                "tournament": "Australia U19 tour of India 2026 · 1st unofficial Test, Day 1",
+                "format": "Test",
+                "time": "07:30 PM IST",
+                "venue": "Niranjan Shah Stadium, Khandheri , Rajkot",
+                "status": "UPCOMING",
+                "seriesId": "12191",
+                "seriesSlug": "australia-u19-tour-of-india-2026"
             }
         ],
         "2026-09-28": [

@@ -484,7 +484,12 @@
             "format": "T20",
             "time": "04:30 AM IST",
             "venue": "Kensington Oval, Bridgetown, Barbados",
-            "status": "UPCOMING"
+            "status": "COMPLETED",
+            "date": "2026-09-21",
+            "tossWinner": "Antigua and Barbuda Falcons",
+            "tossDecision": "bowl",
+            "matchWinner": "Antigua and Barbuda Falcons",
+            "userToss": true
         },
         {
             "id": "indu19_ausu19",

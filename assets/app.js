@@ -124,15 +124,27 @@ function cardHTML(m) {
         : report.action === 'LEAN'
           ? 'SOFT LEAN'
           : (pred.locked ? 'Locked lean' : 'Toss lean');
+  const last5Note = src.lastToss?.winner || report.lastToss || '';
   const pickBody = report.action === 'SKIP'
     ? `${pickLabel}: last 5 vs load split — skip`
     : report.action === 'WAIT'
-      ? (report.pick
-        ? `${pickLabel}: <b>${esc(report.pick)}</b> last-5 note (${pred.probability || 50}%) · load pending`
+      ? (last5Note
+        ? `${pickLabel}: last-5 lean <b>${esc(last5Note)}</b> · load pending · not a lock`
         : `${pickLabel}: last 5 even · load pending`)
-      : `${pickLabel}: <b>${esc(report.pick || pred.winner)}</b> (${pred.probability || 50}%)  ·  ${esc(pred.confidence || '')}`;
+      : report.action === 'LEAN'
+        ? `${pickLabel}: <b>${esc(report.pick || pred.winner || 'even')}</b> (${pred.probability || 50}%) · not a lock`
+        : (report.pick || pred.winner
+          ? `${pickLabel}: <b>${esc(report.pick || pred.winner)}</b> (${pred.probability || 50}%)  ·  ${esc(pred.confidence || '')}`
+          : `${pickLabel}: no side locked`);
+  const resultMark = result === 'pass'
+    ? '<b class="hit">PASS</b>'
+    : result === 'fail'
+      ? '<b class="miss">FAIL</b>'
+      : result === 'nopick'
+        ? 'no pick'
+        : 'pending';
   const actual = m.tossWinner
-    ? `<div class="insight">Ground toss: <b>${esc(m.tossWinner)}</b> chose ${esc(m.tossDecision || '—')}  ·  AI ${result === 'pass' ? '<b class="hit">PASS</b>' : result === 'fail' ? '<b class="miss">FAIL</b>' : 'pending'}</div>`
+    ? `<div class="insight">Ground toss: <b>${esc(m.tossWinner)}</b> chose ${esc(m.tossDecision || '—')}  ·  AI ${resultMark}</div>`
     : '';
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const dateBit = (m.date && m.date !== state.date)
@@ -233,19 +245,21 @@ function namesClose(a, b) {
 
 function tossResult(m) {
   if (!m?.tossWinner) return 'pending';
-  const pick = m?.prediction?.tipperReport?.pick || m?.prediction?.winner || '';
-  if (!pick) return 'pending';
+  const action = (m?.prediction?.tipperReport?.action || '').toUpperCase();
+  const pick = m?.prediction?.tipperReport?.pick || '';
+  if (action !== 'PLAY' || !pick) return 'nopick';
   return namesClose(m.tossWinner, pick) ? 'pass' : 'fail';
 }
 
 function renderScoreboard(matches) {
   const box = $('scoreboard');
   if (!box) return;
-  let pass = 0, fail = 0, pending = 0;
+  let pass = 0, fail = 0, pending = 0, nopick = 0;
   (matches || []).forEach((m) => {
     const r = tossResult(m);
     if (r === 'pass') pass += 1;
     else if (r === 'fail') fail += 1;
+    else if (r === 'nopick') nopick += 1;
     else pending += 1;
   });
   const graded = pass + fail;
@@ -254,6 +268,7 @@ function renderScoreboard(matches) {
   box.innerHTML = `
     <span class="score-chip pass"><b>${pass}</b> Pass</span>
     <span class="score-chip fail"><b>${fail}</b> Fail</span>
+    <span class="score-chip nopick"><b>${nopick}</b> No pick</span>
     <span class="score-chip pending"><b>${pending}</b> Pending</span>
     <span class="score-chip rate"><b>${graded ? rate + '%' : '—'}</b> Hit rate</span>
   `;
@@ -289,7 +304,13 @@ function renderMatches(payload) {
   const box = $('heroAlert');
   if (alerts.length) {
     box.classList.add('show');
-    box.innerHTML = `<strong>30-minute toss lock:</strong> ${alerts.map((a) => `${a.teamA} vs ${a.teamB} → <b>${a.prediction.winner}</b> (${a.prediction.probability}%)`).join('  ·  ')}`;
+    box.innerHTML = `<strong>30-minute toss lock:</strong> ${alerts.map((a) => {
+      const r = a.prediction?.tipperReport || {};
+      const pick = r.action === 'PLAY' ? (r.pick || a.prediction?.winner || '') : '';
+      return pick
+        ? `${a.teamA} vs ${a.teamB} → <b>${esc(pick)}</b> (${a.prediction?.probability || 50}%)`
+        : `${a.teamA} vs ${a.teamB} → WAIT (no lock)`;
+    }).join('  ·  ')}`;
     alerts.forEach(maybeNotify);
   } else {
     box.classList.remove('show');
@@ -462,7 +483,7 @@ function whyPickHTML(a, teamAName, teamBName, extra = {}) {
   if (load.hasMoney && load.winner) {
     bullets.push(`Punter toss money <b>${esc(load.winner)}</b> pe zyada hai (${load.pctA}% vs ${load.pctB}%).`);
   } else {
-    bullets.push('Is match pe mapped punter toss money nahi mila, isliye pick last-match toss history se hai.');
+    bullets.push('Mapped punter toss money nahi mila. Last 5 even/thin ho to PLAY nahi — wait.');
   }
   bullets.push(`Last 5 toss: <b>${esc(teamAName)}</b> ${tA.last5Wins || 0}/${tA.last5Total || 0} vs <b>${esc(teamBName)}</b> ${tB.last5Wins || 0}/${tB.last5Total || 0}.`);
   bullets.push(`Last 10 toss: <b>${esc(teamAName)}</b> ${tA.last10Wins || 0}/${tA.last10Total || 0} vs <b>${esc(teamBName)}</b> ${tB.last10Wins || 0}/${tB.last10Total || 0}.`);
@@ -476,15 +497,19 @@ function whyPickHTML(a, teamAName, teamBName, extra = {}) {
   } else if (src.agree) {
     bullets.push(`STRONG: last 5 toss aur load dono <b>${esc(winner)}</b> pe agree.`);
   } else if (src.loadOnly) {
-    bullets.push(`Last 5 even hai, isliye pick load se <b>${esc(winner)}</b> hai.`);
+    bullets.push(`Last 5 even hai, isliye load note <b>${esc(load.winner)}</b> hai — yeh PLAY lock nahi.`);
   }
   const report = pick.tipperReport || extra.prediction?.tipperReport || {};
   if (report.action === 'PLAY') {
     bullets.push(`Isliye STRONG PICK <b>${esc(winner)}</b> (${pct}%). Toss phir bhi coin hai — best available call, guarantee nahi.`);
   } else if (report.action === 'SKIP') {
     bullets.push('Split signals — AI yahan winner lock nahi karta.');
+  } else if (report.action === 'LEAN') {
+    bullets.push(`SOFT LEAN ${esc(report.pick || winner || 'even')} — halka note, scoreboard pe grade nahi.`);
   } else {
-    bullets.push(`Abhi strong pick nahi: ${esc(winner || '—')} (${pct}%) sirf early note hai. Load 5–10 min pehle confirm hota hai.`);
+    bullets.push(last.winner
+      ? `Last 5 lean <b>${esc(last.winner)}</b> hai, lekin load nahi — PLAY lock nahi.`
+      : 'Abhi PLAY lock nahi. Last 5 even/thin, mapped load nahi — tipper wait karta hai.');
   }
   const headline = why.headline || (report.action === 'PLAY'
     ? `${winner} (${pct}%)`
@@ -519,7 +544,11 @@ function analysisDetailHTML(a, teamAName, teamBName, extra = {}) {
   const load = src.load || {};
   const insights = Array.isArray(pick.insights) ? pick.insights : (Array.isArray(a.prediction?.insights) ? a.prediction.insights : []);
   const actual = extra.tossWinner
-    ? `<div class="agree-note">Ground toss already saved: <b>${esc(extra.tossWinner)}</b> chose ${esc(extra.tossDecision || '—')}${pick.winner && namesClose(extra.tossWinner, pick.winner) ? ' · lean hit' : ' · lean miss'}</div>`
+    ? `<div class="agree-note">Ground toss already saved: <b>${esc(extra.tossWinner)}</b> chose ${esc(extra.tossDecision || '—')}${
+        (pick.tipperReport?.action === 'PLAY' && pick.tipperReport?.pick)
+          ? (namesClose(extra.tossWinner, pick.tipperReport.pick) ? ' · AI PASS' : ' · AI FAIL')
+          : ' · no lock'
+      }</div>`
     : '';
   return `
     ${whyPickHTML(a, teamAName, teamBName, extra)}
@@ -779,9 +808,12 @@ function setView(view) {
 function maybeNotify(m) {
   if (state.notified.has(m.id) || !('Notification' in window)) return;
   if (Notification.permission !== 'granted') return;
+  const report = m.prediction?.tipperReport || {};
+  const pick = report.action === 'PLAY' ? (report.pick || m.prediction?.winner || '') : '';
+  if (!pick) return;
   state.notified.add(m.id);
   new Notification('Toss lock  ·  30 min', {
-    body: `${m.teamA} vs ${m.teamB} → AI: ${m.prediction.winner} (${m.prediction.probability}%)`,
+    body: `${m.teamA} vs ${m.teamB} → PLAY: ${pick} (${m.prediction?.probability || 50}%)`,
   });
 }
 

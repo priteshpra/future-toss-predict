@@ -238,6 +238,10 @@ function load_history(bool $reset = false): array
             if (($row['nW'] ?? '') === '') {
                 continue;
             }
+            $hid = (string) ($m['id'] ?? $row['id'] ?? '');
+            if ($hid !== '' && str_contains($hid, '_gen_')) {
+                continue;
+            }
             $fp = history_fingerprint($row);
             if (isset($seen[$fp])) {
                 continue;
@@ -257,45 +261,7 @@ function history_invalidate(): void
 
 function market_load_share(string $teamA, string $teamB, string $date = '', string $league = '', int $minutesToToss = 99999): array
 {
-    $seed = strtolower($teamA . '|' . $teamB . '|' . $league . '|' . $date);
-    $hash = (int) sprintf('%u', crc32($seed));
-
-    $tier1 = ['india', 'south africa', 'australia', 'england', 'pakistan', 'new zealand', 'west indies', 'sri lanka', 'bangladesh'];
-    $nA = strtolower($teamA);
-    $nB = strtolower($teamB);
-    $t1a = false;
-    $t1b = false;
-    foreach ($tier1 as $t) {
-        if (str_contains($nA, $t)) {
-            $t1a = true;
-        }
-        if (str_contains($nB, $t)) {
-            $t1b = true;
-        }
-    }
-
-    if ($t1a && !$t1b) {
-        $baseA = 61 + ($hash % 10);
-    } elseif ($t1b && !$t1a) {
-        $baseA = 39 - ($hash % 10);
-    } else {
-        $diff = 6 + ($hash % 15);
-        $baseA = ($hash % 2 === 0) ? 50 + $diff : 50 - $diff;
-    }
-
-    $lead = $baseA >= 50 ? 1 : -1;
-    $steam = 0;
-    if ($minutesToToss <= 180 && $minutesToToss > 0) {
-        $steam = (int) min(7, floor((180 - $minutesToToss) / 15));
-    } elseif ($minutesToToss <= 0 && $minutesToToss > -90) {
-        $steam = 7;
-    }
-
-    $clock = (int) floor(ist_now()->getTimestamp() / 420);
-    $wiggle = ((int) sprintf('%u', crc32($seed . '|c' . $clock)) % 3) - 1;
-
-    $loadA = (int) max(24, min(76, $baseA + ($lead * $steam) + $wiggle));
-    return [$loadA, 100 - $loadA];
+    return [50, 50];
 }
 
 function apply_live_toss_markets(array $match, ?array $punter = null, ?array $website = null): array
@@ -341,10 +307,7 @@ function apply_live_toss_markets(array $match, ?array $punter = null, ?array $we
     $last5Winner = $pred['last5Winner'] ?? null;
     $last10Winner = $pred['last10Winner'] ?? null;
     $l5Gap = abs((int) ($pred['last5Gap'] ?? 0));
-    $histWinner = $last5Winner ?: ($last10Winner ?: null);
-    if (!$histWinner && abs($histA - 50) >= 6) {
-        $histWinner = $histA >= $histB ? $teamA : $teamB;
-    }
+    $histWinner = $last5Winner ?: null;
     $histHasEdge = (bool) $histWinner;
     $loadWinner = !$hasLoad ? null : ($loadA === $loadB ? null : ($loadA > $loadB ? $teamA : $teamB));
     $tgWinner = ($hasTg && $tgA !== $tgB) ? ($tgA > $tgB ? $teamA : $teamB) : null;
@@ -393,14 +356,16 @@ function apply_live_toss_markets(array $match, ?array $punter = null, ?array $we
         $winner = $loadWinner;
         $blendA = $loadA;
         $winPct = max($blendA, 100 - $blendA);
-        $clampSide($winner, $teamA, 58, 70);
-        $conf = $loadSrc === 'website' ? 'LOAD PICK · last 5 even, website load is the call' : 'LOAD PICK · last 5 even, Telegram ₹ is the call';
+        $clampSide($winner, $teamA, 54, 64);
+        $conf = 'SOFT LOAD · last 5 even, load hi note hai — lock nahi';
     } else {
-        $winner = $histWinner ?: ($histA >= $histB ? $teamA : $teamB);
+        $winner = $histWinner;
         $blendA = $histA;
         $blendB = $histB;
-        $winPct = max($blendA, $blendB);
-        $conf = $pred['confidence'] ?? 'Last-5 toss note (no load yet)';
+        $winPct = $histWinner ? max($blendA, $blendB) : 50;
+        $conf = $histWinner
+            ? 'Last-5 toss note only — wait for load'
+            : 'No pick — last 5 even, mapped load nahi';
     }
     $blendB = 100 - $blendA;
 
@@ -422,8 +387,10 @@ function apply_live_toss_markets(array $match, ?array $punter = null, ?array $we
             : ($agree
                 ? ("STRONG PICK: {$winner} ({$winPct}%) — last 5 toss aur load same side.")
                 : ($loadOnly
-                    ? ("LOAD PICK: {$winner} ({$winPct}%) — last 5 even, load hi call hai.")
-                    : ("Early note: {$winner} ({$winPct}%) last-5 se. Load abhi nahi."))));
+                    ? ("SOFT LOAD: {$winner} ({$winPct}%) — last 5 even. Load note hai, lock nahi.")
+                    : ($histWinner
+                        ? ("Early note: {$winner} ({$winPct}%) last-5 se. Load abhi nahi — PLAY nahi.")
+                        : 'No pick: last 5 even, mapped load nahi. Tipper wait karta hai.'))));
     array_unshift($insights, $tgLine, $webLine, $comboLine);
 
     $mins = (int) ($match['minutesToToss'] ?? 99999);
@@ -448,28 +415,23 @@ function apply_live_toss_markets(array $match, ?array $punter = null, ?array $we
         $grade = 'play';
         $reportLine = "PLAY: {$winner} — last 5 aur load agree. Toss se 5–10 min pehle load ek baar confirm karo.";
         $reportPick = $winner;
-    } elseif ($loadOnly && $usedTotal >= 3000) {
-        $action = 'PLAY';
-        $grade = 'play';
-        $reportLine = "LOAD PICK: {$winner} — last 5 even hai, isliye load hi strong call hai.";
-        $reportPick = $winner;
     } elseif ($loadOnly) {
         $action = 'LEAN';
         $grade = 'lean';
-        $reportLine = "SOFT LOAD: {$winner} — last 5 even, halka load. Confirm 5–10 min pehle.";
+        $reportLine = "SOFT LOAD: {$winner} — last 5 even. Load note hai, PLAY nahi. Confirm 5–10 min pehle.";
         $reportPick = $winner;
     } elseif (!$hasLoad && $mins > 15) {
         $action = 'WAIT';
         $grade = 'wait';
         $reportLine = !$histHasEdge
-            ? 'WAIT — last 5 toss even. Tipper abhi report nahi nikalta. Load 5–10 min pehle aayega.'
-            : ("EARLY NOTE: {$histWinner} last-5 pe lean hai, lekin load nahi. 5–6 hrs pehle yeh lock nahi — 10 min pehle board dekho.");
-        $reportPick = $histHasEdge ? $histWinner : null;
+            ? 'WAIT — last 5 toss even. Koi pick nahi. Load 5–10 min pehle aayega.'
+            : ("EARLY NOTE: {$histWinner} last-5 pe lean hai, lekin load nahi. Yeh lock nahi — 10 min pehle board dekho.");
+        $reportPick = null;
     } elseif (!$hasLoad) {
         $action = 'WAIT';
         $grade = 'wait';
-        $reportLine = "WAIT FOR LOAD — toss window. Last 5 {$histNote}. Telegram/website money aate hi strong pick lock.";
-        $reportPick = $histWinner;
+        $reportLine = "WAIT FOR LOAD — toss window. Last 5 {$histNote}. Telegram/website money aate hi pick lock.";
+        $reportPick = null;
     } else {
         $action = 'LEAN';
         $grade = 'lean';
@@ -496,8 +458,8 @@ function apply_live_toss_markets(array $match, ?array $punter = null, ?array $we
     $pred['hasTgLoad'] = $hasTg;
     $pred['hasWebLoad'] = $hasWeb;
     $pred['onBook'] = $onBook;
-    $pred['winner'] = $winner;
-    $pred['probability'] = $winPct;
+    $pred['winner'] = $reportPick;
+    $pred['probability'] = $reportPick ? $winPct : 50;
     $pred['confidence'] = $conf;
     $pred['strong'] = ($action === 'PLAY' && ($triple || $agree));
     $pred['pickStrength'] = $triple ? 'best' : ($action === 'PLAY' ? 'strong' : strtolower($action));
@@ -525,7 +487,6 @@ function apply_live_toss_markets(array $match, ?array $punter = null, ?array $we
         }
         return ((float) $av > (float) $bv) ? $teamA : $teamB;
     };
-    $headline = $winner . ' isliye select kiya: ';
     if ($triple) {
         $headline = "BEST PICK {$winner} ({$winPct}%): last 5 + Telegram + website teeno same side.";
     } elseif ($agree) {
@@ -533,16 +494,16 @@ function apply_live_toss_markets(array $match, ?array $punter = null, ?array $we
     } elseif ($split) {
         $headline = "NO PICK: last 5 {$histWinner} pe hai, load {$loadWinner} pe — split skip.";
     } elseif ($loadOnly) {
-        $headline = "LOAD PICK {$winner} ({$winPct}%): last 5 even, isliye load hi call.";
-    } elseif ($hasLoad) {
-        $headline .= ($loadSrc === 'website' ? 'website load' : 'telegram ₹') . " + last 5 toss mix karke {$winner} ({$winPct}%).";
+        $headline = "SOFT LOAD {$winner} ({$winPct}%): last 5 even. Load note hai, PLAY lock nahi.";
+    } elseif ($hasLoad && $winner) {
+        $headline = ($loadSrc === 'website' ? 'Website load' : 'Telegram ₹') . " + last 5 mix: {$winner} ({$winPct}%) — yeh lock nahi.";
     } else {
         $headline = $histHasEdge
             ? "EARLY NOTE {$histWinner}: last 5 toss edge ({$histA}% vs {$histB}%). Load nahi mila — strong pick nahi."
             : 'WAIT: last 5 toss even, mapped load nahi. Strong pick load aane ke baad.';
     }
     $pred['whyPick'] = [
-        'picked' => $winner,
+        'picked' => $reportPick,
         'pct' => $winPct,
         'headline' => $headline,
         'factors' => [
@@ -889,8 +850,8 @@ function analyze_toss(string $teamA, string $teamB, string $venue = '', string $
             : ($last5Winner ? 'Last 5 toss lean is the call' : ($lead >= 54 ? 'Slight last-toss lean' : 'Last 5 toss even — wait for load'));
     }
 
-    $favored = $last5Winner ?: ($last10Winner ?: ($pA >= $pB ? $teamA : $teamB));
-    $favP = max($pA, $pB);
+    $favored = $last5Winner ?: null;
+    $favP = $favored ? max($pA, $pB) : 50;
     $insights = [];
     $insights[] = $last5Winner
         ? "Strong last-5 toss: {$last5Winner} ({$teamA} {$a5}/{$l5nA} vs {$teamB} {$b5}/{$l5nB}). Career/H2H backup only."
