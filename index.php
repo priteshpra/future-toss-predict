@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Toss Desk · Load + Last Matches</title>
-  <link rel="stylesheet" href="assets/app.css?v=16">
+  <link rel="stylesheet" href="assets/app.css?v=17">
 </head>
 
 <body>
@@ -39,6 +39,8 @@
       <div id="dates" class="dates"></div>
       <div id="leagues" class="leagues"></div>
       <div id="heroAlert" class="hero-alert"></div>
+      <div id="punterDesk" class="punter-desk" hidden></div>
+      <div id="deskFilters" class="desk-filters" hidden></div>
       <div class="day-head">
         <h2 id="dayTitle">Matches</h2>
         <small id="dayCount"></small>
@@ -182,7 +184,7 @@
     </div>
   </div>
   <aside class="drawer" id="drawer"></aside>
-  <script src="assets/app.js?v=33"></script>
+  <script src="assets/app.js?v=35"></script>
 </body>
 
 </html>

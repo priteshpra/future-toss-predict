@@ -878,7 +878,35 @@ try {
             if ($teamA === '' || $teamB === '') {
                 json_ok(['error' => 'Both teams required'], 400);
             }
-            json_ok(analyze_toss($teamA, $teamB, $venue, ist_today()));
+            $analysis = analyze_toss($teamA, $teamB, $venue, ist_today());
+            $tmp = [
+                'id' => 'sim_' . md5($teamA . '|' . $teamB),
+                'teamA' => $teamA,
+                'teamB' => $teamB,
+                'date' => ist_today(),
+                'minutesToToss' => 20,
+                'prediction' => [
+                    'teamAPct' => (int) ($analysis['teamA']['probability'] ?? 50),
+                    'last5Winner' => $analysis['prediction']['last5Winner'] ?? null,
+                    'last5Gap' => $analysis['prediction']['last5Gap'] ?? 0,
+                    'last10Winner' => $analysis['prediction']['last10Winner'] ?? null,
+                    'insights' => $analysis['prediction']['insights'] ?? [],
+                    'confidence' => $analysis['prediction']['confidence'] ?? '',
+                ],
+                'analysis' => $analysis,
+                'form' => ['h2h' => $analysis['headToHead'] ?? []],
+            ];
+            try {
+                $tgFeed = fetch_telegram_bets();
+                $pl = build_punter_load($tgFeed['posts'] ?? [], [$tmp], ist_today());
+                $row = $pl['matches'][0] ?? null;
+                $board = build_tossbook_board($tgFeed['posts'] ?? [], ist_today(), [$tmp]);
+                $web = website_load_for_match($tmp, $board['matches'] ?? []);
+                $tmp = apply_live_toss_markets($tmp, $row, $web);
+                $analysis['prediction'] = array_merge($analysis['prediction'], $tmp['prediction'] ?? []);
+            } catch (Throwable $e) {
+            }
+            json_ok($analysis);
             break;
 
         case 'leaderboard':

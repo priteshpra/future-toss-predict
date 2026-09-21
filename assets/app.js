@@ -6,6 +6,8 @@ const state = {
   meta: null,
   matches: [],
   notified: new Set(),
+  deskFilter: localStorage.getItem('ftp_deskFilter') || 'live',
+  prevAct: {},
 };
 
 const $ = (id) => document.getElementById(id);
@@ -74,6 +76,186 @@ function fillTeams(selectId) {
   ).join('');
 }
 
+function matchAction(m) {
+  return (m?.prediction?.tipperReport?.action || 'WAIT').toUpperCase();
+}
+
+function matchPick(m) {
+  const r = m?.prediction?.tipperReport || {};
+  return r.pick || m?.prediction?.winner || '';
+}
+
+function rupeeLine(m) {
+  const pl = m?.punterLoad || {};
+  const total = (pl.amountA || 0) + (pl.amountB || 0);
+  if (total <= 0) return 'No mapped ₹';
+  return `${pl.amountALabel || '₹0'} vs ${pl.amountBLabel || '₹0'}`;
+}
+
+function watchedIds() {
+  try {
+    return JSON.parse(localStorage.getItem('ftp_watch') || '[]');
+  } catch (e) {
+    return [];
+  }
+}
+
+function isWatched(id) {
+  return watchedIds().includes(id);
+}
+
+function toggleWatch(id) {
+  const set = new Set(watchedIds());
+  if (set.has(id)) set.delete(id);
+  else set.add(id);
+  localStorage.setItem('ftp_watch', JSON.stringify([...set]));
+}
+
+function actionStamp(m) {
+  if (m?.tossWinner) return { cls: 'done', label: 'TOSS DONE', sub: m.tossWinner };
+  const act = matchAction(m);
+  const pick = matchPick(m);
+  if (act === 'PLAY') return { cls: 'play', label: 'PLAY', sub: pick };
+  if (act === 'LEAN') return { cls: 'lean', label: 'LEAN', sub: pick };
+  if (act === 'SKIP') return { cls: 'skip', label: 'SKIP', sub: 'split — no bet' };
+  return { cls: 'wait', label: 'WAIT', sub: 'load pending' };
+}
+
+function isOpenToss(m) {
+  if (m?.tossWinner) return false;
+  const mins = Number(m?.minutesToToss);
+  return !Number.isFinite(mins) || mins >= -10;
+}
+
+function punterSort(a, b) {
+  const openA = isOpenToss(a) ? 0 : 1;
+  const openB = isOpenToss(b) ? 0 : 1;
+  if (openA !== openB) return openA - openB;
+  const rank = (m) => {
+    const act = matchAction(m);
+    const pri = act === 'PLAY' ? 0 : act === 'LEAN' ? 1 : act === 'SKIP' ? 2 : 3;
+    return (isWatched(m.id) ? -1 : 0) + pri;
+  };
+  const r = rank(a) - rank(b);
+  if (r !== 0) return r;
+  return (Number(a.minutesToToss) || 99999) - (Number(b.minutesToToss) || 99999);
+}
+
+function filteredMatches(matches) {
+  const list = [...(matches || [])];
+  const f = state.deskFilter || 'live';
+  const out = list.filter((m) => {
+    if (f === 'all') return true;
+    if (f === 'done') return !!m.tossWinner;
+    if (f === 'play') return isOpenToss(m) && (matchAction(m) === 'PLAY' || matchAction(m) === 'LEAN');
+    if (f === 'wait') return isOpenToss(m) && matchAction(m) === 'WAIT';
+    if (f === 'watch') return isWatched(m.id);
+    return isOpenToss(m);
+  });
+  out.sort(punterSort);
+  return out;
+}
+
+function deskCandidates(matches) {
+  const open = (matches || []).filter(isOpenToss).sort(punterSort);
+  const plays = open.filter((m) => matchAction(m) === 'PLAY' || matchAction(m) === 'LEAN');
+  const soon = open.filter((m) => Number(m.minutesToToss) <= 40);
+  const watched = open.filter((m) => isWatched(m.id));
+  const seen = new Set();
+  const rows = [];
+  for (const m of [...plays, ...watched, ...soon, ...open]) {
+    if (seen.has(m.id)) continue;
+    seen.add(m.id);
+    rows.push(m);
+    if (rows.length >= 4) break;
+  }
+  return rows;
+}
+
+function renderDeskFilters(matches) {
+  const box = $('deskFilters');
+  if (!box) return;
+  const all = matches || [];
+  const nLive = all.filter(isOpenToss).length;
+  const nPlay = all.filter((m) => isOpenToss(m) && (matchAction(m) === 'PLAY' || matchAction(m) === 'LEAN')).length;
+  const nWait = all.filter((m) => isOpenToss(m) && matchAction(m) === 'WAIT').length;
+  const nDone = all.filter((m) => m.tossWinner).length;
+  const nWatch = all.filter((m) => isWatched(m.id)).length;
+  box.hidden = !all.length;
+  const chips = [
+    ['live', `Live desk ${nLive}`],
+    ['play', `Play / lean ${nPlay}`],
+    ['wait', `Wait load ${nWait}`],
+    ['watch', `Watch ${nWatch}`],
+    ['done', `Toss done ${nDone}`],
+    ['all', `All ${all.length}`],
+  ];
+  box.innerHTML = chips.map(([id, label]) =>
+    `<button class="chip ${state.deskFilter === id ? 'active' : ''}" data-desk="${id}">${label}</button>`
+  ).join('');
+  box.querySelectorAll('[data-desk]').forEach((el) => {
+    el.onclick = () => {
+      state.deskFilter = el.dataset.desk;
+      localStorage.setItem('ftp_deskFilter', state.deskFilter);
+      renderDeskFilters(state.matches);
+      renderPunterDesk(state.matches);
+      paintMatchGrid();
+    };
+  });
+}
+
+function renderPunterDesk(matches) {
+  const box = $('punterDesk');
+  if (!box) return;
+  const rows = deskCandidates(matches);
+  if (!rows.length) {
+    box.hidden = true;
+    box.innerHTML = '';
+    return;
+  }
+  box.hidden = false;
+  const playN = rows.filter((m) => matchAction(m) === 'PLAY').length;
+  box.innerHTML = `
+    <div class="desk-kicker">Punter desk · pehle yeh dekho <small>${playN ? playN + ' PLAY ready' : 'koi PLAY lock nahi — load wait'}</small></div>
+    ${rows.map((m) => {
+      const st = actionStamp(m);
+      const pick = matchPick(m);
+      return `<button class="desk-row ${st.cls}" type="button" data-jump="${esc(m.id)}">
+        <span class="desk-act">${esc(st.label)}</span>
+        <span class="desk-vs"><b>${esc(pick || m.teamA)}</b> <small>${esc(m.teamA)} vs ${esc(m.teamB)}</small></span>
+        <span class="desk-meta">${esc(fmtMins(m.minutesToToss))}<br>${esc(rupeeLine(m))}</span>
+      </button>`;
+    }).join('')}
+  `;
+  box.querySelectorAll('[data-jump]').forEach((el) => {
+    el.onclick = () => {
+      const card = document.querySelector(`article[data-mid="${el.dataset.jump}"]`);
+      card?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      card?.classList.add('flash');
+      setTimeout(() => card?.classList.remove('flash'), 1200);
+    };
+  });
+}
+
+function maybePlayNotify(m) {
+  const act = matchAction(m);
+  const prev = state.prevAct[m.id];
+  state.prevAct[m.id] = act;
+  if (!prev || prev === act || m.tossWinner) return;
+  if (act !== 'PLAY' && act !== 'LEAN') return;
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  const pick = matchPick(m) || 'load side';
+  new Notification(act === 'PLAY' ? 'PLAY lock · load aa gaya' : 'Load lean ready', {
+    body: `${m.teamA} vs ${m.teamB} → ${pick} · ${rupeeLine(m)} · ${fmtMins(m.minutesToToss)}`,
+  });
+}
+
+function copyPick(m) {
+  const st = actionStamp(m);
+  const text = `${st.label} ${st.sub || ''} · ${m.teamA} vs ${m.teamB} · ${rupeeLine(m)} · toss ${m.tossTime || m.time || ''} IST`;
+  if (navigator.clipboard?.writeText) navigator.clipboard.writeText(text.trim());
+}
+
 function tossDots(team) {
   const rec = (team?.last5Rows && team.last5Rows.length)
     ? team.last5Rows
@@ -108,6 +290,8 @@ function cardHTML(m) {
         : m.status === 'COMPLETED'
           ? '<span class="badge done">DONE</span>'
           : '<span class="badge">UPCOMING</span>';
+  const st = actionStamp(m);
+  const stamp = `<div class="action-stamp ${st.cls}"><b>${esc(st.label)}</b><span>${esc(st.sub || '')}</span><em>${esc(rupeeLine(m))} · ${esc(fmtMins(m.minutesToToss))}</em></div>`;
   const pickClass = report.action === 'PLAY'
     ? 'pick strong'
     : report.action === 'SKIP'
@@ -132,7 +316,7 @@ function cardHTML(m) {
         ? `${pickLabel}: last-5 lean <b>${esc(last5Note)}</b> · load pending · not a lock`
         : `${pickLabel}: last 5 even · load pending`)
       : report.action === 'LEAN'
-        ? `${pickLabel}: <b>${esc(report.pick || pred.winner || 'even')}</b> (${pred.probability || 50}%) · not a lock`
+        ? `${pickLabel}: <b>${esc(report.pick || pred.winner || 'even')}</b> (${pred.probability || 50}%) · load lean`
         : (report.pick || pred.winner
           ? `${pickLabel}: <b>${esc(report.pick || pred.winner)}</b> (${pred.probability || 50}%)  ·  ${esc(pred.confidence || '')}`
           : `${pickLabel}: no side locked`);
@@ -182,7 +366,8 @@ function cardHTML(m) {
         </div>`
     : '';
   return `
-    <article class="card ${m.phase === 'alert_30' || m.phase === 'toss_now' ? 'alert30' : ''} ${m.status === 'LIVE' ? 'live' : ''}">
+    <article class="card ${m.phase === 'alert_30' || m.phase === 'toss_now' ? 'alert30' : ''} ${m.status === 'LIVE' ? 'live' : ''} ${st.cls === 'play' ? 'play-now' : ''} ${isWatched(m.id) ? 'watched' : ''}" data-mid="${esc(m.id)}">
+      ${stamp}
       <div class="meta">
         <div class="meta-left">${esc(m.format)}  ·  ${esc(leagueName(m.league))}</div>
         <div class="meta-right">${bookBadge}${phaseBadge}</div>
@@ -229,6 +414,8 @@ function cardHTML(m) {
       </div>
       <div class="actions">
         <button class="btn mint" data-act="analysis" data-id="${m.id}">Full analysis</button>
+        <button class="btn" data-act="copy" data-id="${m.id}">Copy pick</button>
+        <button class="btn ${isWatched(m.id) ? 'gold' : ''}" data-act="watch" data-id="${m.id}">${isWatched(m.id) ? 'Watching' : 'Watch'}</button>
         <button class="btn" data-act="edit" data-id="${m.id}">Update</button>
         <button class="btn" data-act="toss" data-id="${m.id}">${m.tossWinner ? 'Edit toss' : 'Set ground toss'}</button>
         <button class="btn danger" data-act="del" data-id="${m.id}">Remove</button>
@@ -247,8 +434,8 @@ function gradedPick(m) {
   const pred = m?.prediction || {};
   const report = pred.tipperReport || {};
   const action = (report.action || '').toUpperCase();
-  if (action === 'SKIP') return '';
-  return report.pick || pred.winner || pred.sources?.lastToss?.winner || pred.last5Winner || '';
+  if (action !== 'PLAY' && action !== 'LEAN') return '';
+  return report.pick || pred.winner || '';
 }
 
 function tossResult(m) {
@@ -282,31 +469,51 @@ function renderScoreboard(matches) {
 }
 
 
+function paintMatchGrid() {
+  const grid = $('grid');
+  if (!grid) return;
+  if (!state.matches.length) {
+    grid.innerHTML = `<div class="empty">Is date par scheduled match nahi mila. Niche se custom match add karo.</div>`;
+    return;
+  }
+  const shown = filteredMatches(state.matches);
+  if (!shown.length) {
+    grid.innerHTML = `<div class="empty">Is filter pe match nahi. Upar se <b>All</b> ya <b>Toss done</b> try karo.</div>`;
+    return;
+  }
+  grid.innerHTML = shown.map(cardHTML).join('');
+  grid.querySelectorAll('[data-act]').forEach((btn) => {
+    const m = state.matches.find((x) => x.id === btn.dataset.id);
+    if (!m) return;
+    btn.onclick = () => {
+      if (btn.dataset.act === 'analysis') openAnalysis(m.id);
+      if (btn.dataset.act === 'edit') openMatchModal(m);
+      if (btn.dataset.act === 'toss') promptToss(m);
+      if (btn.dataset.act === 'del') removeMatch(m);
+      if (btn.dataset.act === 'copy') copyPick(m);
+      if (btn.dataset.act === 'watch') {
+        toggleWatch(m.id);
+        renderDeskFilters(state.matches);
+        renderPunterDesk(state.matches);
+        paintMatchGrid();
+      }
+    };
+  });
+}
+
 function renderMatches(payload) {
   state.matches = payload.matches || [];
-  const grid = $('grid');
   $('dayTitle').textContent = headingFor(payload.date);
   $('dayCount').textContent = `${payload.total} matches  ·  updated ${payload.now}`;
   renderScoreboard(state.matches);
+  renderPunterDesk(state.matches);
+  renderDeskFilters(state.matches);
   const calRow = (state.meta?.calendar || []).find((d) => d.date === payload.date);
   if (calRow && typeof payload.total === 'number') {
     calRow.count = payload.total;
   }
-  if (!state.matches.length) {
-    grid.innerHTML = `<div class="empty">Is date par scheduled match nahi mila. Niche se custom match add karo.</div>`;
-  } else {
-    grid.innerHTML = state.matches.map(cardHTML).join('');
-    grid.querySelectorAll('[data-act]').forEach((btn) => {
-      const m = state.matches.find((x) => x.id === btn.dataset.id);
-      if (!m) return;
-      btn.onclick = () => {
-        if (btn.dataset.act === 'analysis') openAnalysis(m.id);
-        if (btn.dataset.act === 'edit') openMatchModal(m);
-        if (btn.dataset.act === 'toss') promptToss(m);
-        if (btn.dataset.act === 'del') removeMatch(m);
-      };
-    });
-  }
+  paintMatchGrid();
+  state.matches.forEach(maybePlayNotify);
   const alerts = payload.alerts || [];
   const box = $('heroAlert');
   if (alerts.length) {
@@ -504,7 +711,7 @@ function whyPickHTML(a, teamAName, teamBName, extra = {}) {
   } else if (src.agree) {
     bullets.push(`STRONG: last 5 toss aur load dono <b>${esc(winner)}</b> pe agree.`);
   } else if (src.loadOnly) {
-    bullets.push(`Last 5 even hai, isliye load note <b>${esc(load.winner)}</b> hai — yeh PLAY lock nahi.`);
+    bullets.push(`Last 5 even hai, isliye AI pick mapped ₹ se <b>${esc(load.winner || winner)}</b> hai.`);
   }
   const report = pick.tipperReport || extra.prediction?.tipperReport || {};
   if (report.action === 'PLAY') {
@@ -512,7 +719,7 @@ function whyPickHTML(a, teamAName, teamBName, extra = {}) {
   } else if (report.action === 'SKIP') {
     bullets.push('Split signals — AI yahan winner lock nahi karta.');
   } else if (report.action === 'LEAN') {
-    bullets.push(`SOFT LEAN ${esc(report.pick || winner || 'even')} — halka note, scoreboard pe grade nahi.`);
+    bullets.push(`LOAD LEAN <b>${esc(report.pick || winner || 'even')}</b> — mapped ₹ ki side, last 5 even/thin.`);
   } else {
     bullets.push(last.winner
       ? `Last 5 lean <b>${esc(last.winner)}</b> hai, lekin load nahi — PLAY lock nahi.`
