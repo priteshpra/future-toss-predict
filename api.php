@@ -1070,6 +1070,7 @@ try {
             break;
 
         case 'telegram_bets':
+            @set_time_limit(90);
             $matches = [];
             try {
                 $matches = collect_day(ist_today(), 'all');

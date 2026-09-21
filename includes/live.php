@@ -12,9 +12,10 @@ function http_get(string $url, int $timeout = 4): ?string
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_TIMEOUT => $timeout,
-            CURLOPT_CONNECTTIMEOUT => 3,
+            CURLOPT_CONNECTTIMEOUT => min(8, max(3, $timeout - 2)),
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_SSL_VERIFYHOST => 0,
+            CURLOPT_ENCODING => '',
             CURLOPT_USERAGENT => $ua,
             CURLOPT_HTTPHEADER => ['Accept: application/json,text/xml,text/html;q=0.9,*/*;q=0.8'],
         ]);
@@ -29,7 +30,7 @@ function http_get(string $url, int $timeout = 4): ?string
         'http' => [
             'method' => 'GET',
             'timeout' => $timeout,
-            'header' => "User-Agent: $ua\r\nAccept: text/html,*/*\r\n",
+            'header' => "User-Agent: $ua\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.9\r\n",
             'ignore_errors' => true,
         ],
         'ssl' => [

@@ -1,5 +1,5 @@
 {
-    "ts": 1789963767,
+    "ts": 1789979561,
     "data": [
         {
             "matchId": "170770",
@@ -21,7 +21,7 @@
             "format": "T20",
             "date": "2026-09-22",
             "time": "12:00 AM IST",
-            "state": "Upcoming",
+            "state": "Preview",
             "teamA": "Bahamas",
             "teamB": "Cayman Islands"
         },

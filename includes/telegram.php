@@ -65,6 +65,98 @@ function format_inr(float $n): string
     return '₹' . number_format($n, 0, '.', ',');
 }
 
+function canonical_tg_user(?string $name): string
+{
+    $raw = trim((string) $name);
+    if ($raw === '') {
+        return $raw;
+    }
+    $n = tg_norm_name($raw);
+    if ($n === 'rahuldada' || $n === 'rahuldadaa' || $n === 'rahuldada1') {
+        return 'Rahul Dada';
+    }
+    return $raw;
+}
+
+function parse_tg_fields(string $rawText): array
+{
+    $userName = null;
+    $teamName = null;
+    $amount = null;
+    $action = null;
+    $type = 'ANNOUNCEMENT';
+
+    if (preg_match('/USER\s*NAME\s*[-:]\s*([^\n\r]+)/i', $rawText, $m)) {
+        $userName = trim($m[1]);
+    }
+    if (preg_match('/TEAM\s*NAME\s*[-:]\s*([^\n\r]+)/i', $rawText, $m)) {
+        $teamName = trim($m[1]);
+        $type = 'BET_PLACED';
+    }
+    if (preg_match('/AMOUNT\s*[-:]\s*([^\n\r]+)/i', $rawText, $m)) {
+        $amount = trim($m[1]);
+    }
+    if (preg_match('/DEPOSIT\/WITHDRAWAL\s*[-:]\s*([^\n\r]+)/i', $rawText, $m)) {
+        $action = trim($m[1]);
+        $type = 'DEPOSIT_WITHDRAWAL';
+    }
+    $skipCompact = (bool) preg_match('/DEPOSIT DONE|WITHDRAWAL DONE|TOSS LOAD|TOSS ID LIST|UPCOMING MATCHES|BONUS\s+\d/i', $rawText);
+    if ($teamName === null && !$skipCompact) {
+        $first = trim(preg_split('/\R/', $rawText)[0] ?? $rawText);
+        $user = '';
+        $rest = '';
+        if (preg_match('/^(.+?)  +(.+)$/', $first, $parts)) {
+            $user = trim($parts[1]);
+            $rest = trim($parts[2]);
+        } elseif (preg_match('/^([A-Za-z0-9][A-Za-z0-9._-]{2,40}) (.+)$/', $first, $parts)) {
+            $user = trim($parts[1]);
+            $rest = trim($parts[2]);
+        }
+        if ($user !== '' && preg_match('/^(.+?) [-:] (.+)$/', $rest, $tm) && preg_match('/\d/', $tm[2] ?? '')) {
+            $userName = $user;
+            $teamName = trim($tm[1]);
+            $amount = trim($tm[2]);
+            $type = 'BET_PLACED';
+        }
+    }
+    if (!$teamName && $userName && preg_match('/TOSS|WINNER|BET/i', $rawText)) {
+        $type = 'BET_PLACED';
+    }
+    if (preg_match('/UPCOMING MATCHES|TOSS ID LIST/i', $rawText)) {
+        $type = 'SCHEDULE';
+    }
+    $userName = canonical_tg_user($userName);
+
+    return [
+        'userName' => $userName,
+        'teamName' => $teamName,
+        'amount' => $amount,
+        'amountValue' => parse_amount_number($amount),
+        'action' => $action ?: ($type === 'BET_PLACED' ? 'BET_PLACED' : 'UPDATE'),
+        'type' => $type,
+    ];
+}
+
+function hydrate_tg_post(array $p): array
+{
+    $raw = trim((string) ($p['rawText'] ?? ''));
+    if ($raw === '') {
+        return $p;
+    }
+    $parsed = parse_tg_fields($raw);
+    if (($parsed['type'] ?? '') === 'BET_PLACED') {
+        $p['userName'] = $parsed['userName'] ?: ($p['userName'] ?? 'Anonymous');
+        $p['teamName'] = $parsed['teamName'] ?? $p['teamName'] ?? null;
+        $p['amount'] = $parsed['amount'] ?? $p['amount'] ?? null;
+        $p['amountValue'] = $parsed['amountValue'] ?? parse_amount_number($p['amount'] ?? null);
+        $p['action'] = $parsed['action'] ?? 'BET_PLACED';
+        $p['type'] = 'BET_PLACED';
+    } elseif (tg_norm_name((string) ($p['userName'] ?? '')) === 'rahuldada') {
+        $p['userName'] = 'Rahul Dada';
+    }
+    return $p;
+}
+
 function parse_tg_html(string $html): array
 {
     $blocks = preg_split('/<div class="tgme_widget_message_wrap/', $html);
@@ -89,48 +181,29 @@ function parse_tg_html(string $html): array
         $rawText = '';
         if (preg_match('/<div class="tgme_widget_message_text[^"]*"[^>]*>([\s\S]*?)<\/div>/', $block, $tx)) {
             $rawText = trim(html_entity_decode(strip_tags(preg_replace('/<br\s*\/?>/i', "\n", $tx[1])), ENT_QUOTES | ENT_HTML5));
+            $fixed = @iconv('UTF-8', 'UTF-8//IGNORE', $rawText);
+            if (is_string($fixed) && $fixed !== '') {
+                $rawText = $fixed;
+            }
         }
         if ($rawText === '') {
             continue;
         }
 
-        $userName = null;
-        $teamName = null;
-        $amount = null;
-        $action = null;
-        $type = 'ANNOUNCEMENT';
-
-        if (preg_match('/USER\s*NAME\s*[-:]\s*([^\n\r]+)/i', $rawText, $m)) {
-            $userName = trim($m[1]);
-        }
-        if (preg_match('/TEAM\s*NAME\s*[-:]\s*([^\n\r]+)/i', $rawText, $m)) {
-            $teamName = trim($m[1]);
-            $type = 'BET_PLACED';
-        }
-        if (preg_match('/AMOUNT\s*[-:]\s*([^\n\r]+)/i', $rawText, $m)) {
-            $amount = trim($m[1]);
-        }
-        if (preg_match('/DEPOSIT\/WITHDRAWAL\s*[-:]\s*([^\n\r]+)/i', $rawText, $m)) {
-            $action = trim($m[1]);
-            $type = 'DEPOSIT_WITHDRAWAL';
-        }
-        if (!$teamName && $userName && preg_match('/TOSS|WINNER|BET/i', $rawText)) {
-            $type = 'BET_PLACED';
-        }
-        if (preg_match('/UPCOMING MATCHES/i', $rawText)) {
-            $type = 'SCHEDULE';
-        }
+        $fields = parse_tg_fields($rawText);
+        $type = $fields['type'];
+        $userName = $fields['userName'] ?: ($type === 'ANNOUNCEMENT' ? 'System / Admin' : 'Anonymous');
 
         $posts[] = [
             'postId' => $postId,
             'isoTime' => $iso,
             'displayTime' => $display,
             'rawText' => $rawText,
-            'userName' => $userName ?: ($type === 'ANNOUNCEMENT' ? 'System / Admin' : 'Anonymous'),
-            'teamName' => $teamName,
-            'amount' => $amount,
-            'amountValue' => parse_amount_number($amount),
-            'action' => $action ?: ($type === 'BET_PLACED' ? 'BET_PLACED' : 'UPDATE'),
+            'userName' => $userName,
+            'teamName' => $fields['teamName'],
+            'amount' => $fields['amount'],
+            'amountValue' => $fields['amountValue'],
+            'action' => $fields['action'],
             'type' => $type,
             'channel' => '@BetfairTossbookOrignal',
             'messageUrl' => 'https://t.me/' . $postId,
@@ -143,7 +216,8 @@ function parse_tg_html(string $html): array
 function load_stored_bets(): array
 {
     $data = read_json(tg_bets_path(), ['posts' => []]);
-    return is_array($data['posts'] ?? null) ? $data['posts'] : [];
+    $posts = is_array($data['posts'] ?? null) ? $data['posts'] : [];
+    return array_map('hydrate_tg_post', $posts);
 }
 
 function save_stored_bets(array $posts): void
@@ -152,11 +226,59 @@ function save_stored_bets(array $posts): void
     write_json(tg_bets_path(), ['posts' => $posts, 'updatedAt' => date('c')]);
 }
 
+function fetch_telegram_pages(array $known): array
+{
+    $fresh = [];
+    $seen = [];
+    $html = null;
+    $before = null;
+    $hitKnown = false;
+    for ($page = 0; $page < 4; $page++) {
+        $url = 'https://t.me/s/BetfairTossbookOrignal' . ($before ? ('?before=' . rawurlencode($before)) : '');
+        $pageHtml = http_get($url, $page === 0 ? 22 : 10);
+        if ($page === 0) {
+            $html = $pageHtml;
+        }
+        if (!$pageHtml) {
+            break;
+        }
+        $rows = parse_tg_html($pageHtml);
+        if (!$rows) {
+            break;
+        }
+        $oldest = null;
+        foreach ($rows as $p) {
+            $id = (string) ($p['postId'] ?? '');
+            if ($id === '' || isset($seen[$id])) {
+                continue;
+            }
+            $seen[$id] = true;
+            $fresh[] = $p;
+            if (!empty($known[$id])) {
+                $hitKnown = true;
+            }
+            if (preg_match('/\/(\d+)$/', $id, $nm)) {
+                $n = (int) $nm[1];
+                $oldest = $oldest === null ? $n : min($oldest, $n);
+            }
+        }
+        if ($hitKnown) {
+            break;
+        }
+        if ($oldest === null) {
+            break;
+        }
+        $before = (string) $oldest;
+    }
+    return [$html, $fresh];
+}
+
 function fetch_telegram_bets(bool $force = false): array
 {
     if (!$force) {
-        $cached = cache_get('tg_feed', 30);
-        if (is_array($cached)) {
+        $cached = cache_get('tg_feed', 20);
+        if (is_array($cached) && ($cached['status'] ?? '') === 'connected' && !empty($cached['posts'])) {
+            $cached['posts'] = array_map('hydrate_tg_post', $cached['posts'] ?? []);
             return $cached;
         }
     }
@@ -169,10 +291,9 @@ function fetch_telegram_bets(bool $force = false): array
         }
     }
 
-    $html = http_get('https://t.me/s/BetfairTossbookOrignal', 5);
-    $fresh = $html ? parse_tg_html($html) : [];
+    [$html, $fresh] = fetch_telegram_pages($known);
     foreach ($fresh as $p) {
-        if (empty($known[$p['postId']])) {
+        if (empty($known[$p['postId'] ?? ''])) {
             array_unshift($stored, $p);
             $known[$p['postId']] = true;
         }
@@ -186,7 +307,9 @@ function fetch_telegram_bets(bool $force = false): array
         'fetchedAt' => ist_now()->format('h:i:s A') . ' IST',
         'posts' => $stored,
     ];
-    cache_set('tg_feed', $pack);
+    if ($html) {
+        cache_set('tg_feed', $pack);
+    }
     return $pack;
 }
 
@@ -203,6 +326,14 @@ function user_is_target(string $userName, array $targets, string $rawText = ''):
         $n = tg_norm_name((string) $t);
         if ($n === '') {
             continue;
+        }
+        if ($n === 'rahuldada' || $n === 'rahul') {
+            if ($u === 'rahuldada' || str_contains($hay, 'rahuldada')) {
+                return true;
+            }
+            if ($n === 'rahul') {
+                continue;
+            }
         }
         if ($u === $n || ($n !== 'rahul' && (str_contains($u, $n) || (str_contains($n, $u) && strlen($u) >= 5)))) {
             return true;
