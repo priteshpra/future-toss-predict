@@ -1190,8 +1190,8 @@ async function enableTgAlerts() {
 }
 
 async function saveTgWatch() {
-  const users = ($('tgUsers').value || 'Rahul Dada').split(',').map((s) => s.trim()).filter(Boolean);
-  await api('telegram_config', { targetUsers: users.length ? users : ['Rahul Dada'], hideOthers: true }, 'POST');
+  const users = ($('tgUsers').value || 'Rahul Dada, BAT9362').split(',').map((s) => s.trim()).filter(Boolean);
+  await api('telegram_config', { targetUsers: users.length ? users : ['Rahul Dada', 'BAT9362'], hideOthers: true }, 'POST');
   loadTelegram(true);
 }
 
@@ -1256,7 +1256,7 @@ function renderTgFeed(bets) {
   const box = $('tgFeed');
   if (!box) return;
   if (!bets.length) {
-    box.innerHTML = '<div class="empty">Rahul Dada ka koi bet abhi nahi aaya. Jaise hi channel pe unka bet drop hoga, yahan dikhega aur notification aa jayegi.</div>';
+    box.innerHTML = '<div class="empty">Rahul Dada / BAT9362 ka koi bet abhi nahi aaya. Jaise hi channel pe unka bet drop hoga, yahan dikhega aur notification aa jayegi.</div>';
     return;
   }
   box.innerHTML = bets.map((b) => `

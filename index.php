@@ -75,7 +75,7 @@
       <div class="tg-head">
         <div>
           <h2>TeleGramBet live</h2>
-          <p>Channel <a href="https://web.telegram.org/k/#@BetfairTossbookOrignal" target="_blank" rel="noopener">@BetfairTossbookOrignal</a> · Rahul Dada drop = instant team + amount alert</p>
+          <p>Channel <a href="https://web.telegram.org/k/#@BetfairTossbookOrignal" target="_blank" rel="noopener">@BetfairTossbookOrignal</a> · Rahul Dada + BAT9362 drop = instant team + amount alert</p>
         </div>
         <div class="tg-actions">
           <span id="tgStatus" class="badge live">Connecting</span>
@@ -86,10 +86,10 @@
       </div>
 
       <div class="tg-track card">
-        <label>Watch user (default Rahul Dada)
-          <input id="tgUsers" value="Rahul Dada" placeholder="Rahul Dada, BTB0353">
+        <label>Watch users
+          <input id="tgUsers" value="Rahul Dada, BAT9362" placeholder="Rahul Dada, BAT9362">
         </label>
-        <p class="tg-hint" style="margin:0">Watched drops mein sirf <b>Rahul Dada</b> (ya jo users save kiye) dikhenge. Naya bet aate hi notification aayegi.</p>
+        <p class="tg-hint" style="margin:0">Watched drops mein <b>Rahul Dada</b> aur <b>BAT9362</b> dikhenge. Naya bet aate hi notification aayegi.</p>
         <button class="btn mint" type="button" id="tgSaveUsers">Save watch</button>
         <small id="tgPoll">Last poll: —</small>
       </div>
@@ -99,7 +99,7 @@
       <div id="tgLoad" class="tg-load"></div>
       <div id="tgTeams" class="tg-load" style="margin-top:10px"></div>
 
-      <h3 class="tg-sub">Rahul Dada drops <span id="tgCount" class="badge">0</span></h3>
+      <h3 class="tg-sub">Watched drops <span id="tgCount" class="badge">0</span></h3>
       <div id="tgFeed" class="tg-feed"></div>
     </section>
 
@@ -184,7 +184,7 @@
     </div>
   </div>
   <aside class="drawer" id="drawer"></aside>
-  <script src="assets/app.js?v=38"></script>
+  <script src="assets/app.js?v=39"></script>
 </body>
 
 </html>

@@ -19,7 +19,7 @@ function default_tg_config(): array
         'channel' => 'BetfairTossbookOrignal',
         'webUrl' => 'https://web.telegram.org/k/#@BetfairTossbookOrignal',
         'tmeUrl' => 'https://t.me/s/BetfairTossbookOrignal',
-        'targetUsers' => ['Rahul Dada'],
+        'targetUsers' => ['Rahul Dada', 'BAT9362'],
         'hideOthers' => true,
         'sound' => 'bell',
     ];
@@ -38,7 +38,7 @@ function save_tg_config(array $cfg): array
         $users = is_array($cfg['targetUsers']) ? $cfg['targetUsers'] : preg_split('/,/', (string) $cfg['targetUsers']);
         $base['targetUsers'] = array_values(array_filter(array_map('trim', $users)));
         if (!$base['targetUsers']) {
-            $base['targetUsers'] = ['Rahul Dada'];
+            $base['targetUsers'] = ['Rahul Dada', 'BAT9362'];
         }
     }
     if (isset($cfg['hideOthers'])) {
@@ -74,6 +74,9 @@ function canonical_tg_user(?string $name): string
     $n = tg_norm_name($raw);
     if ($n === 'rahuldada' || $n === 'rahuldadaa' || $n === 'rahuldada1') {
         return 'Rahul Dada';
+    }
+    if ($n === 'bat9362') {
+        return 'BAT9362';
     }
     return $raw;
 }
