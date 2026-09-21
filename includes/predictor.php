@@ -266,6 +266,9 @@ function market_load_share(string $teamA, string $teamB, string $date = '', stri
 
 function apply_live_toss_markets(array $match, ?array $punter = null, ?array $website = null): array
 {
+    if (!empty($match['tossWinner'])) {
+        return $match;
+    }
     $pred = $match['prediction'] ?? [];
     $teamA = $match['teamA'] ?? '';
     $teamB = $match['teamB'] ?? '';

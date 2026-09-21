@@ -251,11 +251,115 @@ function upsert_day_log_match(string $date, array $match): void
             }
         }
         $log[$date][$i] = $merged;
+        if (!empty($row['tossWinner']) || !empty($match['tossWinner'])) {
+            if (!empty($row['tossWinner'])) {
+                $log[$date][$i]['tossWinner'] = $row['tossWinner'];
+                if (!empty($row['tossDecision'])) {
+                    $log[$date][$i]['tossDecision'] = $row['tossDecision'];
+                }
+            }
+            if (!empty($row['liveLock']) && is_array($row['liveLock'])) {
+                $log[$date][$i]['liveLock'] = $row['liveLock'];
+            }
+        }
         save_day_log($log);
         return;
     }
     $log[$date][] = $match;
     save_day_log($log);
+}
+
+function find_day_log_row(string $date, array $match): ?array
+{
+    $log = load_day_log();
+    $id = (string) ($match['id'] ?? '');
+    $pair = match_pair_key($match['teamA'] ?? '', $match['teamB'] ?? '', $date);
+    foreach (($log[$date] ?? []) as $row) {
+        if (!is_array($row)) {
+            continue;
+        }
+        if ($id !== '' && ($row['id'] ?? '') === $id) {
+            return $row;
+        }
+        if (match_pair_key($row['teamA'] ?? '', $row['teamB'] ?? '', $date) === $pair) {
+            return $row;
+        }
+    }
+    return null;
+}
+
+function strip_done_prediction(array $pred): array
+{
+    $pred['winner'] = null;
+    $pred['probability'] = 50;
+    $pred['confidence'] = 'Toss done';
+    $pred['tipperReport'] = null;
+    $pred['whyPick'] = null;
+    $pred['hasLoad'] = false;
+    $pred['hasTgLoad'] = false;
+    $pred['hasWebLoad'] = false;
+    $pred['onBook'] = false;
+    $pred['strong'] = false;
+    $pred['insights'] = [];
+    $pred['sources'] = [];
+    return $pred;
+}
+
+function apply_frozen_or_strip(array $match): array
+{
+    if (empty($match['tossWinner'])) {
+        return $match;
+    }
+    $date = (string) ($match['date'] ?? '');
+    $row = $date !== '' ? find_day_log_row($date, $match) : null;
+    $lock = is_array($row['liveLock'] ?? null) ? $row['liveLock'] : null;
+    if (is_array($lock) && is_array($lock['prediction'] ?? null)) {
+        $match['prediction'] = $lock['prediction'];
+        if (array_key_exists('punterLoad', $lock)) {
+            $match['punterLoad'] = $lock['punterLoad'];
+        }
+        if (array_key_exists('websiteLoad', $lock)) {
+            $match['websiteLoad'] = $lock['websiteLoad'];
+        }
+    } else {
+        $match['prediction'] = strip_done_prediction(is_array($match['prediction'] ?? null) ? $match['prediction'] : []);
+        $match['punterLoad'] = null;
+    }
+    $match['predictionFrozen'] = true;
+    if (isset($match['analysis']['prediction']) && is_array($match['analysis']['prediction'])) {
+        $match['analysis']['prediction']['favoredWinner'] = null;
+        $match['analysis']['prediction']['insights'] = [];
+    }
+    return $match;
+}
+
+function save_live_lock(array $match): void
+{
+    if (!empty($match['tossWinner'])) {
+        return;
+    }
+    $date = (string) ($match['date'] ?? '');
+    $teamA = trim((string) ($match['teamA'] ?? ''));
+    $teamB = trim((string) ($match['teamB'] ?? ''));
+    if ($date === '' || $teamA === '' || $teamB === '') {
+        return;
+    }
+    $existing = find_day_log_row($date, $match);
+    if (is_array($existing) && !empty($existing['tossWinner'])) {
+        return;
+    }
+    upsert_day_log_match($date, [
+        'id' => $match['id'] ?? '',
+        'teamA' => $teamA,
+        'teamB' => $teamB,
+        'date' => $date,
+        'liveLock' => [
+            'prediction' => $match['prediction'] ?? [],
+            'punterLoad' => $match['punterLoad'] ?? null,
+            'websiteLoad' => $match['websiteLoad'] ?? null,
+            'lockedAt' => ist_now()->format('c'),
+        ],
+    ]);
 }
 
 function remove_day_log_match(string $date, string $teamA, string $teamB, string $id = ''): void
@@ -352,7 +456,7 @@ function enrich_match(array $m, string $date): array
     $tB = $analysis['teamB'];
     [$loadA, $loadB] = market_load_share($teamA, $teamB, $date, $m['league'] ?? '', $mins);
 
-    return [
+    $out = [
         'id' => $m['id'] ?? ('m_' . md5($teamA . $teamB . $date . $time)),
         'date' => $date,
         'teamA' => $teamA,
@@ -381,15 +485,15 @@ function enrich_match(array $m, string $date): array
         'note' => $m['note'] ?? null,
         'custom' => !empty($m['custom']),
         'prediction' => [
-            'winner' => $analysis['prediction']['favoredWinner'],
-            'probability' => $analysis['prediction']['favoredProbability'],
-            'confidence' => $analysis['prediction']['confidence'],
+            'winner' => $tossWinner ? null : ($analysis['prediction']['favoredWinner'] ?? null),
+            'probability' => $tossWinner ? 50 : ($analysis['prediction']['favoredProbability'] ?? 50),
+            'confidence' => $tossWinner ? 'Toss done' : ($analysis['prediction']['confidence'] ?? ''),
             'decision' => $analysis['prediction']['likelyDecision'],
             'teamAPct' => $tA['probability'],
             'teamBPct' => $tB['probability'],
             'tossLoadA' => $loadA,
             'tossLoadB' => $loadB,
-            'insights' => $analysis['prediction']['insights'],
+            'insights' => $tossWinner ? [] : ($analysis['prediction']['insights'] ?? []),
             'locked' => $mins <= 30,
             'last5Winner' => $analysis['prediction']['last5Winner'] ?? null,
             'last5Gap' => $analysis['prediction']['last5Gap'] ?? 0,
@@ -413,6 +517,10 @@ function enrich_match(array $m, string $date): array
         'venueStats' => $analysis['venue'],
         'analysis' => $analysis,
     ];
+    if ($tossWinner) {
+        return apply_frozen_or_strip($out);
+    }
+    return $out;
 }
 
 function is_placeholder_team(string $name): bool
@@ -855,8 +963,13 @@ try {
                 $loadMap = [];
             }
             foreach ($matches as &$mm) {
+                if (!empty($mm['tossWinner'])) {
+                    $mm = apply_frozen_or_strip($mm);
+                    continue;
+                }
                 $web = website_load_for_match($mm, $websiteBoard['matches'] ?? []);
                 $mm = apply_live_toss_markets($mm, $loadMap[$mm['id']] ?? null, $web);
+                save_live_lock($mm);
             }
             unset($mm);
             $alerts = array_values(array_filter($matches, fn($m) => in_array($m['phase'], ['alert_30', 'toss_now'], true) && empty($m['tossWinner'])));

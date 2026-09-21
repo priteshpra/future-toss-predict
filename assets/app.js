@@ -252,7 +252,10 @@ function maybePlayNotify(m) {
 
 function copyPick(m) {
   const st = actionStamp(m);
-  const text = `${st.label} ${st.sub || ''} · ${m.teamA} vs ${m.teamB} · ${rupeeLine(m)} · toss ${m.tossTime || m.time || ''} IST`;
+  const extra = m.tossWinner
+    ? `chose ${m.tossDecision || '—'}`
+    : `${rupeeLine(m)} · toss ${m.tossTime || m.time || ''} IST`;
+  const text = `${st.label} ${st.sub || ''} · ${m.teamA} vs ${m.teamB} · ${extra}`;
   if (navigator.clipboard?.writeText) navigator.clipboard.writeText(text.trim());
 }
 
@@ -271,11 +274,11 @@ function cardHTML(m) {
   const h2h = form.h2h || {};
   const src = pred.sources || {};
   const report = pred.tipperReport || {};
+  const tossed = !!m.tossWinner;
   const aPct = pred.teamAPct ?? 50;
   const bPct = pred.teamBPct ?? 50;
   const loadA = pred.tossLoadA ?? 50;
   const loadB = pred.tossLoadB ?? 50;
-  const hasLoad = !!pred.hasLoad;
   const result = tossResult(m);
   const phaseBadge = m.tossWinner
     ? (result === 'pass'
@@ -291,7 +294,10 @@ function cardHTML(m) {
           ? '<span class="badge done">DONE</span>'
           : '<span class="badge">UPCOMING</span>';
   const st = actionStamp(m);
-  const stamp = `<div class="action-stamp ${st.cls}"><b>${esc(st.label)}</b><span>${esc(st.sub || '')}</span><em>${esc(rupeeLine(m))} · ${esc(fmtMins(m.minutesToToss))}</em></div>`;
+  const stampMeta = tossed
+    ? (m.tossDecision ? `chose ${m.tossDecision}` : 'ground toss')
+    : `${rupeeLine(m)} · ${fmtMins(m.minutesToToss)}`;
+  const stamp = `<div class="action-stamp ${st.cls}"><b>${esc(st.label)}</b><span>${esc(st.sub || '')}</span><em>${esc(stampMeta)}</em></div>`;
   const pickClass = report.action === 'PLAY'
     ? 'pick strong'
     : report.action === 'SKIP'
@@ -357,14 +363,27 @@ function cardHTML(m) {
     ? `<div class="punter-line">Telegram ₹: <b>${esc(m.punterLoad?.leader || 'Even')}</b> ${m.punterLoad?.leader ? m.punterLoad.leaderPct + '%' : ''}  ·  ${esc(m.teamA)} ${esc(m.punterLoad?.amountALabel || '')} vs ${esc(m.teamB)} ${esc(m.punterLoad?.amountBLabel || '')}</div>`
     : `<div class="punter-line">Telegram ₹: is match pe mapped toss money nahi mila</div>`;
   const webLine = `<div class="web-line">${esc(web.label || (onBook ? (hasWeb ? ('Website load favouring ' + (web.leanTeam || '')) : 'Toss-book pe listed · no load yet') : 'Website load: toss-book pe listed nahi'))}</div>`;
-  const bookBadge = onBook ? '<span class="badge book">ON BOOK</span>' : '';
-  const reportBox = report.headline
+  const bookBadge = onBook && !tossed ? '<span class="badge book">ON BOOK</span>' : '';
+  const reportBox = (!tossed && report.headline)
     ? `<div class="tipper ${esc(report.grade || 'wait')}">
           <div class="tipper-kicker">Tipper report · ${esc(report.action || 'WAIT')}</div>
           <p>${esc(report.headline)}</p>
           <small>${esc(report.when || '')}</small>
         </div>`
     : '';
+  const bars = tossed ? '' : `
+      <div class="bars">
+        <div class="bar-row"><span>Last-match toss %</span><span>${aPct}% — ${bPct}%</span></div>
+        <div class="track"><i style="width:${aPct}%"></i><i style="width:${bPct}%"></i></div>
+        <div class="bar-row"><span>Telegram ₹</span><span>${esc(tgLabel)}</span></div>
+        <div class="track"><i style="width:${hasTg ? loadA : 50}%"></i><i style="width:${hasTg ? loadB : 50}%"></i></div>
+        <div class="bar-row"><span>Website load</span><span>${esc(webLabel)}</span></div>
+        <div class="track web"><i style="width:${onBook && hasWeb ? webA : 50}%"></i><i style="width:${onBook && hasWeb ? webB : 50}%"></i></div>
+      </div>`;
+  const pickBlock = tossed ? '' : `<div class="${pickClass}">${pickBody}</div>`;
+  const moneyBlock = tossed ? '' : money;
+  const webBlock = tossed ? '' : webLine;
+  const signalBlock = tossed ? '' : signalNote;
   return `
     <article class="card ${m.phase === 'alert_30' || m.phase === 'toss_now' ? 'alert30' : ''} ${m.status === 'LIVE' ? 'live' : ''} ${st.cls === 'play' ? 'play-now' : ''} ${isWatched(m.id) ? 'watched' : ''}" data-mid="${esc(m.id)}">
       ${stamp}
@@ -392,20 +411,13 @@ function cardHTML(m) {
           ${tossDots(m.analysis?.teamB)}
         </div>
       </div>
-      <div class="bars">
-        <div class="bar-row"><span>Last-match toss %</span><span>${aPct}% — ${bPct}%</span></div>
-        <div class="track"><i style="width:${aPct}%"></i><i style="width:${bPct}%"></i></div>
-        <div class="bar-row"><span>Telegram ₹</span><span>${esc(tgLabel)}</span></div>
-        <div class="track"><i style="width:${hasTg ? loadA : 50}%"></i><i style="width:${hasTg ? loadB : 50}%"></i></div>
-        <div class="bar-row"><span>Website load</span><span>${esc(webLabel)}</span></div>
-        <div class="track web"><i style="width:${onBook && hasWeb ? webA : 50}%"></i><i style="width:${onBook && hasWeb ? webB : 50}%"></i></div>
-      </div>
+      ${bars}
       ${reportBox}
-      <div class="${pickClass}">${pickBody}</div>
+      ${pickBlock}
       ${actual}
-      ${money}
-      ${webLine}
-      ${signalNote}
+      ${moneyBlock}
+      ${webBlock}
+      ${signalBlock}
       <div class="facts">
         <span>📍 ${esc(m.venue)}</span>
         <span>Last 10: ${form.aLast10 || '—'} vs ${form.bLast10 || '—'}</span>
@@ -414,7 +426,7 @@ function cardHTML(m) {
       </div>
       <div class="actions">
         <button class="btn mint" data-act="analysis" data-id="${m.id}">Full analysis</button>
-        <button class="btn" data-act="copy" data-id="${m.id}">Copy pick</button>
+        <button class="btn" data-act="copy" data-id="${m.id}">${m.tossWinner ? 'Copy toss' : 'Copy pick'}</button>
         <button class="btn ${isWatched(m.id) ? 'gold' : ''}" data-act="watch" data-id="${m.id}">${isWatched(m.id) ? 'Watching' : 'Watch'}</button>
         <button class="btn" data-act="edit" data-id="${m.id}">Update</button>
         <button class="btn" data-act="toss" data-id="${m.id}">${m.tossWinner ? 'Edit toss' : 'Set ground toss'}</button>
@@ -763,6 +775,17 @@ function analysisDetailHTML(a, teamAName, teamBName, extra = {}) {
         !gradeSide ? ' · no pick' : (namesClose(extra.tossWinner, gradeSide) ? ' · AI PASS' : ' · AI FAIL')
       }</div>`
     : '';
+  if (extra.tossWinner) {
+    return `
+    ${actual}
+    <div class="insight">Toss done — naya lean / tipper report nahi nikalte. Saved toss freeze hai.</div>
+    <h3>Last toss results</h3>
+    ${lastTossTable(a.teamA || {})}
+    ${lastTossTable(a.teamB || {})}
+    <h3>H2H toss</h3>
+    <div class="insight">${esc(teamAName)} ${h2h.teamAWins ?? 0} – ${h2h.teamBWins ?? 0} ${esc(teamBName)} from ${h2h.total ?? 0} meetings</div>
+  `;
+  }
   return `
     ${whyPickHTML(a, teamAName, teamBName, extra)}
     ${actual}
