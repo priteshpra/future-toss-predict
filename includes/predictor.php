@@ -426,12 +426,12 @@ function apply_live_toss_markets(array $match, ?array $punter = null, ?array $we
         $reportLine = !$histHasEdge
             ? 'WAIT — last 5 toss even. Koi pick nahi. Load 5–10 min pehle aayega.'
             : ("EARLY NOTE: {$histWinner} last-5 pe lean hai, lekin load nahi. Yeh lock nahi — 10 min pehle board dekho.");
-        $reportPick = null;
+        $reportPick = $histHasEdge ? $histWinner : null;
     } elseif (!$hasLoad) {
         $action = 'WAIT';
         $grade = 'wait';
         $reportLine = "WAIT FOR LOAD — toss window. Last 5 {$histNote}. Telegram/website money aate hi pick lock.";
-        $reportPick = null;
+        $reportPick = $histHasEdge ? $histWinner : null;
     } else {
         $action = 'LEAN';
         $grade = 'lean';

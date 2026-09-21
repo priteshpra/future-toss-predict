@@ -243,11 +243,18 @@ function namesClose(a, b) {
   return x && y && (x === y || x.includes(y) || y.includes(x));
 }
 
+function gradedPick(m) {
+  const pred = m?.prediction || {};
+  const report = pred.tipperReport || {};
+  const action = (report.action || '').toUpperCase();
+  if (action === 'SKIP') return '';
+  return report.pick || pred.winner || pred.sources?.lastToss?.winner || pred.last5Winner || '';
+}
+
 function tossResult(m) {
   if (!m?.tossWinner) return 'pending';
-  const action = (m?.prediction?.tipperReport?.action || '').toUpperCase();
-  const pick = m?.prediction?.tipperReport?.pick || '';
-  if (action !== 'PLAY' || !pick) return 'nopick';
+  const pick = gradedPick(m);
+  if (!pick) return 'nopick';
   return namesClose(m.tossWinner, pick) ? 'pass' : 'fail';
 }
 
@@ -543,11 +550,10 @@ function analysisDetailHTML(a, teamAName, teamBName, extra = {}) {
   const last = src.lastToss || {};
   const load = src.load || {};
   const insights = Array.isArray(pick.insights) ? pick.insights : (Array.isArray(a.prediction?.insights) ? a.prediction.insights : []);
+  const gradeSide = extra.tossWinner ? gradedPick({ prediction: pick }) : '';
   const actual = extra.tossWinner
     ? `<div class="agree-note">Ground toss already saved: <b>${esc(extra.tossWinner)}</b> chose ${esc(extra.tossDecision || '—')}${
-        (pick.tipperReport?.action === 'PLAY' && pick.tipperReport?.pick)
-          ? (namesClose(extra.tossWinner, pick.tipperReport.pick) ? ' · AI PASS' : ' · AI FAIL')
-          : ' · no lock'
+        !gradeSide ? ' · no pick' : (namesClose(extra.tossWinner, gradeSide) ? ' · AI PASS' : ' · AI FAIL')
       }</div>`
     : '';
   return `
