@@ -1,0 +1,65 @@
+{
+    "ts": 1789963768,
+    "data": [
+        {
+            "matchId": "155477",
+            "seriesId": "12191",
+            "series": "Australia U19 tour of India 2026",
+            "desc": "2nd unofficial ODI",
+            "format": "ODI",
+            "date": "2026-09-21",
+            "time": "09:00 AM IST",
+            "state": "In Progress",
+            "teamA": "India Under-19s",
+            "teamB": "Australia Under-19s"
+        },
+        {
+            "matchId": "155466",
+            "seriesId": "12191",
+            "series": "Australia U19 tour of India 2026",
+            "desc": "1st unofficial ODI",
+            "format": "ODI",
+            "date": "2026-09-18",
+            "time": "09:00 AM IST",
+            "state": "Complete",
+            "teamA": "India Under-19s",
+            "teamB": "Australia Under-19s"
+        },
+        {
+            "matchId": "155488",
+            "seriesId": "12191",
+            "series": "Australia U19 tour of India 2026",
+            "desc": "3rd unofficial ODI",
+            "format": "ODI",
+            "date": "2026-09-23",
+            "time": "09:00 AM IST",
+            "state": "Upcoming",
+            "teamA": "India Under-19s",
+            "teamB": "Australia Under-19s"
+        },
+        {
+            "matchId": "155499",
+            "seriesId": "12191",
+            "series": "Australia U19 tour of India 2026",
+            "desc": "1st unofficial Test",
+            "format": "TEST",
+            "date": "2026-09-27",
+            "time": "09:00 AM IST",
+            "state": "Upcoming",
+            "teamA": "India Under-19s",
+            "teamB": "Australia Under-19s"
+        },
+        {
+            "matchId": "155510",
+            "seriesId": "12191",
+            "series": "Australia U19 tour of India 2026",
+            "desc": "2nd unofficial Test",
+            "format": "TEST",
+            "date": "2026-10-05",
+            "time": "09:00 AM IST",
+            "state": "Upcoming",
+            "teamA": "India Under-19s",
+            "teamB": "Australia Under-19s"
+        }
+    ]
+}

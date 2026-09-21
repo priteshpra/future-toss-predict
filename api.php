@@ -545,6 +545,9 @@ function guess_live_league(array $lm): string
     if (str_contains($blob, 'wapl') || str_contains($blob, 'andhra premier') || str_contains($blob, 'godavari') || str_contains($blob, 'vizag fire') || str_contains($blob, 'rayalaseema') || str_contains($blob, 'amaravati') || str_contains($blob, 'amravati')) {
         return 'wapl';
     }
+    if (str_contains($blob, 'uttarakhand premier') || str_contains($blob, 'pithoragarh') || str_contains($blob, 'bageshwar') || str_contains($blob, 'mussoorie') || str_contains($blob, 'dehradun warriors') || str_contains($blob, 'haridwar elmas') || str_contains($blob, 'nainital tigers')) {
+        return 'upl';
+    }
     if (str_contains($blob, 'women') && str_contains($blob, 'odi')) {
         return 'women_odi';
     }

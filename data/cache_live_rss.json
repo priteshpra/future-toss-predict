@@ -1,76 +1,28 @@
 {
-    "ts": 1789926880,
+    "ts": 1789963929,
     "data": [
-        {
-            "sourceId": "1544844",
-            "teamA": "Western Australia",
-            "teamB": "Tasmania",
-            "title": "Western Australia 115\/10  v Tasmania 117\/1 *",
-            "liveScore": "Western Australia 115\/10  v Tasmania 117\/1 *",
-            "link": "http:\/\/www.cricinfo.com\/ci\/engine\/match\/1544844.html?CMP=OTC-RSS",
-            "tossWinner": null,
-            "tossDecision": null,
-            "status": "LIVE",
-            "venue": null
-        },
-        {
-            "sourceId": "1530205",
-            "teamA": "Zimbabwe",
-            "teamB": "Australia",
-            "title": "Zimbabwe 271\/8  v Australia 272\/9 *",
-            "liveScore": "Zimbabwe 271\/8  v Australia 272\/9 *",
-            "link": "http:\/\/www.cricinfo.com\/ci\/engine\/match\/1530205.html?CMP=OTC-RSS",
-            "tossWinner": null,
-            "tossDecision": null,
-            "status": "LIVE",
-            "venue": null
-        },
-        {
-            "sourceId": "1552024",
-            "teamA": "India A Women",
-            "teamB": "Australia A Women",
-            "title": "India A Women 239\/6 * v Australia A Women 235\/10",
-            "liveScore": "India A Women 239\/6 * v Australia A Women 235\/10",
-            "link": "http:\/\/www.cricinfo.com\/ci\/engine\/match\/1552024.html?CMP=OTC-RSS",
-            "tossWinner": null,
-            "tossDecision": null,
-            "status": "LIVE",
-            "venue": null
-        },
-        {
-            "sourceId": "1513528",
-            "teamA": "Leicestershire",
-            "teamB": "Middlesex",
-            "title": "Leicestershire 200\/10 * v Middlesex 231\/10",
-            "liveScore": "Leicestershire 200\/10 * v Middlesex 231\/10",
-            "link": "http:\/\/www.cricinfo.com\/ci\/engine\/match\/1513528.html?CMP=OTC-RSS",
-            "tossWinner": null,
-            "tossDecision": null,
-            "status": "LIVE",
-            "venue": null
-        },
-        {
-            "sourceId": "1547903",
-            "teamA": "Belfast Wolves",
-            "teamB": "Edinburgh Castle Rockers",
-            "title": "Belfast Wolves 150\/5  v Edinburgh Castle Rockers 151\/3 *",
-            "liveScore": "Belfast Wolves 150\/5  v Edinburgh Castle Rockers 151\/3 *",
-            "link": "http:\/\/www.cricinfo.com\/ci\/engine\/match\/1547903.html?CMP=OTC-RSS",
-            "tossWinner": null,
-            "tossDecision": null,
-            "status": "LIVE",
-            "venue": null
-        },
         {
             "sourceId": "1534217",
             "teamA": "Antigua and Barbuda Falcons",
             "teamB": "Jamaica Kingsmen",
-            "title": "Antigua and Barbuda Falcons v Jamaica Kingsmen",
-            "liveScore": "Antigua and Barbuda Falcons v Jamaica Kingsmen",
+            "title": "Antigua and Barbuda Falcons 173\/2 * v Jamaica Kingsmen 170\/9",
+            "liveScore": "Antigua and Barbuda Falcons 173\/2 * v Jamaica Kingsmen 170\/9",
             "link": "http:\/\/www.cricinfo.com\/ci\/engine\/match\/1534217.html?CMP=OTC-RSS",
             "tossWinner": null,
             "tossDecision": null,
-            "status": "UPCOMING",
+            "status": "LIVE",
+            "venue": null
+        },
+        {
+            "sourceId": "1535682",
+            "teamA": "India Under-19s",
+            "teamB": "Australia Under-19s",
+            "title": "India Under-19s 55\/1 * v Australia Under-19s",
+            "liveScore": "India Under-19s 55\/1 * v Australia Under-19s",
+            "link": "http:\/\/www.cricinfo.com\/ci\/engine\/match\/1535682.html?CMP=OTC-RSS",
+            "tossWinner": null,
+            "tossDecision": null,
+            "status": "LIVE",
             "venue": null
         }
     ]

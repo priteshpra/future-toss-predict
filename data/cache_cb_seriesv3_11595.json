@@ -1,0 +1,77 @@
+{
+    "ts": 1789963769,
+    "data": [
+        {
+            "matchId": "147895",
+            "seriesId": "11595",
+            "series": "Australia tour of South Africa, 2026",
+            "desc": "1st ODI",
+            "format": "ODI",
+            "date": "2026-09-24",
+            "time": "01:30 PM IST",
+            "state": "Upcoming",
+            "teamA": "South Africa",
+            "teamB": "Australia"
+        },
+        {
+            "matchId": "147898",
+            "seriesId": "11595",
+            "series": "Australia tour of South Africa, 2026",
+            "desc": "2nd ODI",
+            "format": "ODI",
+            "date": "2026-09-27",
+            "time": "01:30 PM IST",
+            "state": "Upcoming",
+            "teamA": "South Africa",
+            "teamB": "Australia"
+        },
+        {
+            "matchId": "147909",
+            "seriesId": "11595",
+            "series": "Australia tour of South Africa, 2026",
+            "desc": "3rd ODI",
+            "format": "ODI",
+            "date": "2026-09-30",
+            "time": "05:00 PM IST",
+            "state": "Upcoming",
+            "teamA": "South Africa",
+            "teamB": "Australia"
+        },
+        {
+            "matchId": "147920",
+            "seriesId": "11595",
+            "series": "Australia tour of South Africa, 2026",
+            "desc": "1st Test",
+            "format": "TEST",
+            "date": "2026-10-09",
+            "time": "01:00 PM IST",
+            "state": "Upcoming",
+            "teamA": "South Africa",
+            "teamB": "Australia"
+        },
+        {
+            "matchId": "147931",
+            "seriesId": "11595",
+            "series": "Australia tour of South Africa, 2026",
+            "desc": "2nd Test",
+            "format": "TEST",
+            "date": "2026-10-18",
+            "time": "01:30 PM IST",
+            "state": "Upcoming",
+            "teamA": "South Africa",
+            "teamB": "Australia"
+        },
+        {
+            "matchId": "147942",
+            "seriesId": "11595",
+            "series": "Australia tour of South Africa, 2026",
+            "desc": "3rd Test",
+            "format": "TEST",
+            "date": "2026-10-27",
+            "time": "01:30 PM IST",
+            "state": "Upcoming",
+            "teamA": "South Africa",
+            "teamB": "Australia"
+        }
+    ]
+}

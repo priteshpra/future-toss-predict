@@ -185,6 +185,7 @@ function leagues(): array
         ['id' => 'wcpl', 'name' => 'CPL Women', 'icon' => '🌺'],
         ['id' => 'odisha', 'name' => 'Odisha T20', 'icon' => '🟠'],
         ['id' => 'wapl', 'name' => 'WAPL', 'icon' => '🦅'],
+        ['id' => 'upl', 'name' => 'UPL', 'icon' => '⛰️'],
         ['id' => 'test', 'name' => 'Test', 'icon' => '📜'],
         ['id' => 'custom', 'name' => 'My Custom', 'icon' => '✨'],
     ];

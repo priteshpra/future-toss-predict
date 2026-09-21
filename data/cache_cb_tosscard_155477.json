@@ -1,8 +1,8 @@
 {
-    "ts": 1789922689,
+    "ts": 1789963770,
     "data": {
-        "tossWinner": null,
-        "tossDecision": null,
+        "tossWinner": "India Under-19s",
+        "tossDecision": "bat",
         "seriesId": "12191",
         "seriesSlug": "australia-u19-tour-of-india-2026"
     }

@@ -1480,5 +1480,18 @@
         "tossDecision": "bowl",
         "matchWinner": "",
         "source": "cricbuzz"
+    },
+    {
+        "id": "cb_155477",
+        "league": "",
+        "date": "2026-09-21",
+        "format": "ODI",
+        "teamA": "India Under-19s",
+        "teamB": "Australia Under-19s",
+        "venue": "",
+        "tossWinner": "India Under-19s",
+        "tossDecision": "bat",
+        "matchWinner": "",
+        "source": "cricbuzz"
     }
 ]
