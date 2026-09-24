@@ -13,13 +13,23 @@ function tg_bets_path(): string
     return data_path('tg_bets.json');
 }
 
+function tg_watched_path(): string
+{
+    return data_path('tg_watched.json');
+}
+
+function default_watch_users(): array
+{
+    return ['Rahul Dada', 'BAT9362', 'VIP7579'];
+}
+
 function default_tg_config(): array
 {
     return [
         'channel' => 'BetfairTossbookOrignal',
         'webUrl' => 'https://web.telegram.org/k/#@BetfairTossbookOrignal',
         'tmeUrl' => 'https://t.me/s/BetfairTossbookOrignal',
-        'targetUsers' => ['Rahul Dada', 'BAT9362'],
+        'targetUsers' => ['Rahul Dada', 'BAT9362', 'VIP7579'],
         'hideOthers' => true,
         'sound' => 'bell',
     ];
@@ -38,7 +48,7 @@ function save_tg_config(array $cfg): array
         $users = is_array($cfg['targetUsers']) ? $cfg['targetUsers'] : preg_split('/,/', (string) $cfg['targetUsers']);
         $base['targetUsers'] = array_values(array_filter(array_map('trim', $users)));
         if (!$base['targetUsers']) {
-            $base['targetUsers'] = ['Rahul Dada', 'BAT9362'];
+            $base['targetUsers'] = ['Rahul Dada', 'BAT9362', 'VIP7579'];
         }
     }
     if (isset($cfg['hideOthers'])) {
@@ -77,6 +87,9 @@ function canonical_tg_user(?string $name): string
     }
     if ($n === 'bat9362') {
         return 'BAT9362';
+    }
+    if ($n === 'vip7579') {
+        return 'VIP7579';
     }
     return $raw;
 }
@@ -225,8 +238,69 @@ function load_stored_bets(): array
 
 function save_stored_bets(array $posts): void
 {
-    $posts = array_slice($posts, 0, 400);
-    write_json(tg_bets_path(), ['posts' => $posts, 'updatedAt' => date('c')]);
+    if (!$posts) {
+        return;
+    }
+    $cfg = load_tg_config();
+    $targets = $cfg['targetUsers'] ?? default_watch_users();
+    $watched = [];
+    $rest = [];
+    foreach ($posts as $p) {
+        if (($p['type'] ?? '') === 'BET_PLACED' && user_is_target($p['userName'] ?? '', $targets, $p['rawText'] ?? '')) {
+            $watched[] = $p;
+        } else {
+            $rest[] = $p;
+        }
+    }
+    $merged = array_merge($watched, array_slice($rest, 0, 500));
+    usort($merged, fn($a, $b) => strcmp($b['isoTime'] ?? '', $a['isoTime'] ?? ''));
+    write_json(tg_bets_path(), ['posts' => $merged, 'updatedAt' => date('c')]);
+}
+
+function load_watched_bets(): array
+{
+    $data = read_json(tg_watched_path(), ['posts' => []]);
+    $posts = is_array($data['posts'] ?? null) ? $data['posts'] : [];
+    return array_values(array_filter(array_map('hydrate_tg_post', $posts), static function ($p) {
+        return ($p['type'] ?? '') === 'BET_PLACED' && !empty($p['postId']);
+    }));
+}
+
+function persist_watched_bets(array $candidates): array
+{
+    $cfg = load_tg_config();
+    $targets = $cfg['targetUsers'] ?? default_watch_users();
+    $byId = [];
+    foreach (load_watched_bets() as $p) {
+        $byId[(string) $p['postId']] = $p;
+    }
+    foreach ($candidates as $p) {
+        if (($p['type'] ?? '') !== 'BET_PLACED' || empty($p['postId'])) {
+            continue;
+        }
+        if (!user_is_target($p['userName'] ?? '', $targets, $p['rawText'] ?? '')) {
+            continue;
+        }
+        $byId[(string) $p['postId']] = hydrate_tg_post($p);
+    }
+    $cutoff = ist_now()->modify('-10 days')->getTimestamp();
+    $keep = [];
+    foreach ($byId as $p) {
+        try {
+            $ts = (new DateTimeImmutable($p['isoTime'] ?? 'now'))->getTimestamp();
+        } catch (Throwable $e) {
+            $ts = time();
+        }
+        if ($ts >= $cutoff) {
+            $keep[] = $p;
+        }
+    }
+    usort($keep, fn($a, $b) => strcmp($b['isoTime'] ?? '', $a['isoTime'] ?? ''));
+    $keep = array_slice($keep, 0, 1500);
+    if ($keep) {
+        write_json(tg_watched_path(), ['posts' => $keep, 'updatedAt' => date('c')]);
+    }
+    return $keep;
 }
 
 function fetch_telegram_pages(array $known): array
@@ -301,6 +375,15 @@ function fetch_telegram_bets(bool $force = false): array
             $known[$p['postId']] = true;
         }
     }
+    $watchedKeep = persist_watched_bets(array_merge($stored, $fresh));
+    foreach ($watchedKeep as $p) {
+        $id = (string) ($p['postId'] ?? '');
+        if ($id === '' || !empty($known[$id])) {
+            continue;
+        }
+        $stored[] = $p;
+        $known[$id] = true;
+    }
     usort($stored, fn($a, $b) => strcmp($b['isoTime'] ?? '', $a['isoTime'] ?? ''));
     save_stored_bets($stored);
 
@@ -310,7 +393,7 @@ function fetch_telegram_bets(bool $force = false): array
         'fetchedAt' => ist_now()->format('h:i:s A') . ' IST',
         'posts' => $stored,
     ];
-    if ($html) {
+    if ($html && $stored) {
         cache_set('tg_feed', $pack);
     }
     return $pack;
@@ -618,6 +701,21 @@ function telegram_payload(array $options = [], array $matches = []): array
     $cfg = load_tg_config();
     $feed = fetch_telegram_bets(!empty($options['force']));
     $posts = $feed['posts'] ?? [];
+    $watchedKeep = persist_watched_bets($posts);
+    $seenIds = [];
+    foreach ($posts as $p) {
+        if (!empty($p['postId'])) {
+            $seenIds[(string) $p['postId']] = true;
+        }
+    }
+    foreach ($watchedKeep as $p) {
+        $id = (string) ($p['postId'] ?? '');
+        if ($id === '' || !empty($seenIds[$id])) {
+            continue;
+        }
+        $posts[] = $p;
+        $seenIds[$id] = true;
+    }
     $type = $options['type'] ?? 'bets_only';
     if ($type === 'bets_only') {
         $posts = array_values(array_filter($posts, fn($p) => ($p['type'] ?? '') === 'BET_PLACED'));
@@ -653,7 +751,7 @@ function telegram_payload(array $options = [], array $matches = []): array
         'count' => count($filtered),
         'watchedCount' => count($watched),
         'bets' => array_slice($filtered, 0, (int) ($options['limit'] ?? 80)),
-        'watched' => array_slice($watched, 0, 40),
+        'watched' => array_slice($watched, 0, 120),
         'punterLoad' => $load,
     ];
 }

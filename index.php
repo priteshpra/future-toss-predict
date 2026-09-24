@@ -75,7 +75,7 @@
       <div class="tg-head">
         <div>
           <h2>TeleGramBet live</h2>
-          <p>Channel <a href="https://web.telegram.org/k/#@BetfairTossbookOrignal" target="_blank" rel="noopener">@BetfairTossbookOrignal</a> · Rahul Dada + BAT9362 drop = instant team + amount alert</p>
+          <p>Channel <a href="https://web.telegram.org/k/#@BetfairTossbookOrignal" target="_blank" rel="noopener">@BetfairTossbookOrignal</a> · Rahul Dada + BAT9362 + VIP7579 drop = instant team + amount alert</p>
         </div>
         <div class="tg-actions">
           <span id="tgStatus" class="badge live">Connecting</span>
@@ -87,9 +87,9 @@
 
       <div class="tg-track card">
         <label>Watch users
-          <input id="tgUsers" value="Rahul Dada, BAT9362" placeholder="Rahul Dada, BAT9362">
+          <input id="tgUsers" value="Rahul Dada, BAT9362, VIP7579" placeholder="Rahul Dada, BAT9362, VIP7579">
         </label>
-        <p class="tg-hint" style="margin:0">Watched drops mein <b>Rahul Dada</b> aur <b>BAT9362</b> dikhenge. Naya bet aate hi notification aayegi.</p>
+        <p class="tg-hint" style="margin:0">Watched drops mein <b>Rahul Dada</b>, <b>BAT9362</b> aur <b>VIP7579</b> persist rehte hain — refresh pe wipe nahi honge.</p>
         <button class="btn mint" type="button" id="tgSaveUsers">Save watch</button>
         <small id="tgPoll">Last poll: —</small>
       </div>
@@ -184,7 +184,7 @@
     </div>
   </div>
   <aside class="drawer" id="drawer"></aside>
-  <script src="assets/app.js?v=39"></script>
+  <script src="assets/app.js?v=40"></script>
 </body>
 
 </html>

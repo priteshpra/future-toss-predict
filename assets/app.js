@@ -1190,8 +1190,8 @@ async function enableTgAlerts() {
 }
 
 async function saveTgWatch() {
-  const users = ($('tgUsers').value || 'Rahul Dada, BAT9362').split(',').map((s) => s.trim()).filter(Boolean);
-  await api('telegram_config', { targetUsers: users.length ? users : ['Rahul Dada', 'BAT9362'], hideOthers: true }, 'POST');
+  const users = ($('tgUsers').value || 'Rahul Dada, BAT9362, VIP7579').split(',').map((s) => s.trim()).filter(Boolean);
+  await api('telegram_config', { targetUsers: users.length ? users : ['Rahul Dada', 'BAT9362', 'VIP7579'], hideOthers: true }, 'POST');
   loadTelegram(true);
 }
 
@@ -1256,7 +1256,7 @@ function renderTgFeed(bets) {
   const box = $('tgFeed');
   if (!box) return;
   if (!bets.length) {
-    box.innerHTML = '<div class="empty">Rahul Dada / BAT9362 ka koi bet abhi nahi aaya. Jaise hi channel pe unka bet drop hoga, yahan dikhega aur notification aa jayegi.</div>';
+    box.innerHTML = '<div class="empty">Rahul Dada / BAT9362 / VIP7579 ka koi bet abhi nahi aaya. Jaise hi channel pe unka bet drop hoga, yahan dikhega aur notification aa jayegi.</div>';
     return;
   }
   box.innerHTML = bets.map((b) => `
@@ -1269,8 +1269,8 @@ function renderTgFeed(bets) {
   `).join('');
 }
 
-async function loadTelegram(force) {
-  const data = await api('telegram_bets', { type: 'bets_only', hideOthers: '0', force: force ? '1' : '' });
+function paintTelegram(data, { notify = false } = {}) {
+  if (!data) return;
   if (data.config?.targetUsers && $('tgUsers') && document.activeElement !== $('tgUsers')) {
     $('tgUsers').value = data.config.targetUsers.join(', ');
   }
@@ -1289,5 +1289,37 @@ async function loadTelegram(force) {
     tgPrimed = true;
     return;
   }
-  watched.forEach(notifyRahul);
+  if (notify) watched.forEach(notifyRahul);
+}
+
+function rememberTelegram(data) {
+  try {
+    const slim = {
+      status: data.status,
+      fetchedAt: data.fetchedAt,
+      config: data.config,
+      watched: (data.watched || []).slice(0, 120),
+      punterLoad: data.punterLoad || { teams: [], matches: [] },
+    };
+    localStorage.setItem('ftp_tg_last', JSON.stringify(slim));
+  } catch (e) {}
+}
+
+async function loadTelegram(force) {
+  if (!force) {
+    try {
+      const cached = JSON.parse(localStorage.getItem('ftp_tg_last') || 'null');
+      if (cached?.watched?.length) paintTelegram(cached);
+    } catch (e) {}
+  }
+  const data = await api('telegram_bets', { type: 'bets_only', hideOthers: '0', force: force ? '1' : '' });
+  if (data && !data.error && (data.watched?.length || data.status === 'connected' || data.status === 'cached')) {
+    rememberTelegram(data);
+    paintTelegram(data, { notify: true });
+    return;
+  }
+  try {
+    const cached = JSON.parse(localStorage.getItem('ftp_tg_last') || 'null');
+    if (cached?.watched?.length) paintTelegram(cached);
+  } catch (e) {}
 }

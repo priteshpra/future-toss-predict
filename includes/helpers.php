@@ -39,7 +39,24 @@ function write_json(string $path, $data): bool
     if (!is_dir($dir)) {
         mkdir($dir, 0777, true);
     }
-    return (bool) file_put_contents($path, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    $flags = JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE;
+    if (defined('JSON_INVALID_UTF8_SUBSTITUTE')) {
+        $flags |= JSON_INVALID_UTF8_SUBSTITUTE;
+    }
+    $json = json_encode($data, $flags);
+    if (!is_string($json) || $json === '') {
+        return false;
+    }
+    $tmp = $path . '.tmp';
+    if (file_put_contents($tmp, $json, LOCK_EX) === false) {
+        return false;
+    }
+    if (@rename($tmp, $path)) {
+        return true;
+    }
+    $ok = (bool) file_put_contents($path, $json, LOCK_EX);
+    @unlink($tmp);
+    return $ok;
 }
 
 function ist_now(): DateTimeImmutable
