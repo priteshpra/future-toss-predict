@@ -80,7 +80,7 @@
         <div class="tg-actions">
           <span id="tgStatus" class="badge live">Connecting</span>
           <button class="btn" type="button" id="tgRefresh">Refresh</button>
-          <button class="btn mint" type="button" id="tgNotifyBtn">Enable alerts</button>
+          <button class="btn mint" type="button" id="tgNotifyBtn">Enable alerts + sound</button>
           <a class="btn" href="https://web.telegram.org/k/#@BetfairTossbookOrignal" target="_blank" rel="noopener">Open Telegram</a>
         </div>
       </div>
@@ -89,7 +89,7 @@
         <label>Watch users
           <input id="tgUsers" value="Rahul Dada, BAT9362, VIP7579" placeholder="Rahul Dada, BAT9362, VIP7579">
         </label>
-        <p class="tg-hint" style="margin:0">Watched drops mein <b>Rahul Dada</b>, <b>BAT9362</b> aur <b>VIP7579</b> persist rehte hain — refresh pe wipe nahi honge.</p>
+        <p class="tg-hint" style="margin:0">Watched drops mein <b>Rahul Dada</b>, <b>BAT9362</b> aur <b>VIP7579</b> persist rehte hain. Sound ke liye ek baar <b>Enable alerts + sound</b> dabao — naya bet aate hi beep + popup aayega.</p>
         <button class="btn mint" type="button" id="tgSaveUsers">Save watch</button>
         <small id="tgPoll">Last poll: —</small>
       </div>
@@ -184,7 +184,7 @@
     </div>
   </div>
   <aside class="drawer" id="drawer"></aside>
-  <script src="assets/app.js?v=41"></script>
+  <script src="assets/app.js?v=42"></script>
 </body>
 
 </html>

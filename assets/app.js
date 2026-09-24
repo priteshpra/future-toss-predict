@@ -1100,10 +1100,12 @@ async function boot() {
   }
   loadTelegram(false);
   scheduleMatchPoll();
-  setInterval(() => loadTelegram(false), 20000);
+  setInterval(() => loadTelegram(false), 10000);
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) loadTelegram(false);
   });
+  document.addEventListener('click', unlockTgAudio, { once: true });
+  document.addEventListener('keydown', unlockTgAudio, { once: true });
   setInterval(() => {
     const now = new Date().toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit' });
     $('istNow').textContent = now + ' IST';
@@ -1141,37 +1143,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const tgSeen = new Set(JSON.parse(localStorage.getItem('fta_tg_seen') || '[]'));
 let tgPrimed = false;
+let tgAudio = null;
+
+function unlockTgAudio() {
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    if (!tgAudio) tgAudio = new AC();
+    if (tgAudio.state === 'suspended') tgAudio.resume();
+    return tgAudio;
+  } catch (e) {
+    return null;
+  }
+}
 
 function playTgBeep() {
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const ctx = unlockTgAudio();
+  if (!ctx) return;
+  const now = ctx.currentTime;
+  [0, 0.22, 0.44].forEach((delay, i) => {
     const o = ctx.createOscillator();
     const g = ctx.createGain();
     o.type = 'sine';
-    o.frequency.value = 880;
+    o.frequency.value = i === 1 ? 1174 : 880;
     o.connect(g);
     g.connect(ctx.destination);
-    g.gain.setValueAtTime(0.0001, ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.18, ctx.currentTime + 0.02);
-    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.45);
-    o.start();
-    o.stop(ctx.currentTime + 0.5);
-  } catch (e) { }
+    const t0 = now + delay;
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(0.28, t0 + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.18);
+    o.start(t0);
+    o.stop(t0 + 0.2);
+  });
 }
 
 function rememberSeen() {
-  localStorage.setItem('fta_tg_seen', JSON.stringify([...tgSeen].slice(-200)));
+  localStorage.setItem('fta_tg_seen', JSON.stringify([...tgSeen].slice(-400)));
 }
 
-function notifyRahul(bet) {
+function notifyWatched(bet) {
   if (!bet?.postId || tgSeen.has(bet.postId)) return;
   tgSeen.add(bet.postId);
   rememberSeen();
   playTgBeep();
   if ('Notification' in window && Notification.permission === 'granted') {
-    new Notification(`${bet.userName || 'Rahul Dada'} ka naya bet`, {
+    new Notification(`${bet.userName || 'Watched user'} ka naya bet`, {
       body: `Team: ${bet.teamName || '—'}  |  Amount: ${bet.amount || '—'}`,
-      tag: bet.postId,
+      tag: String(bet.postId),
       requireInteraction: true,
     });
   }
@@ -1185,13 +1203,24 @@ function notifyRahul(bet) {
 function syncTgNotifyBtn() {
   const btn = $('tgNotifyBtn');
   if (!btn || !('Notification' in window)) return;
-  btn.textContent = Notification.permission === 'granted' ? 'Alerts on' : 'Enable alerts';
+  const on = Notification.permission === 'granted';
+  btn.textContent = on ? 'Alerts on · test sound' : 'Enable alerts + sound';
+  btn.classList.toggle('mint', !on);
 }
 
 async function enableTgAlerts() {
-  if (!('Notification' in window)) return;
-  await Notification.requestPermission();
+  unlockTgAudio();
+  if ('Notification' in window && Notification.permission !== 'granted') {
+    await Notification.requestPermission();
+  }
   syncTgNotifyBtn();
+  playTgBeep();
+  if ('Notification' in window && Notification.permission === 'granted') {
+    new Notification('Telegram alerts ON', {
+      body: 'Rahul Dada, BAT9362, VIP7579 — naya bet aate hi sound + popup aayega.',
+      tag: 'tg-alerts-test',
+    });
+  }
 }
 
 async function saveTgWatch() {
@@ -1274,7 +1303,7 @@ function renderTgFeed(bets) {
   `).join('');
 }
 
-function paintTelegram(data, { notify = false } = {}) {
+function paintTelegram(data, { notify = false, prime = false } = {}) {
   if (!data) return;
   if (data.config?.targetUsers && $('tgUsers') && document.activeElement !== $('tgUsers')) {
     $('tgUsers').value = data.config.targetUsers.join(', ');
@@ -1288,13 +1317,16 @@ function paintTelegram(data, { notify = false } = {}) {
   renderTeamMoney(data.punterLoad?.teams || []);
   renderPunterLoad(data.punterLoad?.matches || []);
   renderTgFeed(watched);
-  if (!tgPrimed) {
-    watched.forEach((b) => tgSeen.add(b.postId));
+  if (prime && !tgPrimed) {
+    const cutoff = Date.now() - 120000;
+    watched.forEach((b) => {
+      const ts = Date.parse(b.isoTime || '') || 0;
+      if (!ts || ts < cutoff) tgSeen.add(b.postId);
+    });
     rememberSeen();
     tgPrimed = true;
-    return;
   }
-  if (notify) watched.forEach(notifyRahul);
+  if (notify) watched.forEach(notifyWatched);
 }
 
 function rememberTelegram(data) {
@@ -1320,7 +1352,7 @@ async function loadTelegram(force) {
   const data = await api('telegram_bets', { type: 'bets_only', hideOthers: '0', force: force ? '1' : '' });
   if (data && !data.error && (data.watched?.length || data.status === 'connected' || data.status === 'cached')) {
     rememberTelegram(data);
-    paintTelegram(data, { notify: true });
+    paintTelegram(data, { notify: true, prime: true });
     return;
   }
   try {
