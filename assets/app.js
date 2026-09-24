@@ -118,9 +118,12 @@ function actionStamp(m) {
   const act = matchAction(m);
   const pick = matchPick(m);
   if (act === 'PLAY') return { cls: 'play', label: 'PLAY', sub: pick };
-  if (act === 'LEAN') return { cls: 'lean', label: 'LEAN', sub: pick };
+  if (act === 'LEAN') {
+    const early = !m?.prediction?.hasLoad && !m?.prediction?.sources?.loadOnly;
+    return { cls: 'lean', label: early ? 'EARLY AI' : 'LEAN', sub: pick || 'last 5 lean' };
+  }
   if (act === 'SKIP') return { cls: 'skip', label: 'SKIP', sub: 'split — no bet' };
-  return { cls: 'wait', label: 'WAIT', sub: 'load pending' };
+  return { cls: 'wait', label: 'WAIT', sub: pick || 'load pending' };
 }
 
 function isOpenToss(m) {
@@ -261,10 +264,12 @@ function copyPick(m) {
   if (navigator.clipboard?.writeText) navigator.clipboard.writeText(text.trim());
 }
 
-function tossDots(team) {
-  const rec = (team?.last5Rows && team.last5Rows.length)
-    ? team.last5Rows
-    : (team?.record?.recent || []);
+function tossDots(team, rows) {
+  const rec = (rows && rows.length)
+    ? rows
+    : ((team?.last5Rows && team.last5Rows.length)
+      ? team.last5Rows
+      : (team?.record?.recent || []));
   if (!rec.length) return '';
   return `<div class="toss-dots">${rec.slice(0, 5).map((r) => `<em class="${r.won ? 'w' : 'l'}">${r.won ? 'W' : 'L'}</em>`).join('')}</div>`;
 }
@@ -403,14 +408,14 @@ function cardHTML(m) {
           <div class="ico">${m.teamABadge || '🏏'}</div>
           <h3>${esc(m.teamA)}</h3>
           <small>Last 5 toss ${last5A}${m.teamAHome ? '  ·  Home' : (m.teamACaptain ? '  ·  ' + esc(m.teamACaptain) : '')}</small>
-          ${tossDots(m.analysis?.teamA)}
+          ${tossDots(m.analysis?.teamA, form.aLast5Rows)}
         </div>
         <div class="vs-mid">VS</div>
         <div class="team">
           <div class="ico">${m.teamBBadge || '🏏'}</div>
           <h3>${esc(m.teamB)}</h3>
           <small>Last 5 toss ${last5B}${m.teamBHome ? '  ·  Home' : (m.teamBCaptain ? '  ·  ' + esc(m.teamBCaptain) : '')}</small>
-          ${tossDots(m.analysis?.teamB)}
+          ${tossDots(m.analysis?.teamB, form.bLast5Rows)}
         </div>
       </div>
       ${bars}

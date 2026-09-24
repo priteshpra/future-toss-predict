@@ -184,7 +184,7 @@
     </div>
   </div>
   <aside class="drawer" id="drawer"></aside>
-  <script src="assets/app.js?v=40"></script>
+  <script src="assets/app.js?v=41"></script>
 </body>
 
 </html>

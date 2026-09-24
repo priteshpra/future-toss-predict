@@ -564,6 +564,8 @@ function enrich_match(array $m, string $date): array
             'bCareerPct' => $tB['record']['pct'] ?? 50,
             'aStreak' => $tA['streak']['text'],
             'bStreak' => $tB['streak']['text'],
+            'aLast5Rows' => $tA['last5Rows'] ?? [],
+            'bLast5Rows' => $tB['last5Rows'] ?? [],
             'h2h' => $analysis['headToHead'],
         ],
         'venueStats' => $analysis['venue'],

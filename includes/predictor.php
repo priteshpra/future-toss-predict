@@ -311,6 +311,12 @@ function apply_live_toss_markets(array $match, ?array $punter = null, ?array $we
     $last5Winner = $pred['last5Winner'] ?? null;
     $last10Winner = $pred['last10Winner'] ?? null;
     $l5Gap = abs((int) ($pred['last5Gap'] ?? 0));
+    if (!$last5Winner && $l5Gap >= 1) {
+        $pctLead = (int) ($pred['teamAPct'] ?? 50);
+        if ($pctLead !== 50) {
+            $last5Winner = $pctLead > 50 ? $teamA : $teamB;
+        }
+    }
     $histWinner = $last5Winner ?: null;
     $histHasEdge = (bool) $histWinner;
     $loadWinner = ($hasLoad && $loadGap >= 8)
@@ -436,12 +442,16 @@ function apply_live_toss_markets(array $match, ?array $punter = null, ?array $we
         $grade = 'lean';
         $reportLine = "SOFT LOAD: {$winner} — last 5 even, halka ₹. Yeh AI lean hai, strong lock nahi.";
         $reportPick = $winner;
+    } elseif (!$hasLoadEdge && $histHasEdge) {
+        $action = 'LEAN';
+        $grade = 'lean';
+        $reportLine = "EARLY AI: {$histWinner} — last 5 toss lean (toss se 2–3 hrs pehle). Load aate hi PLAY/SKIP confirm.";
+        $reportPick = $histWinner;
+        $winner = $histWinner;
     } elseif (!$hasLoadEdge && $mins > 15) {
         $action = 'WAIT';
         $grade = 'wait';
-        $reportLine = !$histHasEdge
-            ? 'WAIT — last 5 toss even. Koi pick nahi. Load 5–10 min pehle aayega.'
-            : ("EARLY NOTE: {$histWinner} last-5 pe lean hai, lekin load nahi. Yeh lock nahi — 10 min pehle board dekho.");
+        $reportLine = 'WAIT — last 5 toss even. Koi pick nahi. Load 2–3 hrs / 5–10 min pehle aayega.';
         $reportPick = null;
     } elseif (!$hasLoadEdge) {
         $action = 'WAIT';
@@ -461,7 +471,9 @@ function apply_live_toss_markets(array $match, ?array $punter = null, ?array $we
         'grade' => $grade,
         'pick' => $reportPick,
         'headline' => $reportLine,
-        'when' => $mins > 15 ? 'Asli load toss se 5–10 min pehle aata hai' : 'Toss window — load ab live check ho raha hai',
+        'when' => $mins > 120
+            ? 'Last-5 AI ab dikh raha hai · asli load toss se 2–3 hrs / 5–10 min pehle aata hai'
+            : ($mins > 15 ? 'Asli load toss se 5–10 min pehle aata hai' : 'Toss window — load ab live check ho raha hai'),
         'lastToss' => $histWinner,
         'load' => $loadWinner,
     ];
@@ -833,7 +845,7 @@ function analyze_toss(string $teamA, string $teamB, string $venue = '', string $
         $scoreA -= 1.4;
     }
 
-    $last5Winner = ($l5nA >= 2 && $l5nB >= 2 && abs($l5Gap) >= 2)
+    $last5Winner = ($l5nA >= 2 && $l5nB >= 2 && abs($l5Gap) >= 1)
         ? ($l5Gap > 0 ? $teamA : $teamB)
         : null;
     $last10Winner = (count($recentA) >= 6 && count($recentB) >= 6 && abs($l10Gap) >= 3)
@@ -899,9 +911,6 @@ function analyze_toss(string $teamA, string $teamB, string $venue = '', string $
         $norm = normalize_name($name);
         $last5Rows = [];
         foreach ($last5 as $m) {
-            if (($m['nW'] ?? '') === '') {
-                continue;
-            }
             $didWin = toss_won_by($m, $norm);
             $dec = ($m['tossDecision'] ?? '') === 'bat' ? 'bat' : ((($m['tossDecision'] ?? '') === 'field' || ($m['tossDecision'] ?? '') === 'bowl') ? 'bowl' : '');
             $last5Rows[] = [
@@ -913,6 +922,9 @@ function analyze_toss(string $teamA, string $teamB, string $venue = '', string $
             if (count($last5Rows) >= 5) {
                 break;
             }
+        }
+        if (!$last5Rows && !empty($rec['recent'])) {
+            $last5Rows = array_slice($rec['recent'], 0, 5);
         }
         return [
             'name' => $name,
