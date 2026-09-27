@@ -1,15 +1,15 @@
 {
-    "ts": 1789991598,
+    "ts": 1790269384,
     "data": [
         {
             "matchId": "147895",
             "seriesId": "11595",
-            "series": "Australia tour of South Africa, 2026",
+            "series": "SA v AUS 2026",
             "desc": "1st ODI",
             "format": "ODI",
             "date": "2026-09-24",
             "time": "01:30 PM IST",
-            "state": "Upcoming",
+            "state": "Complete",
             "teamA": "South Africa",
             "teamB": "Australia"
         },
@@ -68,7 +68,7 @@
             "desc": "3rd Test",
             "format": "TEST",
             "date": "2026-10-27",
-            "time": "01:30 PM IST",
+            "time": "02:00 PM IST",
             "state": "Upcoming",
             "teamA": "South Africa",
             "teamB": "Australia"

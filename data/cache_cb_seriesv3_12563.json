@@ -1,0 +1,173 @@
+{
+    "ts": 1790269384,
+    "data": [
+        {
+            "matchId": "170973",
+            "seriesId": "12563",
+            "series": "Asian Games 2026",
+            "desc": "1st Match, Group A",
+            "format": "T20",
+            "date": "2026-09-24",
+            "time": "05:30 AM IST",
+            "state": "Complete",
+            "teamA": "Afghanistan",
+            "teamB": "Japan"
+        },
+        {
+            "matchId": "170983",
+            "seriesId": "12563",
+            "series": "Asian Games 2026",
+            "desc": "2nd Match, Group B",
+            "format": "T20",
+            "date": "2026-09-24",
+            "time": "10:30 AM IST",
+            "state": "Complete",
+            "teamA": "Hong Kong, China",
+            "teamB": "Malaysia"
+        },
+        {
+            "matchId": "170991",
+            "seriesId": "12563",
+            "series": "Asian Games 2026",
+            "desc": "3rd Match, Group B",
+            "format": "T20",
+            "date": "2026-09-25",
+            "time": "05:30 AM IST",
+            "state": "Preview",
+            "teamA": "Hong Kong, China",
+            "teamB": "Oman"
+        },
+        {
+            "matchId": "170993",
+            "seriesId": "12563",
+            "series": "Asian Games 2026",
+            "desc": "4th Match, Group A",
+            "format": "T20",
+            "date": "2026-09-25",
+            "time": "10:30 AM IST",
+            "state": "Preview",
+            "teamA": "Afghanistan",
+            "teamB": "Nepal"
+        },
+        {
+            "matchId": "171001",
+            "seriesId": "12563",
+            "series": "Asian Games 2026",
+            "desc": "5th Match, Group A",
+            "format": "T20",
+            "date": "2026-09-26",
+            "time": "05:30 AM IST",
+            "state": "Upcoming",
+            "teamA": "Japan",
+            "teamB": "Nepal"
+        },
+        {
+            "matchId": "171011",
+            "seriesId": "12563",
+            "series": "Asian Games 2026",
+            "desc": "6th Match, Group B",
+            "format": "T20",
+            "date": "2026-09-26",
+            "time": "10:30 AM IST",
+            "state": "Upcoming",
+            "teamA": "Malaysia",
+            "teamB": "Oman"
+        },
+        {
+            "matchId": "171021",
+            "seriesId": "12563",
+            "series": "Asian Games 2026",
+            "desc": "1st Quarter-Final",
+            "format": "T20",
+            "date": "2026-09-28",
+            "time": "05:30 AM IST",
+            "state": "Upcoming",
+            "teamA": "Pakistan",
+            "teamB": "B2"
+        },
+        {
+            "matchId": "171030",
+            "seriesId": "12563",
+            "series": "Asian Games 2026",
+            "desc": "2nd Quarter-Final",
+            "format": "T20",
+            "date": "2026-09-28",
+            "time": "10:00 AM IST",
+            "state": "Upcoming",
+            "teamA": "India",
+            "teamB": "A2"
+        },
+        {
+            "matchId": "171040",
+            "seriesId": "12563",
+            "series": "Asian Games 2026",
+            "desc": "3rd Quarter-Final",
+            "format": "T20",
+            "date": "2026-09-29",
+            "time": "05:30 AM IST",
+            "state": "Upcoming",
+            "teamA": "Sri Lanka",
+            "teamB": "A1"
+        },
+        {
+            "matchId": "171041",
+            "seriesId": "12563",
+            "series": "Asian Games 2026",
+            "desc": "4th Quarter-Final",
+            "format": "T20",
+            "date": "2026-09-29",
+            "time": "10:00 AM IST",
+            "state": "Upcoming",
+            "teamA": "Bangladesh",
+            "teamB": "B1"
+        },
+        {
+            "matchId": "171051",
+            "seriesId": "12563",
+            "series": "Asian Games 2026",
+            "desc": "1st Semi-Final",
+            "format": "T20",
+            "date": "2026-10-01",
+            "time": "05:30 AM IST",
+            "state": "Upcoming",
+            "teamA": "TBC",
+            "teamB": "TBC"
+        },
+        {
+            "matchId": "171060",
+            "seriesId": "12563",
+            "series": "Asian Games 2026",
+            "desc": "2nd Semi-Final",
+            "format": "T20",
+            "date": "2026-10-01",
+            "time": "10:00 AM IST",
+            "state": "Upcoming",
+            "teamA": "TBC",
+            "teamB": "TBC"
+        },
+        {
+            "matchId": "171061",
+            "seriesId": "12563",
+            "series": "Asian Games 2026",
+            "desc": "Bronze Medal Match",
+            "format": "T20",
+            "date": "2026-10-03",
+            "time": "05:30 AM IST",
+            "state": "Upcoming",
+            "teamA": "TBC",
+            "teamB": "TBC"
+        },
+        {
+            "matchId": "171070",
+            "seriesId": "12563",
+            "series": "Asian Games 2026",
+            "desc": "Final",
+            "format": "T20",
+            "date": "2026-10-03",
+            "time": "10:00 AM IST",
+            "state": "Upcoming",
+            "teamA": "TBC",
+            "teamB": "TBC"
+        }
+    ]
+}

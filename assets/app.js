@@ -223,14 +223,14 @@ function renderPunterDesk(matches) {
   box.innerHTML = `
     <div class="desk-kicker">Punter desk · pehle yeh dekho <small>${playN ? playN + ' PLAY ready' : 'koi PLAY lock nahi — load wait'}</small></div>
     ${rows.map((m) => {
-      const st = actionStamp(m);
-      const pick = matchPick(m);
-      return `<button class="desk-row ${st.cls}" type="button" data-jump="${esc(m.id)}">
+    const st = actionStamp(m);
+    const pick = matchPick(m);
+    return `<button class="desk-row ${st.cls}" type="button" data-jump="${esc(m.id)}">
         <span class="desk-act">${esc(st.label)}</span>
         <span class="desk-vs"><b>${esc(pick || m.teamA)}</b> <small>${esc(m.teamA)} vs ${esc(m.teamB)}</small></span>
         <span class="desk-meta">${esc(fmtMins(m.minutesToToss))}<br>${esc(rupeeLine(m))}</span>
       </button>`;
-    }).join('')}
+  }).join('')}
   `;
   box.querySelectorAll('[data-jump]').forEach((el) => {
     el.onclick = () => {
@@ -793,9 +793,8 @@ function analysisDetailHTML(a, teamAName, teamBName, extra = {}) {
   const insights = Array.isArray(pick.insights) ? pick.insights : (Array.isArray(a.prediction?.insights) ? a.prediction.insights : []);
   const gradeSide = extra.tossWinner ? gradedPick({ prediction: pick }) : '';
   const actual = extra.tossWinner
-    ? `<div class="agree-note">Ground toss already saved: <b>${esc(extra.tossWinner)}</b> chose ${esc(extra.tossDecision || '—')}${
-        !gradeSide ? ' · no pick' : (namesClose(extra.tossWinner, gradeSide) ? ' · AI PASS' : ' · AI FAIL')
-      }</div>`
+    ? `<div class="agree-note">Ground toss already saved: <b>${esc(extra.tossWinner)}</b> chose ${esc(extra.tossDecision || '—')}${!gradeSide ? ' · no pick' : (namesClose(extra.tossWinner, gradeSide) ? ' · AI PASS' : ' · AI FAIL')
+    }</div>`
     : '';
   if (extra.tossWinner) {
     return `
@@ -1181,11 +1180,26 @@ function rememberSeen() {
   localStorage.setItem('fta_tg_seen', JSON.stringify([...tgSeen].slice(-400)));
 }
 
+function showTgToast(bet) {
+  let box = $('tgToast');
+  if (!box) {
+    box = document.createElement('div');
+    box.id = 'tgToast';
+    box.className = 'tg-toast';
+    document.body.appendChild(box);
+  }
+  box.innerHTML = `<b>${esc(bet.userName || 'Watched')}</b> · ${esc(bet.teamName || '—')} · ${esc(bet.amount || '')}`;
+  box.classList.add('show');
+  clearTimeout(showTgToast._t);
+  showTgToast._t = setTimeout(() => box.classList.remove('show'), 10000);
+}
+
 function notifyWatched(bet) {
   if (!bet?.postId || tgSeen.has(bet.postId)) return;
   tgSeen.add(bet.postId);
   rememberSeen();
   playTgBeep();
+  showTgToast(bet);
   if ('Notification' in window && Notification.permission === 'granted') {
     new Notification(`${bet.userName || 'Watched user'} ka naya bet`, {
       body: `Team: ${bet.teamName || '—'}  |  Amount: ${bet.amount || '—'}`,
@@ -1303,7 +1317,9 @@ function renderTgFeed(bets) {
   `).join('');
 }
 
-function paintTelegram(data, { notify = false, prime = false } = {}) {
+function paintTelegram(data, opts = {}) {
+  const notify = !!opts.notify;
+  const prime = !!opts.prime;
   if (!data) return;
   if (data.config?.targetUsers && $('tgUsers') && document.activeElement !== $('tgUsers')) {
     $('tgUsers').value = data.config.targetUsers.join(', ');
@@ -1318,11 +1334,16 @@ function paintTelegram(data, { notify = false, prime = false } = {}) {
   renderPunterLoad(data.punterLoad?.matches || []);
   renderTgFeed(watched);
   if (prime && !tgPrimed) {
-    const cutoff = Date.now() - 120000;
-    watched.forEach((b) => {
-      const ts = Date.parse(b.isoTime || '') || 0;
-      if (!ts || ts < cutoff) tgSeen.add(b.postId);
-    });
+    const prev = Array.isArray(opts.prevWatched) ? opts.prevWatched : [];
+    if (prev.length) {
+      prev.forEach((b) => { if (b.postId) tgSeen.add(b.postId); });
+    } else {
+      const cutoff = Date.now() - 20 * 60 * 1000;
+      watched.forEach((b) => {
+        const ts = Date.parse(b.isoTime || '') || 0;
+        if (!ts || ts < cutoff) tgSeen.add(b.postId);
+      });
+    }
     rememberSeen();
     tgPrimed = true;
   }
@@ -1339,24 +1360,24 @@ function rememberTelegram(data) {
       punterLoad: data.punterLoad || { teams: [], matches: [] },
     };
     localStorage.setItem('ftp_tg_last', JSON.stringify(slim));
-  } catch (e) {}
+  } catch (e) { }
 }
 
 async function loadTelegram(force) {
-  if (!force) {
-    try {
-      const cached = JSON.parse(localStorage.getItem('ftp_tg_last') || 'null');
-      if (cached?.watched?.length) paintTelegram(cached);
-    } catch (e) {}
-  }
+  let prevWatched = [];
+  try {
+    const cached = JSON.parse(localStorage.getItem('ftp_tg_last') || 'null');
+    prevWatched = cached?.watched || [];
+    if (!force && prevWatched.length) paintTelegram(cached);
+  } catch (e) { }
   const data = await api('telegram_bets', { type: 'bets_only', hideOthers: '0', force: force ? '1' : '' });
   if (data && !data.error && (data.watched?.length || data.status === 'connected' || data.status === 'cached')) {
+    paintTelegram(data, { notify: true, prime: true, prevWatched });
     rememberTelegram(data);
-    paintTelegram(data, { notify: true, prime: true });
     return;
   }
   try {
     const cached = JSON.parse(localStorage.getItem('ftp_tg_last') || 'null');
     if (cached?.watched?.length) paintTelegram(cached);
-  } catch (e) {}
+  } catch (e) { }
 }

@@ -1,0 +1,101 @@
+{
+    "ts": 1790269384,
+    "data": [
+        {
+            "matchId": "151532",
+            "seriesId": "11902",
+            "series": "West Indies tour of India, 2026",
+            "desc": "1st ODI",
+            "format": "ODI",
+            "date": "2026-09-27",
+            "time": "02:00 PM IST",
+            "state": "Upcoming",
+            "teamA": "India",
+            "teamB": "West Indies"
+        },
+        {
+            "matchId": "151543",
+            "seriesId": "11902",
+            "series": "West Indies tour of India, 2026",
+            "desc": "2nd ODI",
+            "format": "ODI",
+            "date": "2026-09-30",
+            "time": "02:00 PM IST",
+            "state": "Upcoming",
+            "teamA": "India",
+            "teamB": "West Indies"
+        },
+        {
+            "matchId": "151554",
+            "seriesId": "11902",
+            "series": "West Indies tour of India, 2026",
+            "desc": "3rd ODI",
+            "format": "ODI",
+            "date": "2026-10-03",
+            "time": "02:00 PM IST",
+            "state": "Upcoming",
+            "teamA": "India",
+            "teamB": "West Indies"
+        },
+        {
+            "matchId": "151565",
+            "seriesId": "11902",
+            "series": "West Indies tour of India, 2026",
+            "desc": "1st T20I",
+            "format": "T20",
+            "date": "2026-10-06",
+            "time": "07:00 PM IST",
+            "state": "Upcoming",
+            "teamA": "India",
+            "teamB": "West Indies"
+        },
+        {
+            "matchId": "151576",
+            "seriesId": "11902",
+            "series": "West Indies tour of India, 2026",
+            "desc": "2nd T20I",
+            "format": "T20",
+            "date": "2026-10-09",
+            "time": "07:00 PM IST",
+            "state": "Upcoming",
+            "teamA": "India",
+            "teamB": "West Indies"
+        },
+        {
+            "matchId": "151587",
+            "seriesId": "11902",
+            "series": "West Indies tour of India, 2026",
+            "desc": "3rd T20I",
+            "format": "T20",
+            "date": "2026-10-11",
+            "time": "07:00 PM IST",
+            "state": "Upcoming",
+            "teamA": "India",
+            "teamB": "West Indies"
+        },
+        {
+            "matchId": "151598",
+            "seriesId": "11902",
+            "series": "West Indies tour of India, 2026",
+            "desc": "4th T20I",
+            "format": "T20",
+            "date": "2026-10-14",
+            "time": "07:00 PM IST",
+            "state": "Upcoming",
+            "teamA": "India",
+            "teamB": "West Indies"
+        },
+        {
+            "matchId": "151602",
+            "seriesId": "11902",
+            "series": "West Indies tour of India, 2026",
+            "desc": "5th T20I",
+            "format": "T20",
+            "date": "2026-10-17",
+            "time": "07:00 PM IST",
+            "state": "Upcoming",
+            "teamA": "India",
+            "teamB": "West Indies"
+        }
+    ]
+}

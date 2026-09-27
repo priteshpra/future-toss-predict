@@ -94,6 +94,35 @@ function canonical_tg_user(?string $name): string
     return $raw;
 }
 
+function parse_tg_emoji_bet(string $rawText): ?array
+{
+    $line = trim(preg_split('/\R/', $rawText)[0] ?? $rawText);
+    $line = preg_replace('/[🎯💲✅✔]/u', ' ', $line) ?? $line;
+    $line = trim(preg_replace('/\s+/u', ' ', $line) ?? $line);
+    if (!preg_match('/^([A-Za-z][A-Za-z0-9._-]{2,40})\s+(.+?)\s+(₹\s*[\d,]+(?:\.\d+)?|Rs\.?\s*[\d,]+|[\d,]+)$/u', $line, $m)) {
+        return null;
+    }
+    $user = trim($m[1]);
+    $mid = trim($m[2]);
+    $amt = trim($m[3]);
+    if (preg_match('/^(deposit|withdrawal|withdraw)$/i', $mid)) {
+        return [
+            'userName' => $user,
+            'teamName' => null,
+            'amount' => $amt,
+            'action' => $mid,
+            'type' => 'DEPOSIT_WITHDRAWAL',
+        ];
+    }
+    return [
+        'userName' => $user,
+        'teamName' => $mid,
+        'amount' => $amt,
+        'action' => 'BET_PLACED',
+        'type' => 'BET_PLACED',
+    ];
+}
+
 function parse_tg_fields(string $rawText): array
 {
     $userName = null;
@@ -118,21 +147,30 @@ function parse_tg_fields(string $rawText): array
     }
     $skipCompact = (bool) preg_match('/DEPOSIT DONE|WITHDRAWAL DONE|TOSS LOAD|TOSS ID LIST|UPCOMING MATCHES|BONUS\s+\d/i', $rawText);
     if ($teamName === null && !$skipCompact) {
-        $first = trim(preg_split('/\R/', $rawText)[0] ?? $rawText);
-        $user = '';
-        $rest = '';
-        if (preg_match('/^(.+?)  +(.+)$/', $first, $parts)) {
-            $user = trim($parts[1]);
-            $rest = trim($parts[2]);
-        } elseif (preg_match('/^([A-Za-z0-9][A-Za-z0-9._-]{2,40}) (.+)$/', $first, $parts)) {
-            $user = trim($parts[1]);
-            $rest = trim($parts[2]);
-        }
-        if ($user !== '' && preg_match('/^(.+?) [-:] (.+)$/', $rest, $tm) && preg_match('/\d/', $tm[2] ?? '')) {
-            $userName = $user;
-            $teamName = trim($tm[1]);
-            $amount = trim($tm[2]);
-            $type = 'BET_PLACED';
+        $emojiLine = parse_tg_emoji_bet($rawText);
+        if ($emojiLine) {
+            $userName = $emojiLine['userName'];
+            $teamName = $emojiLine['teamName'];
+            $amount = $emojiLine['amount'];
+            $action = $emojiLine['action'];
+            $type = $emojiLine['type'];
+        } else {
+            $first = trim(preg_split('/\R/', $rawText)[0] ?? $rawText);
+            $user = '';
+            $rest = '';
+            if (preg_match('/^(.+?)  +(.+)$/', $first, $parts)) {
+                $user = trim($parts[1]);
+                $rest = trim($parts[2]);
+            } elseif (preg_match('/^([A-Za-z0-9][A-Za-z0-9._-]{2,40}) (.+)$/', $first, $parts)) {
+                $user = trim($parts[1]);
+                $rest = trim($parts[2]);
+            }
+            if ($user !== '' && preg_match('/^(.+?) [-:] (.+)$/', $rest, $tm) && preg_match('/\d/', $tm[2] ?? '')) {
+                $userName = $user;
+                $teamName = trim($tm[1]);
+                $amount = trim($tm[2]);
+                $type = 'BET_PLACED';
+            }
         }
     }
     if (!$teamName && $userName && preg_match('/TOSS|WINNER|BET/i', $rawText)) {
