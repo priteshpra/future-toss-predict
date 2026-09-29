@@ -1,6 +1,30 @@
 {
-    "ts": 1790269384,
+    "ts": 1790697402,
     "data": [
+        {
+            "matchId": "171040",
+            "seriesId": "12563",
+            "series": "Asian Games 2026",
+            "desc": "3rd Quarter-Final",
+            "format": "T20",
+            "date": "2026-09-29",
+            "time": "05:30 AM IST",
+            "state": "Complete",
+            "teamA": "Sri Lanka",
+            "teamB": "Nepal"
+        },
+        {
+            "matchId": "171041",
+            "seriesId": "12563",
+            "series": "Asian Games 2026",
+            "desc": "4th Quarter-Final",
+            "format": "T20",
+            "date": "2026-09-29",
+            "time": "10:00 AM IST",
+            "state": "Complete",
+            "teamA": "Bangladesh",
+            "teamB": "Malaysia"
+        },
         {
             "matchId": "170973",
             "seriesId": "12563",
@@ -33,7 +57,7 @@
             "format": "T20",
             "date": "2026-09-25",
             "time": "05:30 AM IST",
-            "state": "Preview",
+            "state": "Complete",
             "teamA": "Hong Kong, China",
             "teamB": "Oman"
         },
@@ -45,7 +69,7 @@
             "format": "T20",
             "date": "2026-09-25",
             "time": "10:30 AM IST",
-            "state": "Preview",
+            "state": "Complete",
             "teamA": "Afghanistan",
             "teamB": "Nepal"
         },
@@ -57,9 +81,9 @@
             "format": "T20",
             "date": "2026-09-26",
             "time": "05:30 AM IST",
-            "state": "Upcoming",
-            "teamA": "Japan",
-            "teamB": "Nepal"
+            "state": "Complete",
+            "teamA": "Nepal",
+            "teamB": "Japan"
         },
         {
             "matchId": "171011",
@@ -69,7 +93,7 @@
             "format": "T20",
             "date": "2026-09-26",
             "time": "10:30 AM IST",
-            "state": "Upcoming",
+            "state": "Abandon",
             "teamA": "Malaysia",
             "teamB": "Oman"
         },
@@ -81,9 +105,9 @@
             "format": "T20",
             "date": "2026-09-28",
             "time": "05:30 AM IST",
-            "state": "Upcoming",
+            "state": "Abandon",
             "teamA": "Pakistan",
-            "teamB": "B2"
+            "teamB": "Hong Kong, China"
         },
         {
             "matchId": "171030",
@@ -93,33 +117,9 @@
             "format": "T20",
             "date": "2026-09-28",
             "time": "10:00 AM IST",
-            "state": "Upcoming",
+            "state": "Abandon",
             "teamA": "India",
-            "teamB": "A2"
-        },
-        {
-            "matchId": "171040",
-            "seriesId": "12563",
-            "series": "Asian Games 2026",
-            "desc": "3rd Quarter-Final",
-            "format": "T20",
-            "date": "2026-09-29",
-            "time": "05:30 AM IST",
-            "state": "Upcoming",
-            "teamA": "Sri Lanka",
-            "teamB": "A1"
-        },
-        {
-            "matchId": "171041",
-            "seriesId": "12563",
-            "series": "Asian Games 2026",
-            "desc": "4th Quarter-Final",
-            "format": "T20",
-            "date": "2026-09-29",
-            "time": "10:00 AM IST",
-            "state": "Upcoming",
-            "teamA": "Bangladesh",
-            "teamB": "B1"
+            "teamB": "Afghanistan"
         },
         {
             "matchId": "171051",
@@ -130,8 +130,8 @@
             "date": "2026-10-01",
             "time": "05:30 AM IST",
             "state": "Upcoming",
-            "teamA": "TBC",
-            "teamB": "TBC"
+            "teamA": "Pakistan",
+            "teamB": "Bangladesh"
         },
         {
             "matchId": "171060",
@@ -142,8 +142,8 @@
             "date": "2026-10-01",
             "time": "10:00 AM IST",
             "state": "Upcoming",
-            "teamA": "TBC",
-            "teamB": "TBC"
+            "teamA": "India",
+            "teamB": "Sri Lanka"
         },
         {
             "matchId": "171061",

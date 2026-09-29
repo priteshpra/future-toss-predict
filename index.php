@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Toss Desk · Load + Last Matches</title>
-  <link rel="stylesheet" href="assets/app.css?v=18">
+  <link rel="stylesheet" href="assets/app.css?v=20">
 </head>
 
 <body>
@@ -75,7 +75,7 @@
       <div class="tg-head">
         <div>
           <h2>TeleGramBet live</h2>
-          <p>Channel <a href="https://web.telegram.org/k/#@BetfairTossbookOrignal" target="_blank" rel="noopener">@BetfairTossbookOrignal</a> · Rahul Dada + BAT9362 + VIP7579 drop = instant team + amount alert</p>
+          <p>Channel <a href="https://web.telegram.org/k/#@BetfairTossbookOrignal" target="_blank" rel="noopener">@BetfairTossbookOrignal</a> · Rahul Dada + BAT9362 + VIP7579 + BTB0353 drop = instant team + amount alert</p>
         </div>
         <div class="tg-actions">
           <span id="tgStatus" class="badge live">Connecting</span>
@@ -87,10 +87,12 @@
 
       <div class="tg-track card">
         <label>Watch users
-          <input id="tgUsers" value="Rahul Dada, BAT9362, VIP7579" placeholder="Rahul Dada, BAT9362, VIP7579">
+          <input id="tgUsers" type="text" value="Rahul Dada, BAT9362, VIP7579, BTB0353" placeholder="Rahul Dada, BAT9362, VIP7579, BTB0353">
         </label>
-        <p class="tg-hint" style="margin:0">Watched drops mein <b>Rahul Dada</b>, <b>BAT9362</b> aur <b>VIP7579</b> persist rehte hain. Sound ke liye ek baar <b>Enable alerts + sound</b> dabao — naya bet aate hi beep + popup aayega.</p>
-        <button class="btn mint" type="button" id="tgSaveUsers">Save watch</button>
+        <div class="tg-track-row">
+          <p class="tg-hint">Watched drops: <b>Rahul Dada</b>, <b>BAT9362</b>, <b>VIP7579</b>, <b>BTB0353</b>. Ek baar <b>Enable alerts + sound</b> dabao — naya bet aate hi beep + popup aayega.</p>
+          <button class="btn mint" type="button" id="tgSaveUsers">Save watch</button>
+        </div>
         <small id="tgPoll">Last poll: —</small>
       </div>
 
@@ -184,7 +186,7 @@
     </div>
   </div>
   <aside class="drawer" id="drawer"></aside>
-  <script src="assets/app.js?v=43"></script>
+  <script src="assets/app.js?v=44"></script>
 </body>
 
 </html>

@@ -1,4 +1,5 @@
 const API = 'api.php';
+const DEFAULT_TG_WATCH = ['Rahul Dada', 'BAT9362', 'VIP7579', 'BTB0353'];
 const state = {
   date: null,
   league: 'all',
@@ -1231,15 +1232,15 @@ async function enableTgAlerts() {
   playTgBeep();
   if ('Notification' in window && Notification.permission === 'granted') {
     new Notification('Telegram alerts ON', {
-      body: 'Rahul Dada, BAT9362, VIP7579 — naya bet aate hi sound + popup aayega.',
+      body: DEFAULT_TG_WATCH.join(', ') + ' — naya bet aate hi sound + popup aayega.',
       tag: 'tg-alerts-test',
     });
   }
 }
 
 async function saveTgWatch() {
-  const users = ($('tgUsers').value || 'Rahul Dada, BAT9362, VIP7579').split(',').map((s) => s.trim()).filter(Boolean);
-  await api('telegram_config', { targetUsers: users.length ? users : ['Rahul Dada', 'BAT9362', 'VIP7579'], hideOthers: true }, 'POST');
+  const users = ($('tgUsers').value || DEFAULT_TG_WATCH.join(', ')).split(',').map((s) => s.trim()).filter(Boolean);
+  await api('telegram_config', { targetUsers: users.length ? users : DEFAULT_TG_WATCH, hideOthers: true }, 'POST');
   loadTelegram(true);
 }
 
@@ -1304,7 +1305,7 @@ function renderTgFeed(bets) {
   const box = $('tgFeed');
   if (!box) return;
   if (!bets.length) {
-    box.innerHTML = '<div class="empty">Rahul Dada / BAT9362 / VIP7579 ka koi bet abhi nahi aaya. Jaise hi channel pe unka bet drop hoga, yahan dikhega aur notification aa jayegi.</div>';
+    box.innerHTML = `<div class="empty">${esc(DEFAULT_TG_WATCH.join(' / '))} ka koi bet abhi nahi aaya. Jaise hi channel pe unka bet drop hoga, yahan dikhega aur notification aa jayegi.</div>`;
     return;
   }
   box.innerHTML = bets.map((b) => `

@@ -932,9 +932,9 @@ body.drawer-open {
 
 .tg-track {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
-  gap: 10px;
-  align-items: end;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  align-items: stretch;
   margin-bottom: 18px;
 }
 
@@ -943,17 +943,43 @@ body.drawer-open {
   color: var(--muted);
   display: grid;
   gap: 6px;
+  min-width: 0;
 }
 
 .tg-track input[type="text"],
 .tg-track input:not([type="checkbox"]) {
   width: 100%;
+  min-width: 0;
   padding: 10px 12px;
-  min-height: 42px;
+  min-height: 44px;
   border-radius: 12px;
   border: 1px solid var(--line);
   background: #0f172a;
   color: white;
+  font-size: 14px;
+}
+
+.tg-track-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tg-track-row .tg-hint {
+  flex: 1 1 240px;
+  margin: 0;
+  min-width: 0;
+}
+
+.tg-track-row .btn {
+  flex: 0 0 auto;
+}
+
+#tgPoll {
+  color: var(--muted);
+  font-size: 12px;
 }
 
 .tg-check {
@@ -1302,8 +1328,8 @@ body.drawer-open {
 }
 
 @media (max-width: 720px) {
-  .tg-track {
-    grid-template-columns: 1fr;
+  .tg-track-row {
+    align-items: flex-start;
   }
 
   .load-teams {

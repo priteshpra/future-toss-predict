@@ -1,6 +1,18 @@
 {
-    "ts": 1790269384,
+    "ts": 1790697401,
     "data": [
+        {
+            "matchId": "151543",
+            "seriesId": "11902",
+            "series": "India v West Indies",
+            "desc": "2nd ODI",
+            "format": "ODI",
+            "date": "2026-09-30",
+            "time": "02:00 PM IST",
+            "state": "Preview",
+            "teamA": "India",
+            "teamB": "West Indies"
+        },
         {
             "matchId": "151532",
             "seriesId": "11902",
@@ -9,21 +21,9 @@
             "format": "ODI",
             "date": "2026-09-27",
             "time": "02:00 PM IST",
-            "state": "Upcoming",
-            "teamA": "India",
-            "teamB": "West Indies"
-        },
-        {
-            "matchId": "151543",
-            "seriesId": "11902",
-            "series": "West Indies tour of India, 2026",
-            "desc": "2nd ODI",
-            "format": "ODI",
-            "date": "2026-09-30",
-            "time": "02:00 PM IST",
-            "state": "Upcoming",
-            "teamA": "India",
-            "teamB": "West Indies"
+            "state": "Complete",
+            "teamA": "West Indies",
+            "teamB": "India"
         },
         {
             "matchId": "151554",

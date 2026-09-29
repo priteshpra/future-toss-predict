@@ -1,18 +1,6 @@
 {
-    "ts": 1790269384,
+    "ts": 1790697401,
     "data": [
-        {
-            "matchId": "155411",
-            "seriesId": "12184",
-            "series": "Australia A tour of India 2026",
-            "desc": "1st unofficial Test",
-            "format": "TEST",
-            "date": "2026-09-22",
-            "time": "09:30 AM IST",
-            "state": "Stumps",
-            "teamA": "India A",
-            "teamB": "Australia A"
-        },
         {
             "matchId": "155422",
             "seriesId": "12184",
@@ -21,7 +9,19 @@
             "format": "TEST",
             "date": "2026-09-29",
             "time": "09:30 AM IST",
-            "state": "Upcoming",
+            "state": "Stumps",
+            "teamA": "Australia A",
+            "teamB": "India A"
+        },
+        {
+            "matchId": "155411",
+            "seriesId": "12184",
+            "series": "Australia A tour of India 2026",
+            "desc": "1st unofficial Test",
+            "format": "TEST",
+            "date": "2026-09-22",
+            "time": "09:30 AM IST",
+            "state": "Complete",
             "teamA": "India A",
             "teamB": "Australia A"
         },

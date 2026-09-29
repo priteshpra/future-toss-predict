@@ -1,11 +1,12 @@
 {
     "channel": "BetfairTossbookOrignal",
-    "webUrl": "https:\/\/web.telegram.org\/k\/#@BetfairTossbookOrignal",
-    "tmeUrl": "https:\/\/t.me\/s\/BetfairTossbookOrignal",
+    "webUrl": "https://web.telegram.org/k/#@BetfairTossbookOrignal",
+    "tmeUrl": "https://t.me/s/BetfairTossbookOrignal",
     "targetUsers": [
         "Rahul Dada",
         "BAT9362",
-        "VIP7579"
+        "VIP7579",
+        "BTB0353"
     ],
     "hideOthers": true,
     "sound": "bell"

@@ -1,15 +1,15 @@
 {
-    "ts": 1790269383,
+    "ts": 1790697400,
     "data": [
         {
-            "matchId": "155639",
+            "matchId": "155650",
             "seriesId": "12210",
             "series": "Australia A Women tour of India 2026",
-            "desc": "3rd unofficial ODI",
-            "format": "ODI",
-            "date": "2026-09-25",
-            "time": "02:00 PM IST",
-            "state": "Preview",
+            "desc": "Only unofficial Test",
+            "format": "TEST",
+            "date": "2026-09-29",
+            "time": "09:30 AM IST",
+            "state": "Stumps",
             "teamA": "India A Women",
             "teamB": "Australia A Women"
         },
@@ -74,16 +74,16 @@
             "teamB": "Australia A Women"
         },
         {
-            "matchId": "155650",
+            "matchId": "155639",
             "seriesId": "12210",
             "series": "Australia A Women tour of India 2026",
-            "desc": "Only unofficial Test",
-            "format": "TEST",
-            "date": "2026-09-29",
-            "time": "09:30 AM IST",
-            "state": "Upcoming",
-            "teamA": "India A Women",
-            "teamB": "Australia A Women"
+            "desc": "3rd unofficial ODI",
+            "format": "ODI",
+            "date": "2026-09-25",
+            "time": "02:00 PM IST",
+            "state": "Complete",
+            "teamA": "Australia A Women",
+            "teamB": "India A Women"
         }
     ]
 }

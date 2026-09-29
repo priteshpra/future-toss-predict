@@ -1,6 +1,51 @@
 {
     "posts": [
         {
+            "postId": "BetfairTossbookOrignal\/1854997",
+            "isoTime": "2026-09-29T15:30:13+00:00",
+            "displayTime": "09:00:13 PM",
+            "rawText": "🎯 VIP7579 Rocks ₹6,750 🎯",
+            "userName": "VIP7579",
+            "teamName": "Rocks",
+            "amount": "₹6,750",
+            "amountValue": 6750,
+            "action": "BET_PLACED",
+            "type": "BET_PLACED",
+            "channel": "@BetfairTossbookOrignal",
+            "messageUrl": "https:\/\/t.me\/BetfairTossbookOrignal\/1854997",
+            "webTelegramUrl": "https:\/\/web.telegram.org\/k\/#@BetfairTossbookOrignal"
+        },
+        {
+            "postId": "BetfairTossbookOrignal\/1854970",
+            "isoTime": "2026-09-29T15:24:56+00:00",
+            "displayTime": "08:54:56 PM",
+            "rawText": "🎯 RAHULDADA Knights ₹12,861 🎯",
+            "userName": "Rahul Dada",
+            "teamName": "Knights",
+            "amount": "₹12,861",
+            "amountValue": 12861,
+            "action": "BET_PLACED",
+            "type": "BET_PLACED",
+            "channel": "@BetfairTossbookOrignal",
+            "messageUrl": "https:\/\/t.me\/BetfairTossbookOrignal\/1854970",
+            "webTelegramUrl": "https:\/\/web.telegram.org\/k\/#@BetfairTossbookOrignal"
+        },
+        {
+            "postId": "BetfairTossbookOrignal\/1844812",
+            "isoTime": "2026-09-24T16:22:33+00:00",
+            "displayTime": "09:52:33 PM",
+            "rawText": "BTB0353  BOUBYAN - ₹10,000 ✅",
+            "userName": "BTB0353",
+            "teamName": "BOUBYAN",
+            "amount": "₹10,000 �",
+            "amountValue": 10000,
+            "action": "BET_PLACED",
+            "type": "BET_PLACED",
+            "channel": "@BetfairTossbookOrignal",
+            "messageUrl": "https:\/\/t.me\/BetfairTossbookOrignal\/1844812",
+            "webTelegramUrl": "https:\/\/web.telegram.org\/k\/#@BetfairTossbookOrignal"
+        },
+        {
             "postId": "BetfairTossbookOrignal\/1844792",
             "isoTime": "2026-09-24T16:08:59+00:00",
             "displayTime": "09:38:59 PM",
@@ -16,5 +61,5 @@
             "webTelegramUrl": "https:\/\/web.telegram.org\/k\/#@BetfairTossbookOrignal"
         }
     ],
-    "updatedAt": "2026-09-24T19:05:04+02:00"
+    "updatedAt": "2026-09-29T17:58:04+02:00"
 }

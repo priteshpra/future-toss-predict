@@ -20,7 +20,7 @@ function tg_watched_path(): string
 
 function default_watch_users(): array
 {
-    return ['Rahul Dada', 'BAT9362', 'VIP7579'];
+    return ['Rahul Dada', 'BAT9362', 'VIP7579', 'BTB0353'];
 }
 
 function default_tg_config(): array
@@ -29,7 +29,7 @@ function default_tg_config(): array
         'channel' => 'BetfairTossbookOrignal',
         'webUrl' => 'https://web.telegram.org/k/#@BetfairTossbookOrignal',
         'tmeUrl' => 'https://t.me/s/BetfairTossbookOrignal',
-        'targetUsers' => ['Rahul Dada', 'BAT9362', 'VIP7579'],
+        'targetUsers' => default_watch_users(),
         'hideOthers' => true,
         'sound' => 'bell',
     ];
@@ -48,7 +48,7 @@ function save_tg_config(array $cfg): array
         $users = is_array($cfg['targetUsers']) ? $cfg['targetUsers'] : preg_split('/,/', (string) $cfg['targetUsers']);
         $base['targetUsers'] = array_values(array_filter(array_map('trim', $users)));
         if (!$base['targetUsers']) {
-            $base['targetUsers'] = ['Rahul Dada', 'BAT9362', 'VIP7579'];
+            $base['targetUsers'] = default_watch_users();
         }
     }
     if (isset($cfg['hideOthers'])) {
@@ -90,6 +90,9 @@ function canonical_tg_user(?string $name): string
     }
     if ($n === 'vip7579') {
         return 'VIP7579';
+    }
+    if ($n === 'btb0353') {
+        return 'BTB0353';
     }
     return $raw;
 }

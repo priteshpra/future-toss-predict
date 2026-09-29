@@ -1,10 +1,22 @@
 {
-    "ts": 1790269384,
+    "ts": 1790697402,
     "data": [
+        {
+            "matchId": "147909",
+            "seriesId": "11595",
+            "series": "SA v AUS 2026",
+            "desc": "3rd ODI",
+            "format": "ODI",
+            "date": "2026-09-30",
+            "time": "05:00 PM IST",
+            "state": "Preview",
+            "teamA": "South Africa",
+            "teamB": "Australia"
+        },
         {
             "matchId": "147895",
             "seriesId": "11595",
-            "series": "SA v AUS 2026",
+            "series": "Australia tour of South Africa, 2026",
             "desc": "1st ODI",
             "format": "ODI",
             "date": "2026-09-24",
@@ -21,19 +33,7 @@
             "format": "ODI",
             "date": "2026-09-27",
             "time": "01:30 PM IST",
-            "state": "Upcoming",
-            "teamA": "South Africa",
-            "teamB": "Australia"
-        },
-        {
-            "matchId": "147909",
-            "seriesId": "11595",
-            "series": "Australia tour of South Africa, 2026",
-            "desc": "3rd ODI",
-            "format": "ODI",
-            "date": "2026-09-30",
-            "time": "05:00 PM IST",
-            "state": "Upcoming",
+            "state": "Complete",
             "teamA": "South Africa",
             "teamB": "Australia"
         },

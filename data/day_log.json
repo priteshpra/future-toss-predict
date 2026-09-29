@@ -6046,5 +6046,1695 @@
                 "lockedAt": "2026-09-24T22:33:24+05:30"
             }
         }
+    ],
+    "2026-09-29": [
+        {
+            "id": "live_1535684",
+            "teamA": "India Under-19s",
+            "teamB": "Australia Under-19s",
+            "league": "international",
+            "tournament": "India Under-19s 494\/10  v Australia Under-19s 229\/10 &  217\/10 *",
+            "format": "T20",
+            "time": "10:00 AM IST",
+            "venue": "International Cricket Ground",
+            "status": "LIVE",
+            "tossWinner": null,
+            "tossDecision": null,
+            "liveScore": "India Under-19s 494\/10  v Australia Under-19s 229\/10 &  217\/10 *",
+            "date": "2026-09-29",
+            "liveLock": {
+                "prediction": {
+                    "winner": "Australia Under-19s",
+                    "probability": 56,
+                    "confidence": "Last-5 toss note only — wait for load",
+                    "decision": "Bowl \/ Field First",
+                    "teamAPct": 44,
+                    "teamBPct": 56,
+                    "tossLoadA": 50,
+                    "tossLoadB": 50,
+                    "insights": [
+                        "Telegram ₹: is match pe mapped toss money nahi mila.",
+                        "Website load: toss-book board pe ye match listed nahi hai.",
+                        "Early note: Australia Under-19s (56%) last-5 se. Load abhi nahi — PLAY nahi.",
+                        "Strong last-5 toss: Australia Under-19s (India Under-19s 1\/3 vs Australia Under-19s 2\/3). Career\/H2H backup only.",
+                        "India Under-19s career toss wins 1\/3 (33%). Last 10: 1\/3. Last 5: 1\/3.",
+                        "Australia Under-19s career toss wins 2\/3 (67%). Last 10: 2\/3. Last 5: 2\/3.",
+                        "India Under-19s after winning toss: bowl 0 \/ bat 1. Australia Under-19s: bowl 1 \/ bat 1.",
+                        "Head-to-head toss: India Under-19s 1 – 2 Australia Under-19s (3 meetings).",
+                        "Ground calling at International Cricket Ground: toss winners prefer Bowl \/ Field First (bowl 55% \/ bat 45%, dew Medium)."
+                    ],
+                    "locked": true,
+                    "last5Winner": "Australia Under-19s",
+                    "last5Gap": -1,
+                    "last10Winner": null,
+                    "tipperReport": {
+                        "action": "LEAN",
+                        "grade": "lean",
+                        "pick": "Australia Under-19s",
+                        "headline": "EARLY AI: Australia Under-19s — last 5 toss lean (toss se 2–3 hrs pehle). Load aate hi PLAY\/SKIP confirm.",
+                        "when": "Toss window — load ab live check ho raha hai",
+                        "lastToss": "Australia Under-19s",
+                        "load": null
+                    },
+                    "webLoadA": 50,
+                    "webLoadB": 50,
+                    "hasLoad": false,
+                    "hasTgLoad": false,
+                    "hasWebLoad": false,
+                    "onBook": false,
+                    "strong": false,
+                    "pickStrength": "lean",
+                    "sources": {
+                        "lastToss": {
+                            "winner": "Australia Under-19s",
+                            "pctA": 44,
+                            "pctB": 56,
+                            "last5": "Australia Under-19s",
+                            "gap": 1
+                        },
+                        "load": {
+                            "winner": null,
+                            "pctA": 50,
+                            "pctB": 50,
+                            "hasMoney": false,
+                            "amountA": 0,
+                            "amountB": 0,
+                            "source": null
+                        },
+                        "telegram": {
+                            "hasMoney": false,
+                            "pctA": 50,
+                            "pctB": 50,
+                            "amountA": 0,
+                            "amountB": 0
+                        },
+                        "website": {
+                            "onBook": false,
+                            "hasLean": false,
+                            "winner": null,
+                            "pctA": 50,
+                            "pctB": 50
+                        },
+                        "agree": false,
+                        "split": false,
+                        "triple": false,
+                        "loadOnly": false
+                    },
+                    "model": "Mapped ₹ first · last 5 confirm",
+                    "whyPick": {
+                        "picked": "Australia Under-19s",
+                        "pct": 56,
+                        "headline": "EARLY NOTE Australia Under-19s: last 5 toss edge (44% vs 56%). Load nahi mila — strong pick nahi.",
+                        "factors": [
+                            {
+                                "name": "Last 5 toss",
+                                "a": "1\/3 (33%)",
+                                "b": "2\/3 (67%)",
+                                "edge": "Australia Under-19s"
+                            },
+                            {
+                                "name": "Last 10 toss",
+                                "a": "1\/3 (33%)",
+                                "b": "2\/3 (67%)",
+                                "edge": "Australia Under-19s"
+                            },
+                            {
+                                "name": "Career toss",
+                                "a": "1\/3 (33%)",
+                                "b": "2\/3 (67%)",
+                                "edge": "Australia Under-19s"
+                            },
+                            {
+                                "name": "H2H toss",
+                                "a": "1",
+                                "b": "2",
+                                "edge": "Australia Under-19s"
+                            },
+                            {
+                                "name": "Telegram ₹",
+                                "a": "—",
+                                "b": "—",
+                                "edge": "No TG money"
+                            },
+                            {
+                                "name": "Website load",
+                                "a": "—",
+                                "b": "—",
+                                "edge": "Not listed"
+                            }
+                        ]
+                    }
+                },
+                "punterLoad": {
+                    "id": "live_1535684",
+                    "teamA": "India Under-19s",
+                    "teamB": "Australia Under-19s",
+                    "tournament": "India Under-19s 494\/10  v Australia Under-19s 229\/10 &  217\/10 *",
+                    "time": "10:00 AM IST",
+                    "status": "LIVE",
+                    "phase": "done",
+                    "matchWinner": null,
+                    "tossWinner": null,
+                    "amountA": 0,
+                    "amountB": 0,
+                    "betsA": 0,
+                    "betsB": 0,
+                    "amountALabel": "₹0",
+                    "amountBLabel": "₹0",
+                    "leader": null,
+                    "leaderPct": 0,
+                    "pctA": 50,
+                    "pctB": 50,
+                    "totalLabel": "₹0"
+                },
+                "websiteLoad": {
+                    "onBook": false,
+                    "hasLean": false,
+                    "pctA": 50,
+                    "pctB": 50,
+                    "lean": null,
+                    "leanTeam": null,
+                    "amountA": 0,
+                    "amountB": 0,
+                    "amountALabel": "₹0",
+                    "amountBLabel": "₹0",
+                    "label": "Not listed on toss-book"
+                },
+                "lockedAt": "2026-09-29T21:27:42+05:30"
+            }
+        },
+        {
+            "id": "live_1551342",
+            "teamA": "Maiwand Champions",
+            "teamB": "Pamir Legends",
+            "league": "ipl",
+            "tournament": "Maiwand Champions 103\/10 &  110\/9 * v Pamir Legends 332\/10 &  175\/10",
+            "format": "T20",
+            "time": "10:00 AM IST",
+            "venue": "International Cricket Ground",
+            "status": "LIVE",
+            "tossWinner": null,
+            "tossDecision": null,
+            "liveScore": "Maiwand Champions 103\/10 &  110\/9 * v Pamir Legends 332\/10 &  175\/10",
+            "date": "2026-09-29",
+            "liveLock": {
+                "prediction": {
+                    "winner": null,
+                    "probability": 50,
+                    "confidence": "No pick — last 5 even, mapped load nahi",
+                    "decision": "Bowl \/ Field First",
+                    "teamAPct": 50,
+                    "teamBPct": 50,
+                    "tossLoadA": 50,
+                    "tossLoadB": 50,
+                    "insights": [
+                        "Telegram ₹: is match pe mapped toss money nahi mila.",
+                        "Website load: toss-book board pe ye match listed nahi hai.",
+                        "No pick: last 5 even, mapped load nahi. Tipper wait karta hai.",
+                        "Last-5 toss even\/thin — no strong history pick yet (Maiwand Champions 0\/0 vs Pamir Legends 0\/0).",
+                        "Maiwand Champions career toss wins 0\/0 (50%). Last 10: 0\/0. Last 5: 0\/0.",
+                        "Pamir Legends career toss wins 0\/0 (50%). Last 10: 0\/0. Last 5: 0\/0.",
+                        "Ground calling at International Cricket Ground: toss winners prefer Bowl \/ Field First (bowl 55% \/ bat 45%, dew Medium)."
+                    ],
+                    "locked": true,
+                    "last5Winner": null,
+                    "last5Gap": 0,
+                    "last10Winner": null,
+                    "tipperReport": {
+                        "action": "WAIT",
+                        "grade": "wait",
+                        "pick": null,
+                        "headline": "WAIT FOR LOAD — toss window. Last 5 even. Telegram\/website money aate hi pick lock.",
+                        "when": "Toss window — load ab live check ho raha hai",
+                        "lastToss": null,
+                        "load": null
+                    },
+                    "webLoadA": 50,
+                    "webLoadB": 50,
+                    "hasLoad": false,
+                    "hasTgLoad": false,
+                    "hasWebLoad": false,
+                    "onBook": false,
+                    "strong": false,
+                    "pickStrength": "wait",
+                    "sources": {
+                        "lastToss": {
+                            "winner": null,
+                            "pctA": 50,
+                            "pctB": 50,
+                            "last5": null,
+                            "gap": 0
+                        },
+                        "load": {
+                            "winner": null,
+                            "pctA": 50,
+                            "pctB": 50,
+                            "hasMoney": false,
+                            "amountA": 0,
+                            "amountB": 0,
+                            "source": null
+                        },
+                        "telegram": {
+                            "hasMoney": false,
+                            "pctA": 50,
+                            "pctB": 50,
+                            "amountA": 0,
+                            "amountB": 0
+                        },
+                        "website": {
+                            "onBook": false,
+                            "hasLean": false,
+                            "winner": null,
+                            "pctA": 50,
+                            "pctB": 50
+                        },
+                        "agree": false,
+                        "split": false,
+                        "triple": false,
+                        "loadOnly": false
+                    },
+                    "model": "Mapped ₹ first · last 5 confirm",
+                    "whyPick": {
+                        "picked": null,
+                        "pct": 50,
+                        "headline": "WAIT: last 5 toss even, mapped load nahi. Strong pick load aane ke baad.",
+                        "factors": [
+                            {
+                                "name": "Last 5 toss",
+                                "a": "0\/0 (50%)",
+                                "b": "0\/0 (50%)",
+                                "edge": "Even"
+                            },
+                            {
+                                "name": "Last 10 toss",
+                                "a": "0\/0 (50%)",
+                                "b": "0\/0 (50%)",
+                                "edge": "Even"
+                            },
+                            {
+                                "name": "Career toss",
+                                "a": "0\/0 (50%)",
+                                "b": "0\/0 (50%)",
+                                "edge": "Even"
+                            },
+                            {
+                                "name": "H2H toss",
+                                "a": "0",
+                                "b": "0",
+                                "edge": "Even"
+                            },
+                            {
+                                "name": "Telegram ₹",
+                                "a": "—",
+                                "b": "—",
+                                "edge": "No TG money"
+                            },
+                            {
+                                "name": "Website load",
+                                "a": "—",
+                                "b": "—",
+                                "edge": "Not listed"
+                            }
+                        ]
+                    }
+                },
+                "punterLoad": {
+                    "id": "live_1551342",
+                    "teamA": "Maiwand Champions",
+                    "teamB": "Pamir Legends",
+                    "tournament": "Maiwand Champions 103\/10 &  110\/9 * v Pamir Legends 332\/10 &  175\/10",
+                    "time": "10:00 AM IST",
+                    "status": "LIVE",
+                    "phase": "done",
+                    "matchWinner": null,
+                    "tossWinner": null,
+                    "amountA": 0,
+                    "amountB": 0,
+                    "betsA": 0,
+                    "betsB": 0,
+                    "amountALabel": "₹0",
+                    "amountBLabel": "₹0",
+                    "leader": null,
+                    "leaderPct": 0,
+                    "pctA": 50,
+                    "pctB": 50,
+                    "totalLabel": "₹0"
+                },
+                "websiteLoad": {
+                    "onBook": false,
+                    "hasLean": false,
+                    "pctA": 50,
+                    "pctB": 50,
+                    "lean": null,
+                    "leanTeam": null,
+                    "amountA": 0,
+                    "amountB": 0,
+                    "amountALabel": "₹0",
+                    "amountBLabel": "₹0",
+                    "label": "Not listed on toss-book"
+                },
+                "lockedAt": "2026-09-29T21:27:42+05:30"
+            }
+        },
+        {
+            "id": "live_1551343",
+            "teamA": "Mah-e-Par Stars",
+            "teamB": "Hindukush Strikers",
+            "league": "kcl",
+            "tournament": "Mah-e-Par Stars 266\/10  v Hindukush Strikers 128\/10 &  115\/10 *",
+            "format": "T20",
+            "time": "10:00 AM IST",
+            "venue": "International Cricket Ground",
+            "status": "LIVE",
+            "tossWinner": null,
+            "tossDecision": null,
+            "liveScore": "Mah-e-Par Stars 266\/10  v Hindukush Strikers 128\/10 &  115\/10 *",
+            "date": "2026-09-29",
+            "liveLock": {
+                "prediction": {
+                    "winner": null,
+                    "probability": 50,
+                    "confidence": "No pick — last 5 even, mapped load nahi",
+                    "decision": "Bowl \/ Field First",
+                    "teamAPct": 50,
+                    "teamBPct": 50,
+                    "tossLoadA": 50,
+                    "tossLoadB": 50,
+                    "insights": [
+                        "Telegram ₹: is match pe mapped toss money nahi mila.",
+                        "Website load: toss-book board pe ye match listed nahi hai.",
+                        "No pick: last 5 even, mapped load nahi. Tipper wait karta hai.",
+                        "Last-5 toss even\/thin — no strong history pick yet (Mah-e-Par Stars 0\/0 vs Hindukush Strikers 0\/0).",
+                        "Mah-e-Par Stars career toss wins 0\/0 (50%). Last 10: 0\/0. Last 5: 0\/0.",
+                        "Hindukush Strikers career toss wins 0\/0 (50%). Last 10: 0\/0. Last 5: 0\/0.",
+                        "Ground calling at International Cricket Ground: toss winners prefer Bowl \/ Field First (bowl 55% \/ bat 45%, dew Medium)."
+                    ],
+                    "locked": true,
+                    "last5Winner": null,
+                    "last5Gap": 0,
+                    "last10Winner": null,
+                    "tipperReport": {
+                        "action": "WAIT",
+                        "grade": "wait",
+                        "pick": null,
+                        "headline": "WAIT FOR LOAD — toss window. Last 5 even. Telegram\/website money aate hi pick lock.",
+                        "when": "Toss window — load ab live check ho raha hai",
+                        "lastToss": null,
+                        "load": null
+                    },
+                    "webLoadA": 50,
+                    "webLoadB": 50,
+                    "hasLoad": false,
+                    "hasTgLoad": false,
+                    "hasWebLoad": false,
+                    "onBook": false,
+                    "strong": false,
+                    "pickStrength": "wait",
+                    "sources": {
+                        "lastToss": {
+                            "winner": null,
+                            "pctA": 50,
+                            "pctB": 50,
+                            "last5": null,
+                            "gap": 0
+                        },
+                        "load": {
+                            "winner": null,
+                            "pctA": 50,
+                            "pctB": 50,
+                            "hasMoney": false,
+                            "amountA": 0,
+                            "amountB": 0,
+                            "source": null
+                        },
+                        "telegram": {
+                            "hasMoney": false,
+                            "pctA": 50,
+                            "pctB": 50,
+                            "amountA": 0,
+                            "amountB": 0
+                        },
+                        "website": {
+                            "onBook": false,
+                            "hasLean": false,
+                            "winner": null,
+                            "pctA": 50,
+                            "pctB": 50
+                        },
+                        "agree": false,
+                        "split": false,
+                        "triple": false,
+                        "loadOnly": false
+                    },
+                    "model": "Mapped ₹ first · last 5 confirm",
+                    "whyPick": {
+                        "picked": null,
+                        "pct": 50,
+                        "headline": "WAIT: last 5 toss even, mapped load nahi. Strong pick load aane ke baad.",
+                        "factors": [
+                            {
+                                "name": "Last 5 toss",
+                                "a": "0\/0 (50%)",
+                                "b": "0\/0 (50%)",
+                                "edge": "Even"
+                            },
+                            {
+                                "name": "Last 10 toss",
+                                "a": "0\/0 (50%)",
+                                "b": "0\/0 (50%)",
+                                "edge": "Even"
+                            },
+                            {
+                                "name": "Career toss",
+                                "a": "0\/0 (50%)",
+                                "b": "0\/0 (50%)",
+                                "edge": "Even"
+                            },
+                            {
+                                "name": "H2H toss",
+                                "a": "0",
+                                "b": "0",
+                                "edge": "Even"
+                            },
+                            {
+                                "name": "Telegram ₹",
+                                "a": "—",
+                                "b": "—",
+                                "edge": "No TG money"
+                            },
+                            {
+                                "name": "Website load",
+                                "a": "—",
+                                "b": "—",
+                                "edge": "Not listed"
+                            }
+                        ]
+                    }
+                },
+                "punterLoad": {
+                    "id": "live_1551343",
+                    "teamA": "Mah-e-Par Stars",
+                    "teamB": "Hindukush Strikers",
+                    "tournament": "Mah-e-Par Stars 266\/10  v Hindukush Strikers 128\/10 &  115\/10 *",
+                    "time": "10:00 AM IST",
+                    "status": "LIVE",
+                    "phase": "done",
+                    "matchWinner": null,
+                    "tossWinner": null,
+                    "amountA": 0,
+                    "amountB": 0,
+                    "betsA": 0,
+                    "betsB": 0,
+                    "amountALabel": "₹0",
+                    "amountBLabel": "₹0",
+                    "leader": null,
+                    "leaderPct": 0,
+                    "pctA": 50,
+                    "pctB": 50,
+                    "totalLabel": "₹0"
+                },
+                "websiteLoad": {
+                    "onBook": false,
+                    "hasLean": false,
+                    "pctA": 50,
+                    "pctB": 50,
+                    "lean": null,
+                    "leanTeam": null,
+                    "amountA": 0,
+                    "amountB": 0,
+                    "amountALabel": "₹0",
+                    "amountBLabel": "₹0",
+                    "label": "Not listed on toss-book"
+                },
+                "lockedAt": "2026-09-29T21:27:42+05:30"
+            }
+        },
+        {
+            "id": "cb_173143",
+            "teamA": "Boland",
+            "teamB": "Knights",
+            "date": "2026-09-29",
+            "liveLock": {
+                "prediction": {
+                    "winner": "Knights",
+                    "probability": 72,
+                    "confidence": "LOAD PICK · last 5 even, mapped ₹ hi call hai",
+                    "decision": "Bowl \/ Field First",
+                    "teamAPct": 50,
+                    "teamBPct": 50,
+                    "tossLoadA": 22,
+                    "tossLoadB": 78,
+                    "insights": [
+                        "Telegram ₹: Boland ₹0 vs Knights ₹40,752.",
+                        "Website load: Website load favouring Knights (0%–100%).",
+                        "LOAD PICK: Knights (72%) — last 5 even, mapped ₹ is side pe hai.",
+                        "Last-5 toss even\/thin — no strong history pick yet (Boland 0\/0 vs Knights 0\/1).",
+                        "Boland career toss wins 0\/0 (50%). Last 10: 0\/0. Last 5: 0\/0.",
+                        "Knights career toss wins 0\/1 (0%). Last 10: 0\/1. Last 5: 0\/1.",
+                        "Ground calling at International Ground: toss winners prefer Bowl \/ Field First (bowl 55% \/ bat 45%, dew Medium)."
+                    ],
+                    "locked": true,
+                    "last5Winner": null,
+                    "last5Gap": 0,
+                    "last10Winner": null,
+                    "tipperReport": {
+                        "action": "PLAY",
+                        "grade": "play",
+                        "pick": "Knights",
+                        "headline": "LOAD PICK: Knights — last 5 even hai, isliye mapped ₹ hi AI call hai.",
+                        "when": "Toss window — load ab live check ho raha hai",
+                        "lastToss": null,
+                        "load": "Knights"
+                    },
+                    "webLoadA": 0,
+                    "webLoadB": 100,
+                    "hasLoad": true,
+                    "hasTgLoad": true,
+                    "hasWebLoad": true,
+                    "onBook": true,
+                    "strong": true,
+                    "pickStrength": "load",
+                    "sources": {
+                        "lastToss": {
+                            "winner": null,
+                            "pctA": 50,
+                            "pctB": 50,
+                            "last5": null,
+                            "gap": 0
+                        },
+                        "load": {
+                            "winner": "Knights",
+                            "pctA": 22,
+                            "pctB": 78,
+                            "hasMoney": true,
+                            "amountA": 0,
+                            "amountB": 40752,
+                            "source": "telegram"
+                        },
+                        "telegram": {
+                            "hasMoney": true,
+                            "pctA": 0,
+                            "pctB": 100,
+                            "amountA": 0,
+                            "amountB": 40752
+                        },
+                        "website": {
+                            "onBook": true,
+                            "hasLean": true,
+                            "winner": "Knights",
+                            "pctA": 0,
+                            "pctB": 100
+                        },
+                        "agree": false,
+                        "split": false,
+                        "triple": false,
+                        "loadOnly": true
+                    },
+                    "model": "Mapped ₹ first · last 5 confirm",
+                    "whyPick": {
+                        "picked": "Knights",
+                        "pct": 72,
+                        "headline": "LOAD PICK Knights (72%): last 5 even, mapped ₹ is side pe — yeh AI call hai.",
+                        "factors": [
+                            {
+                                "name": "Last 5 toss",
+                                "a": "0\/0 (50%)",
+                                "b": "0\/1 (0%)",
+                                "edge": "Boland"
+                            },
+                            {
+                                "name": "Last 10 toss",
+                                "a": "0\/0 (50%)",
+                                "b": "0\/1 (0%)",
+                                "edge": "Boland"
+                            },
+                            {
+                                "name": "Career toss",
+                                "a": "0\/0 (50%)",
+                                "b": "0\/1 (0%)",
+                                "edge": "Boland"
+                            },
+                            {
+                                "name": "H2H toss",
+                                "a": "0",
+                                "b": "0",
+                                "edge": "Even"
+                            },
+                            {
+                                "name": "Telegram ₹",
+                                "a": "₹0",
+                                "b": "₹40,752",
+                                "edge": "Knights"
+                            },
+                            {
+                                "name": "Website load",
+                                "a": "0%",
+                                "b": "100%",
+                                "edge": "Knights"
+                            }
+                        ]
+                    }
+                },
+                "punterLoad": {
+                    "id": "cb_173143",
+                    "teamA": "Boland",
+                    "teamB": "Knights",
+                    "tournament": "Boland vs Knights",
+                    "time": "07:30 PM IST",
+                    "status": "TOSS_WINDOW",
+                    "phase": "done",
+                    "matchWinner": null,
+                    "tossWinner": null,
+                    "amountA": 0,
+                    "amountB": 40752,
+                    "betsA": 0,
+                    "betsB": 11,
+                    "amountALabel": "₹0",
+                    "amountBLabel": "₹40,752",
+                    "leader": "Knights",
+                    "leaderPct": 100,
+                    "pctA": 0,
+                    "pctB": 100,
+                    "totalLabel": "₹40,752"
+                },
+                "websiteLoad": {
+                    "onBook": true,
+                    "bookTeamA": "Boland",
+                    "bookTeamB": "Knights",
+                    "bookTime": "07:30 PM IST",
+                    "bookStatus": "OPEN",
+                    "amountA": 0,
+                    "amountB": 40752,
+                    "amountALabel": "₹0",
+                    "amountBLabel": "₹40,752",
+                    "pctA": 0,
+                    "pctB": 100,
+                    "lean": "B",
+                    "leanTeam": "Knights",
+                    "hasLean": true,
+                    "label": "Website load favouring Knights"
+                },
+                "lockedAt": "2026-09-29T21:27:42+05:30"
+            }
+        },
+        {
+            "id": "cb_173127",
+            "teamA": "South Africa Emerging Players",
+            "teamB": "KwaZulu-Natal Inland Tuskers",
+            "date": "2026-09-29",
+            "liveLock": {
+                "prediction": {
+                    "winner": "KwaZulu-Natal Inland Tuskers",
+                    "probability": 56,
+                    "confidence": "Last-5 toss note only — wait for load",
+                    "decision": "Bowl \/ Field First",
+                    "teamAPct": 44,
+                    "teamBPct": 56,
+                    "tossLoadA": 50,
+                    "tossLoadB": 50,
+                    "insights": [
+                        "Telegram ₹: is match pe mapped toss money nahi mila.",
+                        "Website load: toss-book board pe ye match listed nahi hai.",
+                        "Early note: KwaZulu-Natal Inland Tuskers (56%) last-5 se. Load abhi nahi — PLAY nahi.",
+                        "Last-5 toss even\/thin — no strong history pick yet (South Africa Emerging Players 2\/5 vs KwaZulu-Natal Inland Tuskers 0\/0).",
+                        "South Africa Emerging Players career toss wins 4\/8 (50%). Last 10: 4\/8. Last 5: 2\/5.",
+                        "KwaZulu-Natal Inland Tuskers career toss wins 0\/0 (50%). Last 10: 0\/0. Last 5: 0\/0.",
+                        "South Africa Emerging Players after winning toss: bowl 4 \/ bat 0. KwaZulu-Natal Inland Tuskers: bowl 0 \/ bat 0.",
+                        "Ground calling at International Ground: toss winners prefer Bowl \/ Field First (bowl 55% \/ bat 45%, dew Medium).",
+                        "Aiden Markram \/ Temba Bavuma (South Africa Emerging Players) calling: 2 consecutive toss losses."
+                    ],
+                    "locked": true,
+                    "last5Winner": "KwaZulu-Natal Inland Tuskers",
+                    "last5Gap": 2,
+                    "last10Winner": null,
+                    "tipperReport": {
+                        "action": "LEAN",
+                        "grade": "lean",
+                        "pick": "KwaZulu-Natal Inland Tuskers",
+                        "headline": "EARLY AI: KwaZulu-Natal Inland Tuskers — last 5 toss lean (toss se 2–3 hrs pehle). Load aate hi PLAY\/SKIP confirm.",
+                        "when": "Toss window — load ab live check ho raha hai",
+                        "lastToss": "KwaZulu-Natal Inland Tuskers",
+                        "load": null
+                    },
+                    "webLoadA": 50,
+                    "webLoadB": 50,
+                    "hasLoad": false,
+                    "hasTgLoad": false,
+                    "hasWebLoad": false,
+                    "onBook": false,
+                    "strong": false,
+                    "pickStrength": "lean",
+                    "sources": {
+                        "lastToss": {
+                            "winner": "KwaZulu-Natal Inland Tuskers",
+                            "pctA": 44,
+                            "pctB": 56,
+                            "last5": "KwaZulu-Natal Inland Tuskers",
+                            "gap": 2
+                        },
+                        "load": {
+                            "winner": null,
+                            "pctA": 50,
+                            "pctB": 50,
+                            "hasMoney": false,
+                            "amountA": 0,
+                            "amountB": 0,
+                            "source": null
+                        },
+                        "telegram": {
+                            "hasMoney": false,
+                            "pctA": 50,
+                            "pctB": 50,
+                            "amountA": 0,
+                            "amountB": 0
+                        },
+                        "website": {
+                            "onBook": false,
+                            "hasLean": false,
+                            "winner": null,
+                            "pctA": 50,
+                            "pctB": 50
+                        },
+                        "agree": false,
+                        "split": false,
+                        "triple": false,
+                        "loadOnly": false
+                    },
+                    "model": "Mapped ₹ first · last 5 confirm",
+                    "whyPick": {
+                        "picked": "KwaZulu-Natal Inland Tuskers",
+                        "pct": 56,
+                        "headline": "EARLY NOTE KwaZulu-Natal Inland Tuskers: last 5 toss edge (44% vs 56%). Load nahi mila — strong pick nahi.",
+                        "factors": [
+                            {
+                                "name": "Last 5 toss",
+                                "a": "2\/5 (40%)",
+                                "b": "0\/0 (50%)",
+                                "edge": "KwaZulu-Natal Inland Tuskers"
+                            },
+                            {
+                                "name": "Last 10 toss",
+                                "a": "4\/8 (50%)",
+                                "b": "0\/0 (50%)",
+                                "edge": "Even"
+                            },
+                            {
+                                "name": "Career toss",
+                                "a": "4\/8 (50%)",
+                                "b": "0\/0 (50%)",
+                                "edge": "Even"
+                            },
+                            {
+                                "name": "H2H toss",
+                                "a": "0",
+                                "b": "0",
+                                "edge": "Even"
+                            },
+                            {
+                                "name": "Telegram ₹",
+                                "a": "—",
+                                "b": "—",
+                                "edge": "No TG money"
+                            },
+                            {
+                                "name": "Website load",
+                                "a": "—",
+                                "b": "—",
+                                "edge": "Not listed"
+                            }
+                        ]
+                    }
+                },
+                "punterLoad": {
+                    "id": "cb_173127",
+                    "teamA": "South Africa Emerging Players",
+                    "teamB": "KwaZulu-Natal Inland Tuskers",
+                    "tournament": "South Africa Emerging Players vs KwaZulu-Natal Inland Tuskers",
+                    "time": "07:30 PM IST",
+                    "status": "TOSS_WINDOW",
+                    "phase": "done",
+                    "matchWinner": null,
+                    "tossWinner": null,
+                    "amountA": 0,
+                    "amountB": 0,
+                    "betsA": 0,
+                    "betsB": 0,
+                    "amountALabel": "₹0",
+                    "amountBLabel": "₹0",
+                    "leader": null,
+                    "leaderPct": 0,
+                    "pctA": 50,
+                    "pctB": 50,
+                    "totalLabel": "₹0"
+                },
+                "websiteLoad": {
+                    "onBook": false,
+                    "hasLean": false,
+                    "pctA": 50,
+                    "pctB": 50,
+                    "lean": null,
+                    "leanTeam": null,
+                    "amountA": 0,
+                    "amountB": 0,
+                    "amountALabel": "₹0",
+                    "amountBLabel": "₹0",
+                    "label": "Not listed on toss-book"
+                },
+                "lockedAt": "2026-09-29T21:27:42+05:30"
+            }
+        }
+    ],
+    "2026-09-30": [
+        {
+            "id": "cb_151543",
+            "teamA": "India",
+            "teamB": "West Indies",
+            "date": "2026-09-30",
+            "liveLock": {
+                "prediction": {
+                    "winner": "India",
+                    "probability": 61,
+                    "confidence": "Last-5 toss note only — wait for load",
+                    "decision": "Bowl \/ Field First",
+                    "teamAPct": 61,
+                    "teamBPct": 39,
+                    "tossLoadA": 50,
+                    "tossLoadB": 50,
+                    "insights": [
+                        "Telegram ₹: is match pe mapped toss money nahi mila.",
+                        "Website load: toss-book board pe ye match listed nahi hai.",
+                        "Early note: India (61%) last-5 se. Load abhi nahi — PLAY nahi.",
+                        "Strong last-5 toss: India (India 2\/3 vs West Indies 0\/2). Career\/H2H backup only.",
+                        "India career toss wins 2\/3 (67%). Last 10: 2\/3. Last 5: 2\/3.",
+                        "West Indies career toss wins 0\/2 (0%). Last 10: 0\/2. Last 5: 0\/2.",
+                        "India after winning toss: bowl 1 \/ bat 1. West Indies: bowl 0 \/ bat 0.",
+                        "Head-to-head toss: India 1 – 0 West Indies (1 meetings).",
+                        "Ground calling at International Ground: toss winners prefer Bowl \/ Field First (bowl 55% \/ bat 45%, dew Medium).",
+                        "Rovman Powell \/ Shai Hope (West Indies) calling: 2 consecutive toss losses."
+                    ],
+                    "locked": false,
+                    "last5Winner": "India",
+                    "last5Gap": 2,
+                    "last10Winner": null,
+                    "tipperReport": {
+                        "action": "LEAN",
+                        "grade": "lean",
+                        "pick": "India",
+                        "headline": "EARLY AI: India — last 5 toss lean (toss se 2–3 hrs pehle). Load aate hi PLAY\/SKIP confirm.",
+                        "when": "Last-5 AI ab dikh raha hai · asli load toss se 2–3 hrs \/ 5–10 min pehle aata hai",
+                        "lastToss": "India",
+                        "load": null
+                    },
+                    "webLoadA": 50,
+                    "webLoadB": 50,
+                    "hasLoad": false,
+                    "hasTgLoad": false,
+                    "hasWebLoad": false,
+                    "onBook": false,
+                    "strong": false,
+                    "pickStrength": "lean",
+                    "sources": {
+                        "lastToss": {
+                            "winner": "India",
+                            "pctA": 61,
+                            "pctB": 39,
+                            "last5": "India",
+                            "gap": 2
+                        },
+                        "load": {
+                            "winner": null,
+                            "pctA": 50,
+                            "pctB": 50,
+                            "hasMoney": false,
+                            "amountA": 0,
+                            "amountB": 0,
+                            "source": null
+                        },
+                        "telegram": {
+                            "hasMoney": false,
+                            "pctA": 50,
+                            "pctB": 50,
+                            "amountA": 0,
+                            "amountB": 0
+                        },
+                        "website": {
+                            "onBook": false,
+                            "hasLean": false,
+                            "winner": null,
+                            "pctA": 50,
+                            "pctB": 50
+                        },
+                        "agree": false,
+                        "split": false,
+                        "triple": false,
+                        "loadOnly": false
+                    },
+                    "model": "Mapped ₹ first · last 5 confirm",
+                    "whyPick": {
+                        "picked": "India",
+                        "pct": 61,
+                        "headline": "EARLY NOTE India: last 5 toss edge (61% vs 39%). Load nahi mila — strong pick nahi.",
+                        "factors": [
+                            {
+                                "name": "Last 5 toss",
+                                "a": "2\/3 (67%)",
+                                "b": "0\/2 (0%)",
+                                "edge": "India"
+                            },
+                            {
+                                "name": "Last 10 toss",
+                                "a": "2\/3 (67%)",
+                                "b": "0\/2 (0%)",
+                                "edge": "India"
+                            },
+                            {
+                                "name": "Career toss",
+                                "a": "2\/3 (67%)",
+                                "b": "0\/2 (0%)",
+                                "edge": "India"
+                            },
+                            {
+                                "name": "H2H toss",
+                                "a": "1",
+                                "b": "0",
+                                "edge": "India"
+                            },
+                            {
+                                "name": "Telegram ₹",
+                                "a": "—",
+                                "b": "—",
+                                "edge": "No TG money"
+                            },
+                            {
+                                "name": "Website load",
+                                "a": "—",
+                                "b": "—",
+                                "edge": "Not listed"
+                            }
+                        ]
+                    }
+                },
+                "punterLoad": {
+                    "id": "cb_151543",
+                    "teamA": "India",
+                    "teamB": "West Indies",
+                    "tournament": "India vs West Indies",
+                    "time": "07:30 PM IST",
+                    "status": "UPCOMING",
+                    "phase": "upcoming",
+                    "matchWinner": null,
+                    "tossWinner": null,
+                    "amountA": 0,
+                    "amountB": 0,
+                    "betsA": 0,
+                    "betsB": 0,
+                    "amountALabel": "₹0",
+                    "amountBLabel": "₹0",
+                    "leader": null,
+                    "leaderPct": 0,
+                    "pctA": 50,
+                    "pctB": 50,
+                    "totalLabel": "₹0"
+                },
+                "websiteLoad": {
+                    "onBook": false,
+                    "hasLean": false,
+                    "pctA": 50,
+                    "pctB": 50,
+                    "lean": null,
+                    "leanTeam": null,
+                    "amountA": 0,
+                    "amountB": 0,
+                    "amountALabel": "₹0",
+                    "amountBLabel": "₹0",
+                    "label": "Not listed on toss-book"
+                },
+                "lockedAt": "2026-09-29T21:27:42+05:30"
+            }
+        },
+        {
+            "id": "cb_147909",
+            "teamA": "South Africa",
+            "teamB": "Australia",
+            "date": "2026-09-30",
+            "liveLock": {
+                "prediction": {
+                    "winner": "Australia",
+                    "probability": 56,
+                    "confidence": "Last-5 toss note only — wait for load",
+                    "decision": "Bowl \/ Field First",
+                    "teamAPct": 44,
+                    "teamBPct": 56,
+                    "tossLoadA": 50,
+                    "tossLoadB": 50,
+                    "insights": [
+                        "Telegram ₹: is match pe mapped toss money nahi mila.",
+                        "Website load: toss-book board pe ye match listed nahi hai.",
+                        "Early note: Australia (56%) last-5 se. Load abhi nahi — PLAY nahi.",
+                        "Strong last-5 toss: Australia (South Africa 2\/5 vs Australia 3\/5). Career\/H2H backup only.",
+                        "South Africa career toss wins 4\/9 (44%). Last 10: 4\/9. Last 5: 2\/5.",
+                        "Australia career toss wins 3\/5 (60%). Last 10: 3\/5. Last 5: 3\/5.",
+                        "South Africa after winning toss: bowl 4 \/ bat 0. Australia: bowl 2 \/ bat 1.",
+                        "Head-to-head toss: South Africa 1 – 2 Australia (3 meetings).",
+                        "Ground calling at International Ground: toss winners prefer Bowl \/ Field First (bowl 55% \/ bat 45%, dew Medium).",
+                        "Aiden Markram \/ Temba Bavuma (South Africa) calling: 3 consecutive toss losses.",
+                        "Mitchell Marsh \/ Pat Cummins (Australia) calling: 3 consecutive toss wins."
+                    ],
+                    "locked": false,
+                    "last5Winner": "Australia",
+                    "last5Gap": -1,
+                    "last10Winner": null,
+                    "tipperReport": {
+                        "action": "LEAN",
+                        "grade": "lean",
+                        "pick": "Australia",
+                        "headline": "EARLY AI: Australia — last 5 toss lean (toss se 2–3 hrs pehle). Load aate hi PLAY\/SKIP confirm.",
+                        "when": "Last-5 AI ab dikh raha hai · asli load toss se 2–3 hrs \/ 5–10 min pehle aata hai",
+                        "lastToss": "Australia",
+                        "load": null
+                    },
+                    "webLoadA": 50,
+                    "webLoadB": 50,
+                    "hasLoad": false,
+                    "hasTgLoad": false,
+                    "hasWebLoad": false,
+                    "onBook": false,
+                    "strong": false,
+                    "pickStrength": "lean",
+                    "sources": {
+                        "lastToss": {
+                            "winner": "Australia",
+                            "pctA": 44,
+                            "pctB": 56,
+                            "last5": "Australia",
+                            "gap": 1
+                        },
+                        "load": {
+                            "winner": null,
+                            "pctA": 50,
+                            "pctB": 50,
+                            "hasMoney": false,
+                            "amountA": 0,
+                            "amountB": 0,
+                            "source": null
+                        },
+                        "telegram": {
+                            "hasMoney": false,
+                            "pctA": 50,
+                            "pctB": 50,
+                            "amountA": 0,
+                            "amountB": 0
+                        },
+                        "website": {
+                            "onBook": false,
+                            "hasLean": false,
+                            "winner": null,
+                            "pctA": 50,
+                            "pctB": 50
+                        },
+                        "agree": false,
+                        "split": false,
+                        "triple": false,
+                        "loadOnly": false
+                    },
+                    "model": "Mapped ₹ first · last 5 confirm",
+                    "whyPick": {
+                        "picked": "Australia",
+                        "pct": 56,
+                        "headline": "EARLY NOTE Australia: last 5 toss edge (44% vs 56%). Load nahi mila — strong pick nahi.",
+                        "factors": [
+                            {
+                                "name": "Last 5 toss",
+                                "a": "2\/5 (40%)",
+                                "b": "3\/5 (60%)",
+                                "edge": "Australia"
+                            },
+                            {
+                                "name": "Last 10 toss",
+                                "a": "4\/9 (44%)",
+                                "b": "3\/5 (60%)",
+                                "edge": "Australia"
+                            },
+                            {
+                                "name": "Career toss",
+                                "a": "4\/9 (44%)",
+                                "b": "3\/5 (60%)",
+                                "edge": "Australia"
+                            },
+                            {
+                                "name": "H2H toss",
+                                "a": "1",
+                                "b": "2",
+                                "edge": "Australia"
+                            },
+                            {
+                                "name": "Telegram ₹",
+                                "a": "—",
+                                "b": "—",
+                                "edge": "No TG money"
+                            },
+                            {
+                                "name": "Website load",
+                                "a": "—",
+                                "b": "—",
+                                "edge": "Not listed"
+                            }
+                        ]
+                    }
+                },
+                "punterLoad": {
+                    "id": "cb_147909",
+                    "teamA": "South Africa",
+                    "teamB": "Australia",
+                    "tournament": "South Africa vs Australia",
+                    "time": "07:30 PM IST",
+                    "status": "UPCOMING",
+                    "phase": "upcoming",
+                    "matchWinner": null,
+                    "tossWinner": null,
+                    "amountA": 0,
+                    "amountB": 0,
+                    "betsA": 0,
+                    "betsB": 0,
+                    "amountALabel": "₹0",
+                    "amountBLabel": "₹0",
+                    "leader": null,
+                    "leaderPct": 0,
+                    "pctA": 50,
+                    "pctB": 50,
+                    "totalLabel": "₹0"
+                },
+                "websiteLoad": {
+                    "onBook": false,
+                    "hasLean": false,
+                    "pctA": 50,
+                    "pctB": 50,
+                    "lean": null,
+                    "leanTeam": null,
+                    "amountA": 0,
+                    "amountB": 0,
+                    "amountALabel": "₹0",
+                    "amountBLabel": "₹0",
+                    "label": "Not listed on toss-book"
+                },
+                "lockedAt": "2026-09-29T21:27:42+05:30"
+            }
+        },
+        {
+            "id": "cb_173100",
+            "teamA": "Zimbabwe Women",
+            "teamB": "West Indies Women",
+            "date": "2026-09-30",
+            "liveLock": {
+                "prediction": {
+                    "winner": null,
+                    "probability": 50,
+                    "confidence": "No pick — last 5 even, mapped load nahi",
+                    "decision": "Bowl \/ Field First",
+                    "teamAPct": 50,
+                    "teamBPct": 50,
+                    "tossLoadA": 50,
+                    "tossLoadB": 50,
+                    "insights": [
+                        "Telegram ₹: is match pe mapped toss money nahi mila.",
+                        "Website load: toss-book board pe ye match listed nahi hai.",
+                        "No pick: last 5 even, mapped load nahi. Tipper wait karta hai.",
+                        "Last-5 toss even\/thin — no strong history pick yet (Zimbabwe Women 0\/1 vs West Indies Women 1\/1).",
+                        "Zimbabwe Women career toss wins 0\/1 (0%). Last 10: 0\/1. Last 5: 0\/1.",
+                        "West Indies Women career toss wins 1\/1 (100%). Last 10: 1\/1. Last 5: 1\/1.",
+                        "Zimbabwe Women after winning toss: bowl 0 \/ bat 0. West Indies Women: bowl 0 \/ bat 1.",
+                        "Head-to-head toss: Zimbabwe Women 0 – 1 West Indies Women (1 meetings).",
+                        "Ground calling at International Ground: toss winners prefer Bowl \/ Field First (bowl 55% \/ bat 45%, dew Medium)."
+                    ],
+                    "locked": false,
+                    "last5Winner": null,
+                    "last5Gap": -1,
+                    "last10Winner": null,
+                    "tipperReport": {
+                        "action": "WAIT",
+                        "grade": "wait",
+                        "pick": null,
+                        "headline": "WAIT — last 5 toss even. Koi pick nahi. Load 2–3 hrs \/ 5–10 min pehle aayega.",
+                        "when": "Last-5 AI ab dikh raha hai · asli load toss se 2–3 hrs \/ 5–10 min pehle aata hai",
+                        "lastToss": null,
+                        "load": null
+                    },
+                    "webLoadA": 50,
+                    "webLoadB": 50,
+                    "hasLoad": false,
+                    "hasTgLoad": false,
+                    "hasWebLoad": false,
+                    "onBook": false,
+                    "strong": false,
+                    "pickStrength": "wait",
+                    "sources": {
+                        "lastToss": {
+                            "winner": null,
+                            "pctA": 50,
+                            "pctB": 50,
+                            "last5": null,
+                            "gap": 1
+                        },
+                        "load": {
+                            "winner": null,
+                            "pctA": 50,
+                            "pctB": 50,
+                            "hasMoney": false,
+                            "amountA": 0,
+                            "amountB": 0,
+                            "source": null
+                        },
+                        "telegram": {
+                            "hasMoney": false,
+                            "pctA": 50,
+                            "pctB": 50,
+                            "amountA": 0,
+                            "amountB": 0
+                        },
+                        "website": {
+                            "onBook": false,
+                            "hasLean": false,
+                            "winner": null,
+                            "pctA": 50,
+                            "pctB": 50
+                        },
+                        "agree": false,
+                        "split": false,
+                        "triple": false,
+                        "loadOnly": false
+                    },
+                    "model": "Mapped ₹ first · last 5 confirm",
+                    "whyPick": {
+                        "picked": null,
+                        "pct": 50,
+                        "headline": "WAIT: last 5 toss even, mapped load nahi. Strong pick load aane ke baad.",
+                        "factors": [
+                            {
+                                "name": "Last 5 toss",
+                                "a": "0\/1 (0%)",
+                                "b": "1\/1 (100%)",
+                                "edge": "West Indies Women"
+                            },
+                            {
+                                "name": "Last 10 toss",
+                                "a": "0\/1 (0%)",
+                                "b": "1\/1 (100%)",
+                                "edge": "West Indies Women"
+                            },
+                            {
+                                "name": "Career toss",
+                                "a": "0\/1 (0%)",
+                                "b": "1\/1 (100%)",
+                                "edge": "West Indies Women"
+                            },
+                            {
+                                "name": "H2H toss",
+                                "a": "0",
+                                "b": "1",
+                                "edge": "West Indies Women"
+                            },
+                            {
+                                "name": "Telegram ₹",
+                                "a": "—",
+                                "b": "—",
+                                "edge": "No TG money"
+                            },
+                            {
+                                "name": "Website load",
+                                "a": "—",
+                                "b": "—",
+                                "edge": "Not listed"
+                            }
+                        ]
+                    }
+                },
+                "punterLoad": {
+                    "id": "cb_173100",
+                    "teamA": "Zimbabwe Women",
+                    "teamB": "West Indies Women",
+                    "tournament": "Zimbabwe Women vs West Indies Women",
+                    "time": "07:30 PM IST",
+                    "status": "UPCOMING",
+                    "phase": "upcoming",
+                    "matchWinner": null,
+                    "tossWinner": null,
+                    "amountA": 0,
+                    "amountB": 0,
+                    "betsA": 0,
+                    "betsB": 0,
+                    "amountALabel": "₹0",
+                    "amountBLabel": "₹0",
+                    "leader": null,
+                    "leaderPct": 0,
+                    "pctA": 50,
+                    "pctB": 50,
+                    "totalLabel": "₹0"
+                },
+                "websiteLoad": {
+                    "onBook": false,
+                    "hasLean": false,
+                    "pctA": 50,
+                    "pctB": 50,
+                    "lean": null,
+                    "leanTeam": null,
+                    "amountA": 0,
+                    "amountB": 0,
+                    "amountALabel": "₹0",
+                    "amountBLabel": "₹0",
+                    "label": "Not listed on toss-book"
+                },
+                "lockedAt": "2026-09-29T21:27:42+05:30"
+            }
+        },
+        {
+            "id": "cb_173153",
+            "teamA": "Dolphins",
+            "teamB": "Northern Cape",
+            "date": "2026-09-30",
+            "liveLock": {
+                "prediction": {
+                    "winner": null,
+                    "probability": 50,
+                    "confidence": "No pick — last 5 even, mapped load nahi",
+                    "decision": "Bowl \/ Field First",
+                    "teamAPct": 50,
+                    "teamBPct": 50,
+                    "tossLoadA": 50,
+                    "tossLoadB": 50,
+                    "insights": [
+                        "Telegram ₹: is match pe mapped toss money nahi mila.",
+                        "Website load: toss-book board pe ye match listed nahi hai.",
+                        "No pick: last 5 even, mapped load nahi. Tipper wait karta hai.",
+                        "Last-5 toss even\/thin — no strong history pick yet (Dolphins 0\/0 vs Northern Cape 0\/0).",
+                        "Dolphins career toss wins 0\/0 (50%). Last 10: 0\/0. Last 5: 0\/0.",
+                        "Northern Cape career toss wins 0\/0 (50%). Last 10: 0\/0. Last 5: 0\/0.",
+                        "Ground calling at International Ground: toss winners prefer Bowl \/ Field First (bowl 55% \/ bat 45%, dew Medium)."
+                    ],
+                    "locked": false,
+                    "last5Winner": null,
+                    "last5Gap": 0,
+                    "last10Winner": null,
+                    "tipperReport": {
+                        "action": "WAIT",
+                        "grade": "wait",
+                        "pick": null,
+                        "headline": "WAIT — last 5 toss even. Koi pick nahi. Load 2–3 hrs \/ 5–10 min pehle aayega.",
+                        "when": "Last-5 AI ab dikh raha hai · asli load toss se 2–3 hrs \/ 5–10 min pehle aata hai",
+                        "lastToss": null,
+                        "load": null
+                    },
+                    "webLoadA": 50,
+                    "webLoadB": 50,
+                    "hasLoad": false,
+                    "hasTgLoad": false,
+                    "hasWebLoad": false,
+                    "onBook": false,
+                    "strong": false,
+                    "pickStrength": "wait",
+                    "sources": {
+                        "lastToss": {
+                            "winner": null,
+                            "pctA": 50,
+                            "pctB": 50,
+                            "last5": null,
+                            "gap": 0
+                        },
+                        "load": {
+                            "winner": null,
+                            "pctA": 50,
+                            "pctB": 50,
+                            "hasMoney": false,
+                            "amountA": 0,
+                            "amountB": 0,
+                            "source": null
+                        },
+                        "telegram": {
+                            "hasMoney": false,
+                            "pctA": 50,
+                            "pctB": 50,
+                            "amountA": 0,
+                            "amountB": 0
+                        },
+                        "website": {
+                            "onBook": false,
+                            "hasLean": false,
+                            "winner": null,
+                            "pctA": 50,
+                            "pctB": 50
+                        },
+                        "agree": false,
+                        "split": false,
+                        "triple": false,
+                        "loadOnly": false
+                    },
+                    "model": "Mapped ₹ first · last 5 confirm",
+                    "whyPick": {
+                        "picked": null,
+                        "pct": 50,
+                        "headline": "WAIT: last 5 toss even, mapped load nahi. Strong pick load aane ke baad.",
+                        "factors": [
+                            {
+                                "name": "Last 5 toss",
+                                "a": "0\/0 (50%)",
+                                "b": "0\/0 (50%)",
+                                "edge": "Even"
+                            },
+                            {
+                                "name": "Last 10 toss",
+                                "a": "0\/0 (50%)",
+                                "b": "0\/0 (50%)",
+                                "edge": "Even"
+                            },
+                            {
+                                "name": "Career toss",
+                                "a": "0\/0 (50%)",
+                                "b": "0\/0 (50%)",
+                                "edge": "Even"
+                            },
+                            {
+                                "name": "H2H toss",
+                                "a": "0",
+                                "b": "0",
+                                "edge": "Even"
+                            },
+                            {
+                                "name": "Telegram ₹",
+                                "a": "—",
+                                "b": "—",
+                                "edge": "No TG money"
+                            },
+                            {
+                                "name": "Website load",
+                                "a": "—",
+                                "b": "—",
+                                "edge": "Not listed"
+                            }
+                        ]
+                    }
+                },
+                "punterLoad": {
+                    "id": "cb_173153",
+                    "teamA": "Dolphins",
+                    "teamB": "Northern Cape",
+                    "tournament": "Dolphins vs Northern Cape",
+                    "time": "07:30 PM IST",
+                    "status": "UPCOMING",
+                    "phase": "upcoming",
+                    "matchWinner": null,
+                    "tossWinner": null,
+                    "amountA": 0,
+                    "amountB": 0,
+                    "betsA": 0,
+                    "betsB": 0,
+                    "amountALabel": "₹0",
+                    "amountBLabel": "₹0",
+                    "leader": null,
+                    "leaderPct": 0,
+                    "pctA": 50,
+                    "pctB": 50,
+                    "totalLabel": "₹0"
+                },
+                "websiteLoad": {
+                    "onBook": false,
+                    "hasLean": false,
+                    "pctA": 50,
+                    "pctB": 50,
+                    "lean": null,
+                    "leanTeam": null,
+                    "amountA": 0,
+                    "amountB": 0,
+                    "amountALabel": "₹0",
+                    "amountBLabel": "₹0",
+                    "label": "Not listed on toss-book"
+                },
+                "lockedAt": "2026-09-29T21:27:42+05:30"
+            }
+        },
+        {
+            "id": "cb_173163",
+            "teamA": "Eastern Storm",
+            "teamB": "Mpumalanga Rhinos",
+            "date": "2026-09-30",
+            "liveLock": {
+                "prediction": {
+                    "winner": "Eastern Storm",
+                    "probability": 53,
+                    "confidence": "Last-5 toss note only — wait for load",
+                    "decision": "Bowl \/ Field First",
+                    "teamAPct": 53,
+                    "teamBPct": 47,
+                    "tossLoadA": 50,
+                    "tossLoadB": 50,
+                    "insights": [
+                        "Telegram ₹: is match pe mapped toss money nahi mila.",
+                        "Website load: toss-book board pe ye match listed nahi hai.",
+                        "Early note: Eastern Storm (53%) last-5 se. Load abhi nahi — PLAY nahi.",
+                        "Last-5 toss even\/thin — no strong history pick yet (Eastern Storm 2\/2 vs Mpumalanga Rhinos 1\/1).",
+                        "Eastern Storm career toss wins 2\/2 (100%). Last 10: 2\/2. Last 5: 2\/2.",
+                        "Mpumalanga Rhinos career toss wins 1\/1 (100%). Last 10: 1\/1. Last 5: 1\/1.",
+                        "Eastern Storm after winning toss: bowl 2 \/ bat 0. Mpumalanga Rhinos: bowl 1 \/ bat 0.",
+                        "Ground calling at International Ground: toss winners prefer Bowl \/ Field First (bowl 55% \/ bat 45%, dew Medium).",
+                        "Eastern Storm calling: 2 consecutive toss wins."
+                    ],
+                    "locked": false,
+                    "last5Winner": "Eastern Storm",
+                    "last5Gap": 1,
+                    "last10Winner": null,
+                    "tipperReport": {
+                        "action": "LEAN",
+                        "grade": "lean",
+                        "pick": "Eastern Storm",
+                        "headline": "EARLY AI: Eastern Storm — last 5 toss lean (toss se 2–3 hrs pehle). Load aate hi PLAY\/SKIP confirm.",
+                        "when": "Last-5 AI ab dikh raha hai · asli load toss se 2–3 hrs \/ 5–10 min pehle aata hai",
+                        "lastToss": "Eastern Storm",
+                        "load": null
+                    },
+                    "webLoadA": 50,
+                    "webLoadB": 50,
+                    "hasLoad": false,
+                    "hasTgLoad": false,
+                    "hasWebLoad": false,
+                    "onBook": false,
+                    "strong": false,
+                    "pickStrength": "lean",
+                    "sources": {
+                        "lastToss": {
+                            "winner": "Eastern Storm",
+                            "pctA": 53,
+                            "pctB": 47,
+                            "last5": "Eastern Storm",
+                            "gap": 1
+                        },
+                        "load": {
+                            "winner": null,
+                            "pctA": 50,
+                            "pctB": 50,
+                            "hasMoney": false,
+                            "amountA": 0,
+                            "amountB": 0,
+                            "source": null
+                        },
+                        "telegram": {
+                            "hasMoney": false,
+                            "pctA": 50,
+                            "pctB": 50,
+                            "amountA": 0,
+                            "amountB": 0
+                        },
+                        "website": {
+                            "onBook": false,
+                            "hasLean": false,
+                            "winner": null,
+                            "pctA": 50,
+                            "pctB": 50
+                        },
+                        "agree": false,
+                        "split": false,
+                        "triple": false,
+                        "loadOnly": false
+                    },
+                    "model": "Mapped ₹ first · last 5 confirm",
+                    "whyPick": {
+                        "picked": "Eastern Storm",
+                        "pct": 53,
+                        "headline": "EARLY NOTE Eastern Storm: last 5 toss edge (53% vs 47%). Load nahi mila — strong pick nahi.",
+                        "factors": [
+                            {
+                                "name": "Last 5 toss",
+                                "a": "2\/2 (100%)",
+                                "b": "1\/1 (100%)",
+                                "edge": "Even"
+                            },
+                            {
+                                "name": "Last 10 toss",
+                                "a": "2\/2 (100%)",
+                                "b": "1\/1 (100%)",
+                                "edge": "Even"
+                            },
+                            {
+                                "name": "Career toss",
+                                "a": "2\/2 (100%)",
+                                "b": "1\/1 (100%)",
+                                "edge": "Even"
+                            },
+                            {
+                                "name": "H2H toss",
+                                "a": "0",
+                                "b": "0",
+                                "edge": "Even"
+                            },
+                            {
+                                "name": "Telegram ₹",
+                                "a": "—",
+                                "b": "—",
+                                "edge": "No TG money"
+                            },
+                            {
+                                "name": "Website load",
+                                "a": "—",
+                                "b": "—",
+                                "edge": "Not listed"
+                            }
+                        ]
+                    }
+                },
+                "punterLoad": {
+                    "id": "cb_173163",
+                    "teamA": "Eastern Storm",
+                    "teamB": "Mpumalanga Rhinos",
+                    "tournament": "Eastern Storm vs Mpumalanga Rhinos",
+                    "time": "07:30 PM IST",
+                    "status": "UPCOMING",
+                    "phase": "upcoming",
+                    "matchWinner": null,
+                    "tossWinner": null,
+                    "amountA": 0,
+                    "amountB": 0,
+                    "betsA": 0,
+                    "betsB": 0,
+                    "amountALabel": "₹0",
+                    "amountBLabel": "₹0",
+                    "leader": null,
+                    "leaderPct": 0,
+                    "pctA": 50,
+                    "pctB": 50,
+                    "totalLabel": "₹0"
+                },
+                "websiteLoad": {
+                    "onBook": false,
+                    "hasLean": false,
+                    "pctA": 50,
+                    "pctB": 50,
+                    "lean": null,
+                    "leanTeam": null,
+                    "amountA": 0,
+                    "amountB": 0,
+                    "amountALabel": "₹0",
+                    "amountBLabel": "₹0",
+                    "label": "Not listed on toss-book"
+                },
+                "lockedAt": "2026-09-29T21:27:42+05:30"
+            }
+        }
     ]
 }
