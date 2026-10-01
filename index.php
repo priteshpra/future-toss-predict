@@ -75,7 +75,7 @@
       <div class="tg-head">
         <div>
           <h2>TeleGramBet live</h2>
-          <p>Channel <a href="https://web.telegram.org/k/#@BetfairTossbookOrignal" target="_blank" rel="noopener">@BetfairTossbookOrignal</a> · Rahul Dada + BAT9362 + VIP7579 + BTB0353 drop = instant team + amount alert</p>
+          <p>Channel <a href="https://web.telegram.org/k/#@BetfairTossbookOrignal" target="_blank" rel="noopener">@BetfairTossbookOrignal</a> · Rahul Dada + BAT9362 + VIP7579 + BTB0353 + KBT6927 drop = instant team + amount alert</p>
         </div>
         <div class="tg-actions">
           <span id="tgStatus" class="badge live">Connecting</span>
@@ -87,10 +87,10 @@
 
       <div class="tg-track card">
         <label>Watch users
-          <input id="tgUsers" type="text" value="Rahul Dada, BAT9362, VIP7579, BTB0353" placeholder="Rahul Dada, BAT9362, VIP7579, BTB0353">
+          <input id="tgUsers" type="text" value="Rahul Dada, BAT9362, VIP7579, BTB0353, KBT6927" placeholder="Rahul Dada, BAT9362, VIP7579, BTB0353, KBT6927">
         </label>
         <div class="tg-track-row">
-          <p class="tg-hint">Watched drops: <b>Rahul Dada</b>, <b>BAT9362</b>, <b>VIP7579</b>, <b>BTB0353</b>. Ek baar <b>Enable alerts + sound</b> dabao — naya bet aate hi beep + popup aayega.</p>
+          <p class="tg-hint">Watched drops: <b>Rahul Dada</b>, <b>BAT9362</b>, <b>VIP7579</b>, <b>BTB0353</b>, <b>KBT6927</b>. Ek baar <b>Enable alerts + sound</b> dabao — naya bet aate hi beep + popup aayega.</p>
           <button class="btn mint" type="button" id="tgSaveUsers">Save watch</button>
         </div>
         <small id="tgPoll">Last poll: —</small>
@@ -182,7 +182,7 @@
     </div>
   </div>
   <aside class="drawer" id="drawer"></aside>
-  <script src="assets/app.js?v=47"></script>
+  <script src="assets/app.js?v=48"></script>
 </body>
 
 </html>

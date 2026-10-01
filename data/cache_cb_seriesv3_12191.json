@@ -1,18 +1,6 @@
 {
-    "ts": 1790841964,
+    "ts": 1790872918,
     "data": [
-        {
-            "matchId": "155499",
-            "seriesId": "12191",
-            "series": "Australia U19 tour of India 2026",
-            "desc": "1st unofficial Test",
-            "format": "TEST",
-            "date": "2026-09-27",
-            "time": "09:30 AM IST",
-            "state": "Complete",
-            "teamA": "Australia Under-19s",
-            "teamB": "India Under-19s"
-        },
         {
             "matchId": "155466",
             "seriesId": "12191",
@@ -45,6 +33,18 @@
             "format": "ODI",
             "date": "2026-09-23",
             "time": "09:00 AM IST",
+            "state": "Complete",
+            "teamA": "Australia Under-19s",
+            "teamB": "India Under-19s"
+        },
+        {
+            "matchId": "155499",
+            "seriesId": "12191",
+            "series": "Australia U19 tour of India 2026",
+            "desc": "1st unofficial Test",
+            "format": "TEST",
+            "date": "2026-09-27",
+            "time": "09:30 AM IST",
             "state": "Complete",
             "teamA": "Australia Under-19s",
             "teamB": "India Under-19s"

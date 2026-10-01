@@ -2143,5 +2143,83 @@
         "tossDecision": "bat",
         "matchWinner": "",
         "source": "crictracker"
+    },
+    {
+        "id": "cb_173170",
+        "league": "",
+        "date": "2026-10-01",
+        "format": "T20",
+        "teamA": "South Western Districts",
+        "teamB": "Border",
+        "venue": "",
+        "tossWinner": "South Western Districts",
+        "tossDecision": "bat",
+        "matchWinner": "",
+        "source": "cricbuzz"
+    },
+    {
+        "id": "cb_155488",
+        "league": "",
+        "date": "2026-09-23",
+        "format": "ODI",
+        "teamA": "Australia Under-19s",
+        "teamB": "India Under-19s",
+        "venue": "",
+        "tossWinner": "Australia Under-19s",
+        "tossDecision": "bat",
+        "matchWinner": "",
+        "source": "cricbuzz"
+    },
+    {
+        "id": "cb_155411",
+        "league": "",
+        "date": "2026-09-22",
+        "format": "TEST",
+        "teamA": "India A",
+        "teamB": "Australia A",
+        "venue": "",
+        "tossWinner": "India A",
+        "tossDecision": "bat",
+        "matchWinner": "",
+        "source": "cricbuzz"
+    },
+    {
+        "id": "ct_abdvssha15thmatcht10emiratesd1001oct2026",
+        "league": "ed10",
+        "date": "2026-10-01",
+        "format": "T10",
+        "teamA": "Abu Dhabi",
+        "teamB": "Fujairah",
+        "venue": "Seven Districts Ground, Sharjah",
+        "tossWinner": "Abu Dhabi",
+        "tossDecision": "bowl",
+        "matchWinner": "",
+        "source": "crictracker"
+    },
+    {
+        "id": "ct_embvsdub14thmatcht10emiratesd1001oct2026",
+        "league": "ed10",
+        "date": "2026-10-01",
+        "format": "T10",
+        "teamA": "Emirates Blues",
+        "teamB": "Dubai",
+        "venue": "Seven Districts Ground, Sharjah",
+        "tossWinner": "Emirates Blues",
+        "tossDecision": "bat",
+        "matchWinner": "",
+        "source": "crictracker"
+    },
+    {
+        "id": "ct_shavsabd13thmatcht10emiratesd1001oct2026",
+        "league": "ed10",
+        "date": "2026-10-01",
+        "format": "T10",
+        "teamA": "Sharjah",
+        "teamB": "Abu Dhabi",
+        "venue": "Seven Districts Ground, Sharjah",
+        "tossWinner": "Abu Dhabi",
+        "tossDecision": "bowl",
+        "matchWinner": "",
+        "source": "crictracker"
     }
 ]

@@ -20,7 +20,7 @@ function tg_watched_path(): string
 
 function default_watch_users(): array
 {
-    return ['Rahul Dada', 'BAT9362', 'VIP7579', 'BTB0353'];
+    return ['Rahul Dada', 'BAT9362', 'VIP7579', 'BTB0353', 'KBT6927'];
 }
 
 function default_tg_config(): array
@@ -93,6 +93,9 @@ function canonical_tg_user(?string $name): string
     }
     if ($n === 'btb0353') {
         return 'BTB0353';
+    }
+    if ($n === 'kbt6927') {
+        return 'KBT6927';
     }
     return $raw;
 }

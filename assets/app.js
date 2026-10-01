@@ -1,5 +1,5 @@
 const API = 'api.php';
-const DEFAULT_TG_WATCH = ['Rahul Dada', 'BAT9362', 'VIP7579', 'BTB0353'];
+const DEFAULT_TG_WATCH = ['Rahul Dada', 'BAT9362', 'VIP7579', 'BTB0353', 'KBT6927'];
 const state = {
   date: null,
   league: 'all',

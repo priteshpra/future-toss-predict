@@ -1,5 +1,5 @@
 {
-    "ts": 1790843195,
+    "ts": 1790872915,
     "data": {
         "2026-10-01": [
             {
@@ -14,19 +14,6 @@
                 "status": "UPCOMING",
                 "seriesId": "12387",
                 "seriesSlug": "irani-cup-2026"
-            },
-            {
-                "id": "cb_173170",
-                "teamA": "South Western Districts",
-                "teamB": "Border",
-                "league": "kcl",
-                "tournament": "CSA T20 Challenge 2026 · Pool A",
-                "format": "T20",
-                "time": "07:30 PM IST",
-                "venue": "Recreation Ground , Oudtshoorn",
-                "status": "UPCOMING",
-                "seriesId": "13180",
-                "seriesSlug": "csa-t20-challenge-2026"
             }
         ],
         "2026-10-02": [
@@ -401,6 +388,112 @@
                 "seriesSlug": "icc-cricket-world-cup-league-two-2023-27"
             }
         ],
+        "2026-10-06": [
+            {
+                "id": "cb_174360",
+                "teamA": "India Champions",
+                "teamB": "South Africa Champions",
+                "league": "international",
+                "tournament": "World Championship of Legends 2026 · 7th Match",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Sharjah Cricket Stadium , Sharjah",
+                "status": "UPCOMING",
+                "seriesId": "13300",
+                "seriesSlug": "world-championship-of-legends-2026"
+            },
+            {
+                "id": "cb_174361",
+                "teamA": "Pakistan Champions",
+                "teamB": "West Indies Champions",
+                "league": "international",
+                "tournament": "INDCH vs SACH, 7th Match Live Cricket Score · 8th Match",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Sharjah Cricket Stadium , Sharjah",
+                "status": "UPCOMING",
+                "seriesId": "13300",
+                "seriesSlug": "world-championship-of-legends-2026"
+            },
+            {
+                "id": "cb_173237",
+                "teamA": "Western Province",
+                "teamB": "Eastern Storm",
+                "league": "t20i",
+                "tournament": "CSA T20 Challenge 2026 · Pool B",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Newlands , Cape Town",
+                "status": "UPCOMING",
+                "seriesId": "13180",
+                "seriesSlug": "csa-t20-challenge-2026"
+            },
+            {
+                "id": "cb_155433",
+                "teamA": "India A",
+                "teamB": "Australia A",
+                "league": "odi",
+                "tournament": "Australia A tour of India 2026 · 1st unofficial ODI",
+                "format": "ODI",
+                "time": "01:00 PM IST",
+                "venue": "Cricket Association Puducherry Siechem Ground , Puducherry",
+                "status": "UPCOMING",
+                "seriesId": "12184",
+                "seriesSlug": "australia-a-tour-of-india-2026"
+            },
+            {
+                "id": "cb_173721",
+                "teamA": "Qatar",
+                "teamB": "Thailand",
+                "league": "international",
+                "tournament": "ICC Men's T20 World Cup Asia Sub Regional Qualifier A 2026 · 4th Match",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Bayuemas Oval , Kuala Lumpur",
+                "status": "UPCOMING",
+                "seriesId": "13253",
+                "seriesSlug": "icc-mens-t20-world-cup-asia-sub-regional-qualifier-a-2026"
+            },
+            {
+                "id": "cb_173723",
+                "teamA": "Bahrain",
+                "teamB": "Bhutan",
+                "league": "international",
+                "tournament": "QAT vs THAI, 4th Match Live Cricket Score · 5th Match",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "YSD-UKM Cricket Oval , Bangi",
+                "status": "UPCOMING",
+                "seriesId": "13253",
+                "seriesSlug": "icc-mens-t20-world-cup-asia-sub-regional-qualifier-a-2026"
+            },
+            {
+                "id": "cb_173727",
+                "teamA": "Kuwait",
+                "teamB": "Mongolia",
+                "league": "international",
+                "tournament": "BHR vs BTN, 5th Match Live Cricket Score · 6th Match",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Bayuemas Oval , Kuala Lumpur",
+                "status": "UPCOMING",
+                "seriesId": "13253",
+                "seriesSlug": "icc-mens-t20-world-cup-asia-sub-regional-qualifier-a-2026"
+            },
+            {
+                "id": "cb_151565",
+                "teamA": "India",
+                "teamB": "West Indies",
+                "league": "international",
+                "tournament": "West Indies tour of India, 2026 · 1st T20I",
+                "format": "T20",
+                "time": "07:30 PM IST",
+                "venue": "Bharat Ratna Shri Atal Bihari Vajpayee Ekana Cricket Stadium , Lucknow",
+                "status": "UPCOMING",
+                "seriesId": "11902",
+                "seriesSlug": "west-indies-tour-of-india-2026"
+            }
+        ],
         "2026-10-07": [
             {
                 "id": "cb_173123",
@@ -470,73 +563,6 @@
                 "status": "UPCOMING",
                 "seriesId": "11898",
                 "seriesSlug": "bangladesh-women-tour-of-australia-2026"
-            }
-        ],
-        "2026-10-06": [
-            {
-                "id": "cb_155433",
-                "teamA": "India A",
-                "teamB": "Australia A",
-                "league": "odi",
-                "tournament": "Australia A tour of India 2026 · 1st unofficial ODI",
-                "format": "ODI",
-                "time": "01:00 PM IST",
-                "venue": "Cricket Association Puducherry Siechem Ground , Puducherry",
-                "status": "UPCOMING",
-                "seriesId": "12184",
-                "seriesSlug": "australia-a-tour-of-india-2026"
-            },
-            {
-                "id": "cb_173721",
-                "teamA": "Qatar",
-                "teamB": "Thailand",
-                "league": "international",
-                "tournament": "ICC Men's T20 World Cup Asia Sub Regional Qualifier A 2026 · 4th Match",
-                "format": "T20",
-                "time": "07:30 PM IST",
-                "venue": "Bayuemas Oval , Kuala Lumpur",
-                "status": "UPCOMING",
-                "seriesId": "13253",
-                "seriesSlug": "icc-mens-t20-world-cup-asia-sub-regional-qualifier-a-2026"
-            },
-            {
-                "id": "cb_173723",
-                "teamA": "Bahrain",
-                "teamB": "Bhutan",
-                "league": "international",
-                "tournament": "QAT vs THAI, 4th Match Live Cricket Score · 5th Match",
-                "format": "T20",
-                "time": "07:30 PM IST",
-                "venue": "YSD-UKM Cricket Oval , Bangi",
-                "status": "UPCOMING",
-                "seriesId": "13253",
-                "seriesSlug": "icc-mens-t20-world-cup-asia-sub-regional-qualifier-a-2026"
-            },
-            {
-                "id": "cb_173727",
-                "teamA": "Kuwait",
-                "teamB": "Mongolia",
-                "league": "international",
-                "tournament": "BHR vs BTN, 5th Match Live Cricket Score · 6th Match",
-                "format": "T20",
-                "time": "07:30 PM IST",
-                "venue": "Bayuemas Oval , Kuala Lumpur",
-                "status": "UPCOMING",
-                "seriesId": "13253",
-                "seriesSlug": "icc-mens-t20-world-cup-asia-sub-regional-qualifier-a-2026"
-            },
-            {
-                "id": "cb_151565",
-                "teamA": "India",
-                "teamB": "West Indies",
-                "league": "international",
-                "tournament": "West Indies tour of India, 2026 · 1st T20I",
-                "format": "T20",
-                "time": "07:30 PM IST",
-                "venue": "Bharat Ratna Shri Atal Bihari Vajpayee Ekana Cricket Stadium , Lucknow",
-                "status": "UPCOMING",
-                "seriesId": "11902",
-                "seriesSlug": "west-indies-tour-of-india-2026"
             }
         ],
         "2026-10-08": [

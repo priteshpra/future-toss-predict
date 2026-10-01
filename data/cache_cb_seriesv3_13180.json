@@ -1,5 +1,5 @@
 {
-    "ts": 1790841963,
+    "ts": 1790872917,
     "data": [
         {
             "matchId": "173153",
@@ -33,9 +33,45 @@
             "format": "T20",
             "date": "2026-10-01",
             "time": "04:30 PM IST",
-            "state": "Preview",
+            "state": "Complete",
             "teamA": "South Western Districts",
             "teamB": "Border"
+        },
+        {
+            "matchId": "173187",
+            "seriesId": "13180",
+            "series": "CSA T20 Challenge 2026",
+            "desc": "Pool B",
+            "format": "T20",
+            "date": "2026-10-02",
+            "time": "04:30 PM IST",
+            "state": "Preview",
+            "teamA": "Mpumalanga Rhinos",
+            "teamB": "KwaZulu-Natal Inland Tuskers"
+        },
+        {
+            "matchId": "173180",
+            "seriesId": "13180",
+            "series": "CSA T20 Challenge 2026",
+            "desc": "Pool B",
+            "format": "T20",
+            "date": "2026-10-02",
+            "time": "09:30 PM IST",
+            "state": "Upcoming",
+            "teamA": "Knights",
+            "teamB": "Titans"
+        },
+        {
+            "matchId": "173197",
+            "seriesId": "13180",
+            "series": "CSA T20 Challenge 2026",
+            "desc": "Pool A",
+            "format": "T20",
+            "date": "2026-10-02",
+            "time": "09:30 PM IST",
+            "state": "Upcoming",
+            "teamA": "Lions",
+            "teamB": "North West - Eastvaal Renault Dragons"
         },
         {
             "matchId": "172981",
@@ -156,42 +192,6 @@
             "state": "Complete",
             "teamA": "Knights",
             "teamB": "Boland"
-        },
-        {
-            "matchId": "173187",
-            "seriesId": "13180",
-            "series": "CSA T20 Challenge 2026",
-            "desc": "Pool B",
-            "format": "T20",
-            "date": "2026-10-02",
-            "time": "04:30 PM IST",
-            "state": "Upcoming",
-            "teamA": "Mpumalanga Rhinos",
-            "teamB": "KwaZulu-Natal Inland Tuskers"
-        },
-        {
-            "matchId": "173180",
-            "seriesId": "13180",
-            "series": "CSA T20 Challenge 2026",
-            "desc": "Pool B",
-            "format": "T20",
-            "date": "2026-10-02",
-            "time": "09:30 PM IST",
-            "state": "Upcoming",
-            "teamA": "Knights",
-            "teamB": "Titans"
-        },
-        {
-            "matchId": "173197",
-            "seriesId": "13180",
-            "series": "CSA T20 Challenge 2026",
-            "desc": "Pool A",
-            "format": "T20",
-            "date": "2026-10-02",
-            "time": "09:30 PM IST",
-            "state": "Upcoming",
-            "teamA": "Lions",
-            "teamB": "North West - Eastvaal Renault Dragons"
         },
         {
             "matchId": "173191",

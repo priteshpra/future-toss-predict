@@ -1,8 +1,8 @@
 {
-    "ts": 1790843440,
+    "ts": 1790872916,
     "data": {
-        "tossWinner": null,
-        "tossDecision": null,
+        "tossWinner": "South Western Districts",
+        "tossDecision": "bat",
         "seriesId": "13180",
         "seriesSlug": "csa-t20-challenge-2026"
     }

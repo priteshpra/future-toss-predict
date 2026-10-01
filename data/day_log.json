@@ -9225,7 +9225,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-10-01T14:00:40+05:30"
+                "lockedAt": "2026-10-01T14:02:17+05:30"
             }
         },
         {
@@ -9747,7 +9747,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-10-01T14:00:40+05:30"
+                "lockedAt": "2026-10-01T14:02:17+05:30"
             }
         },
         {
@@ -10075,7 +10075,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-10-01T14:00:40+05:30"
+                "lockedAt": "2026-10-01T14:02:17+05:30"
             }
         },
         {
@@ -10239,7 +10239,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-10-01T14:00:40+05:30"
+                "lockedAt": "2026-10-01T14:02:17+05:30"
             }
         },
         {
@@ -10403,7 +10403,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-10-01T14:00:40+05:30"
+                "lockedAt": "2026-10-01T14:02:17+05:30"
             }
         },
         {
@@ -10413,18 +10413,18 @@
             "date": "2026-10-01",
             "liveLock": {
                 "prediction": {
-                    "winner": "Sharjah",
-                    "probability": 80,
-                    "confidence": "BEST PICK · last 5 + Telegram + website teeno same side",
+                    "winner": null,
+                    "probability": 50,
+                    "confidence": "SPLIT · last 5 vs load disagree — NO PICK",
                     "decision": "Bowl \/ Field First",
                     "teamAPct": 60,
                     "teamBPct": 40,
-                    "tossLoadA": 78,
-                    "tossLoadB": 22,
+                    "tossLoadA": 18,
+                    "tossLoadB": 82,
                     "insights": [
-                        "Telegram ₹: Sharjah ₹1,426 vs Abu Dhabi ₹0.",
-                        "Website load: Website load favouring Sharjah (100%–0%).",
-                        "BEST PICK: Sharjah (80%) — last 5 + Telegram + website teeno same side.",
+                        "Telegram ₹: Sharjah ₹1,426 vs Abu Dhabi ₹13,000.",
+                        "Website load: Website load favouring Abu Dhabi (10%–90%).",
+                        "NO PICK: last 5 → Sharjah (60%) · load → Abu Dhabi (18%). Split pe skip.",
                         "Strong last-5 toss: Sharjah (Sharjah 3\/4 vs Abu Dhabi 2\/4). Career\/H2H backup only.",
                         "Sharjah career toss wins 3\/4 (75%). Last 10: 3\/4. Last 5: 3\/4.",
                         "Abu Dhabi career toss wins 2\/4 (50%). Last 10: 2\/4. Last 5: 2\/4.",
@@ -10436,22 +10436,22 @@
                     "last5Gap": 1,
                     "last10Winner": null,
                     "tipperReport": {
-                        "action": "PLAY",
-                        "grade": "play",
-                        "pick": "Sharjah",
-                        "headline": "BEST PICK: Sharjah — last 5 + Telegram + website teeno same side. Strongest available call, lock nahi.",
+                        "action": "SKIP",
+                        "grade": "skip",
+                        "pick": null,
+                        "headline": "SKIP — last 5 Sharjah, load Abu Dhabi. Best tipper split pe nahi khelta.",
                         "when": "Last-5 AI ab dikh raha hai · asli load toss se 2–3 hrs \/ 5–10 min pehle aata hai",
                         "lastToss": "Sharjah",
-                        "load": "Sharjah"
+                        "load": "Abu Dhabi"
                     },
-                    "webLoadA": 100,
-                    "webLoadB": 0,
+                    "webLoadA": 10,
+                    "webLoadB": 90,
                     "hasLoad": true,
                     "hasTgLoad": true,
                     "hasWebLoad": true,
                     "onBook": true,
-                    "strong": true,
-                    "pickStrength": "best",
+                    "strong": false,
+                    "pickStrength": "skip",
                     "sources": {
                         "lastToss": {
                             "winner": "Sharjah",
@@ -10461,38 +10461,38 @@
                             "gap": 1
                         },
                         "load": {
-                            "winner": "Sharjah",
-                            "pctA": 78,
-                            "pctB": 22,
+                            "winner": "Abu Dhabi",
+                            "pctA": 18,
+                            "pctB": 82,
                             "hasMoney": true,
                             "amountA": 1426,
-                            "amountB": 0,
+                            "amountB": 13000,
                             "source": "telegram"
                         },
                         "telegram": {
                             "hasMoney": true,
-                            "pctA": 100,
-                            "pctB": 0,
+                            "pctA": 10,
+                            "pctB": 90,
                             "amountA": 1426,
-                            "amountB": 0
+                            "amountB": 13000
                         },
                         "website": {
                             "onBook": true,
                             "hasLean": true,
-                            "winner": "Sharjah",
-                            "pctA": 100,
-                            "pctB": 0
+                            "winner": "Abu Dhabi",
+                            "pctA": 10,
+                            "pctB": 90
                         },
-                        "agree": true,
-                        "split": false,
-                        "triple": true,
+                        "agree": false,
+                        "split": true,
+                        "triple": false,
                         "loadOnly": false
                     },
                     "model": "Mapped ₹ first · last 5 confirm",
                     "whyPick": {
-                        "picked": "Sharjah",
-                        "pct": 80,
-                        "headline": "BEST PICK Sharjah (80%): last 5 + Telegram + website teeno same side.",
+                        "picked": null,
+                        "pct": 60,
+                        "headline": "NO PICK: last 5 Sharjah pe hai, load Abu Dhabi pe — split skip.",
                         "factors": [
                             {
                                 "name": "Last 5 toss",
@@ -10521,14 +10521,14 @@
                             {
                                 "name": "Telegram ₹",
                                 "a": "₹1,426",
-                                "b": "₹0",
-                                "edge": "Sharjah"
+                                "b": "₹13,000",
+                                "edge": "Abu Dhabi"
                             },
                             {
                                 "name": "Website load",
-                                "a": "100%",
-                                "b": "0%",
-                                "edge": "Sharjah"
+                                "a": "10%",
+                                "b": "90%",
+                                "edge": "Abu Dhabi"
                             }
                         ]
                     }
@@ -10544,16 +10544,16 @@
                     "matchWinner": null,
                     "tossWinner": null,
                     "amountA": 1426,
-                    "amountB": 0,
+                    "amountB": 13000,
                     "betsA": 2,
-                    "betsB": 0,
+                    "betsB": 1,
                     "amountALabel": "₹1,426",
-                    "amountBLabel": "₹0",
-                    "leader": "Sharjah",
-                    "leaderPct": 100,
-                    "pctA": 100,
-                    "pctB": 0,
-                    "totalLabel": "₹1,426"
+                    "amountBLabel": "₹13,000",
+                    "leader": "Abu Dhabi",
+                    "leaderPct": 90,
+                    "pctA": 10,
+                    "pctB": 90,
+                    "totalLabel": "₹14,426"
                 },
                 "websiteLoad": {
                     "onBook": true,
@@ -10562,17 +10562,17 @@
                     "bookTime": "07:30 PM IST",
                     "bookStatus": "OPEN",
                     "amountA": 1426,
-                    "amountB": 0,
+                    "amountB": 13000,
                     "amountALabel": "₹1,426",
-                    "amountBLabel": "₹0",
-                    "pctA": 100,
-                    "pctB": 0,
-                    "lean": "A",
-                    "leanTeam": "Sharjah",
+                    "amountBLabel": "₹13,000",
+                    "pctA": 10,
+                    "pctB": 90,
+                    "lean": "B",
+                    "leanTeam": "Abu Dhabi",
                     "hasLean": true,
-                    "label": "Website load favouring Sharjah"
+                    "label": "Website load favouring Abu Dhabi"
                 },
-                "lockedAt": "2026-10-01T14:00:40+05:30"
+                "lockedAt": "2026-10-01T14:02:17+05:30"
             }
         },
         {
@@ -10738,7 +10738,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-10-01T14:00:40+05:30"
+                "lockedAt": "2026-10-01T14:02:17+05:30"
             }
         },
         {
@@ -10905,7 +10905,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-10-01T14:00:40+05:30"
+                "lockedAt": "2026-10-01T14:02:17+05:30"
             }
         },
         {
@@ -10915,18 +10915,18 @@
             "date": "2026-10-01",
             "liveLock": {
                 "prediction": {
-                    "winner": null,
-                    "probability": 50,
-                    "confidence": "No pick — last 5 even, mapped load nahi",
+                    "winner": "Abu Dhabi",
+                    "probability": 72,
+                    "confidence": "LOAD PICK · last 5 even, mapped ₹ hi call hai",
                     "decision": "Bowl \/ Field First",
                     "teamAPct": 44,
                     "teamBPct": 56,
-                    "tossLoadA": 50,
-                    "tossLoadB": 50,
+                    "tossLoadA": 78,
+                    "tossLoadB": 22,
                     "insights": [
-                        "Telegram ₹: is match pe mapped toss money nahi mila.",
-                        "Website load: toss-book board pe ye match listed nahi hai.",
-                        "No pick: last 5 even, mapped load nahi. Tipper wait karta hai.",
+                        "Telegram ₹: Abu Dhabi ₹13,000 vs Fujairah ₹0.",
+                        "Website load: Website load favouring Abu Dhabi (100%–0%).",
+                        "LOAD PICK: Abu Dhabi (72%) — last 5 even, mapped ₹ is side pe hai.",
                         "Last-5 toss even\/thin — no strong history pick yet (Abu Dhabi 2\/4 vs Fujairah 2\/3).",
                         "Abu Dhabi career toss wins 2\/4 (50%). Last 10: 2\/4. Last 5: 2\/4.",
                         "Fujairah career toss wins 2\/3 (67%). Last 10: 2\/3. Last 5: 2\/3.",
@@ -10939,22 +10939,22 @@
                     "last5Gap": 0,
                     "last10Winner": null,
                     "tipperReport": {
-                        "action": "WAIT",
-                        "grade": "wait",
-                        "pick": null,
-                        "headline": "WAIT — last 5 toss even. Koi pick nahi. Load 2–3 hrs \/ 5–10 min pehle aayega.",
+                        "action": "PLAY",
+                        "grade": "play",
+                        "pick": "Abu Dhabi",
+                        "headline": "LOAD PICK: Abu Dhabi — last 5 even hai, isliye mapped ₹ hi AI call hai.",
                         "when": "Last-5 AI ab dikh raha hai · asli load toss se 2–3 hrs \/ 5–10 min pehle aata hai",
                         "lastToss": null,
-                        "load": null
+                        "load": "Abu Dhabi"
                     },
-                    "webLoadA": 50,
-                    "webLoadB": 50,
-                    "hasLoad": false,
-                    "hasTgLoad": false,
-                    "hasWebLoad": false,
-                    "onBook": false,
-                    "strong": false,
-                    "pickStrength": "wait",
+                    "webLoadA": 100,
+                    "webLoadB": 0,
+                    "hasLoad": true,
+                    "hasTgLoad": true,
+                    "hasWebLoad": true,
+                    "onBook": true,
+                    "strong": true,
+                    "pickStrength": "load",
                     "sources": {
                         "lastToss": {
                             "winner": null,
@@ -10964,38 +10964,38 @@
                             "gap": 0
                         },
                         "load": {
-                            "winner": null,
-                            "pctA": 50,
-                            "pctB": 50,
-                            "hasMoney": false,
-                            "amountA": 0,
+                            "winner": "Abu Dhabi",
+                            "pctA": 78,
+                            "pctB": 22,
+                            "hasMoney": true,
+                            "amountA": 13000,
                             "amountB": 0,
-                            "source": null
+                            "source": "telegram"
                         },
                         "telegram": {
-                            "hasMoney": false,
-                            "pctA": 50,
-                            "pctB": 50,
-                            "amountA": 0,
+                            "hasMoney": true,
+                            "pctA": 100,
+                            "pctB": 0,
+                            "amountA": 13000,
                             "amountB": 0
                         },
                         "website": {
-                            "onBook": false,
-                            "hasLean": false,
-                            "winner": null,
-                            "pctA": 50,
-                            "pctB": 50
+                            "onBook": true,
+                            "hasLean": true,
+                            "winner": "Abu Dhabi",
+                            "pctA": 100,
+                            "pctB": 0
                         },
                         "agree": false,
                         "split": false,
                         "triple": false,
-                        "loadOnly": false
+                        "loadOnly": true
                     },
                     "model": "Mapped ₹ first · last 5 confirm",
                     "whyPick": {
-                        "picked": null,
-                        "pct": 50,
-                        "headline": "WAIT: last 5 toss even, mapped load nahi. Strong pick load aane ke baad.",
+                        "picked": "Abu Dhabi",
+                        "pct": 72,
+                        "headline": "LOAD PICK Abu Dhabi (72%): last 5 even, mapped ₹ is side pe — yeh AI call hai.",
                         "factors": [
                             {
                                 "name": "Last 5 toss",
@@ -11023,15 +11023,15 @@
                             },
                             {
                                 "name": "Telegram ₹",
-                                "a": "—",
-                                "b": "—",
-                                "edge": "No TG money"
+                                "a": "₹13,000",
+                                "b": "₹0",
+                                "edge": "Abu Dhabi"
                             },
                             {
                                 "name": "Website load",
-                                "a": "—",
-                                "b": "—",
-                                "edge": "Not listed"
+                                "a": "100%",
+                                "b": "0%",
+                                "edge": "Abu Dhabi"
                             }
                         ]
                     }
@@ -11046,32 +11046,36 @@
                     "phase": "upcoming",
                     "matchWinner": null,
                     "tossWinner": null,
-                    "amountA": 0,
+                    "amountA": 13000,
                     "amountB": 0,
-                    "betsA": 0,
+                    "betsA": 1,
                     "betsB": 0,
-                    "amountALabel": "₹0",
+                    "amountALabel": "₹13,000",
                     "amountBLabel": "₹0",
-                    "leader": null,
-                    "leaderPct": 0,
-                    "pctA": 50,
-                    "pctB": 50,
-                    "totalLabel": "₹0"
+                    "leader": "Abu Dhabi",
+                    "leaderPct": 100,
+                    "pctA": 100,
+                    "pctB": 0,
+                    "totalLabel": "₹13,000"
                 },
                 "websiteLoad": {
-                    "onBook": false,
-                    "hasLean": false,
-                    "pctA": 50,
-                    "pctB": 50,
-                    "lean": null,
-                    "leanTeam": null,
-                    "amountA": 0,
+                    "onBook": true,
+                    "bookTeamA": "Abu Dhabi",
+                    "bookTeamB": "Fujairah",
+                    "bookTime": "07:30 PM IST",
+                    "bookStatus": "OPEN",
+                    "amountA": 13000,
                     "amountB": 0,
-                    "amountALabel": "₹0",
+                    "amountALabel": "₹13,000",
                     "amountBLabel": "₹0",
-                    "label": "Not listed on toss-book"
+                    "pctA": 100,
+                    "pctB": 0,
+                    "lean": "A",
+                    "leanTeam": "Abu Dhabi",
+                    "hasLean": true,
+                    "label": "Website load favouring Abu Dhabi"
                 },
-                "lockedAt": "2026-10-01T14:00:40+05:30"
+                "lockedAt": "2026-10-01T14:02:17+05:30"
             }
         },
         {
@@ -11237,7 +11241,7 @@
                     "amountBLabel": "₹0",
                     "label": "Not listed on toss-book"
                 },
-                "lockedAt": "2026-10-01T14:00:40+05:30"
+                "lockedAt": "2026-10-01T14:02:17+05:30"
             }
         }
     ],

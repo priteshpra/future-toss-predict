@@ -1,6 +1,36 @@
 {
     "posts": [
         {
+            "postId": "BetfairTossbookOrignal\/1859327",
+            "isoTime": "2026-10-01T16:38:10+00:00",
+            "displayTime": "10:08:10 PM",
+            "rawText": "🎯 BTB0353 Ajman ₹28,000 🎯",
+            "userName": "BTB0353",
+            "teamName": "Ajman",
+            "amount": "₹28,000",
+            "amountValue": 28000,
+            "action": "BET_PLACED",
+            "type": "BET_PLACED",
+            "channel": "@BetfairTossbookOrignal",
+            "messageUrl": "https:\/\/t.me\/BetfairTossbookOrignal\/1859327",
+            "webTelegramUrl": "https:\/\/web.telegram.org\/k\/#@BetfairTossbookOrignal"
+        },
+        {
+            "postId": "BetfairTossbookOrignal\/1859323",
+            "isoTime": "2026-10-01T16:34:52+00:00",
+            "displayTime": "10:04:52 PM",
+            "rawText": "🎯 BTB0353 Dubai ₹10,000 🎯",
+            "userName": "BTB0353",
+            "teamName": "Dubai",
+            "amount": "₹10,000",
+            "amountValue": 10000,
+            "action": "BET_PLACED",
+            "type": "BET_PLACED",
+            "channel": "@BetfairTossbookOrignal",
+            "messageUrl": "https:\/\/t.me\/BetfairTossbookOrignal\/1859323",
+            "webTelegramUrl": "https:\/\/web.telegram.org\/k\/#@BetfairTossbookOrignal"
+        },
+        {
             "postId": "BetfairTossbookOrignal\/1855045",
             "isoTime": "2026-09-29T16:00:06+00:00",
             "displayTime": "09:30:06 PM",
@@ -76,5 +106,5 @@
             "webTelegramUrl": "https:\/\/web.telegram.org\/k\/#@BetfairTossbookOrignal"
         }
     ],
-    "updatedAt": "2026-10-01T10:30:26+02:00"
+    "updatedAt": "2026-10-01T18:42:38+02:00"
 }
