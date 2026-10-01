@@ -203,6 +203,9 @@ function leagues(): array
         ['id' => 'odisha', 'name' => 'Odisha T20', 'icon' => '🟠'],
         ['id' => 'wapl', 'name' => 'WAPL', 'icon' => '🦅'],
         ['id' => 'upl', 'name' => 'UPL', 'icon' => '⛰️'],
+        ['id' => 'ed10', 'name' => 'Emirates D10', 'icon' => '🇦🇪'],
+        ['id' => 'wncl', 'name' => 'WNCL', 'icon' => '🇦🇺'],
+        ['id' => 'cs60', 'name' => 'CAN Super 60', 'icon' => '🍁'],
         ['id' => 'test', 'name' => 'Test', 'icon' => '📜'],
         ['id' => 'custom', 'name' => 'My Custom', 'icon' => '✨'],
     ];

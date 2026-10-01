@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Toss Desk · Load + Last Matches</title>
-  <link rel="stylesheet" href="assets/app.css?v=20">
+  <link rel="stylesheet" href="assets/app.css?v=21">
 </head>
 
 <body>
@@ -120,7 +120,6 @@
               <th>Played</th>
               <th>Toss won</th>
               <th>%</th>
-              <th>Bowl / Bat</th>
             </tr>
           </thead>
           <tbody id="lbBody"></tbody>
@@ -177,16 +176,13 @@
         <button class="btn mint" type="button" id="tossWinnerA">Team A</button>
         <button class="btn mint" type="button" id="tossWinnerB">Team B</button>
       </div>
-      <p style="margin:0 0 8px;color:#94a3b8;font-size:13px">Decision after winning toss</p>
-      <label class="tg-check"><input type="radio" name="tossDec" id="tossDecBowl" checked> Bowl / field first</label>
-      <label class="tg-check"><input type="radio" name="tossDec" id="tossDecBat"> Bat first</label>
       <div class="actions" style="margin-top:14px">
         <button class="btn ghost" type="button" id="tossClose">Cancel</button>
       </div>
     </div>
   </div>
   <aside class="drawer" id="drawer"></aside>
-  <script src="assets/app.js?v=44"></script>
+  <script src="assets/app.js?v=46"></script>
 </body>
 
 </html>

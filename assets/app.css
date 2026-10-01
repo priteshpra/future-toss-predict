@@ -1259,6 +1259,55 @@ body.drawer-open {
   color: #fda4af;
 }
 
+.toss-dots .na {
+  background: rgba(148, 163, 184, .12);
+  color: #64748b;
+}
+
+.list-section {
+  grid-column: 1 / -1;
+  margin: 8px 0 4px;
+  padding: 8px 2px 2px;
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: #6ee7b7;
+}
+
+.list-section small {
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 600;
+  color: var(--muted);
+  margin-left: 8px;
+}
+
+.list-section.done,
+.list-section:has(+ .card.done) {
+  color: #93c5fd;
+}
+
+.desk-wl {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.desk-wl .toss-dots {
+  margin-top: 0;
+}
+
+.desk-wl em {
+  font-style: normal;
+  color: var(--text);
+}
+
 .toss-block {
   margin-bottom: 12px;
 }

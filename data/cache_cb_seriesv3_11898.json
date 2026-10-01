@@ -1,0 +1,41 @@
+{
+    "ts": 1790841964,
+    "data": [
+        {
+            "matchId": "151389",
+            "seriesId": "11898",
+            "series": "Bangladesh Women tour of Australia, 2026",
+            "desc": "1st ODI",
+            "format": "ODI",
+            "date": "2026-10-09",
+            "time": "09:20 AM IST",
+            "state": "Upcoming",
+            "teamA": "Australia Women",
+            "teamB": "Bangladesh Women"
+        },
+        {
+            "matchId": "151400",
+            "seriesId": "11898",
+            "series": "Bangladesh Women tour of Australia, 2026",
+            "desc": "2nd ODI",
+            "format": "ODI",
+            "date": "2026-10-11",
+            "time": "09:20 AM IST",
+            "state": "Upcoming",
+            "teamA": "Australia Women",
+            "teamB": "Bangladesh Women"
+        },
+        {
+            "matchId": "151411",
+            "seriesId": "11898",
+            "series": "Bangladesh Women tour of Australia, 2026",
+            "desc": "3rd ODI",
+            "format": "ODI",
+            "date": "2026-10-14",
+            "time": "09:20 AM IST",
+            "state": "Upcoming",
+            "teamA": "Australia Women",
+            "teamB": "Bangladesh Women"
+        }
+    ]
+}

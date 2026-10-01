@@ -1,29 +1,29 @@
 {
-    "ts": 1790697402,
+    "ts": 1790841963,
     "data": [
         {
-            "matchId": "171040",
+            "matchId": "171051",
             "seriesId": "12563",
             "series": "Asian Games 2026",
-            "desc": "3rd Quarter-Final",
+            "desc": "1st Semi-Final",
             "format": "T20",
-            "date": "2026-09-29",
+            "date": "2026-10-01",
             "time": "05:30 AM IST",
             "state": "Complete",
-            "teamA": "Sri Lanka",
-            "teamB": "Nepal"
+            "teamA": "Bangladesh",
+            "teamB": "Pakistan"
         },
         {
-            "matchId": "171041",
+            "matchId": "171060",
             "seriesId": "12563",
             "series": "Asian Games 2026",
-            "desc": "4th Quarter-Final",
+            "desc": "2nd Semi-Final",
             "format": "T20",
-            "date": "2026-09-29",
+            "date": "2026-10-01",
             "time": "10:00 AM IST",
             "state": "Complete",
-            "teamA": "Bangladesh",
-            "teamB": "Malaysia"
+            "teamA": "India",
+            "teamB": "Sri Lanka"
         },
         {
             "matchId": "170973",
@@ -122,28 +122,28 @@
             "teamB": "Afghanistan"
         },
         {
-            "matchId": "171051",
+            "matchId": "171040",
             "seriesId": "12563",
             "series": "Asian Games 2026",
-            "desc": "1st Semi-Final",
+            "desc": "3rd Quarter-Final",
             "format": "T20",
-            "date": "2026-10-01",
+            "date": "2026-09-29",
             "time": "05:30 AM IST",
-            "state": "Upcoming",
-            "teamA": "Pakistan",
-            "teamB": "Bangladesh"
+            "state": "Abandon",
+            "teamA": "Sri Lanka",
+            "teamB": "Nepal"
         },
         {
-            "matchId": "171060",
+            "matchId": "171041",
             "seriesId": "12563",
             "series": "Asian Games 2026",
-            "desc": "2nd Semi-Final",
+            "desc": "4th Quarter-Final",
             "format": "T20",
-            "date": "2026-10-01",
+            "date": "2026-09-29",
             "time": "10:00 AM IST",
-            "state": "Upcoming",
-            "teamA": "India",
-            "teamB": "Sri Lanka"
+            "state": "Abandon",
+            "teamA": "Bangladesh",
+            "teamB": "Malaysia"
         },
         {
             "matchId": "171061",
@@ -154,20 +154,20 @@
             "date": "2026-10-03",
             "time": "05:30 AM IST",
             "state": "Upcoming",
-            "teamA": "TBC",
-            "teamB": "TBC"
+            "teamA": "Bangladesh",
+            "teamB": "Sri Lanka"
         },
         {
             "matchId": "171070",
             "seriesId": "12563",
             "series": "Asian Games 2026",
-            "desc": "Final",
+            "desc": "Gold Medal Match",
             "format": "T20",
             "date": "2026-10-03",
             "time": "10:00 AM IST",
             "state": "Upcoming",
-            "teamA": "TBC",
-            "teamB": "TBC"
+            "teamA": "Pakistan",
+            "teamB": "India"
         }
     ]
 }

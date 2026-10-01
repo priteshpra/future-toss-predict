@@ -492,6 +492,9 @@ function guess_format_label(string $blob): string
     if (str_contains($b, 'odi')) {
         return 'ODI';
     }
+    if (str_contains($b, 'd10') || str_contains($b, 't10') || str_contains($b, 'super 60') || str_contains($b, 'super60')) {
+        return 'T10';
+    }
     return 'T20';
 }
 
@@ -506,6 +509,15 @@ function default_slate_time(string $blob): string
     }
     if (str_contains($b, 'odi')) {
         return '01:00 PM IST';
+    }
+    if (str_contains($b, 'emirates d10') || str_contains($b, 'd10 league')) {
+        return '04:30 PM IST';
+    }
+    if (str_contains($b, 'wncl') || str_contains($b, 'women\'s national cricket')) {
+        return '05:00 AM IST';
+    }
+    if (str_contains($b, 'super 60') || str_contains($b, 'super60')) {
+        return '04:30 AM IST';
     }
     return '07:30 PM IST';
 }
@@ -683,6 +695,198 @@ function fetch_cricbuzz_match_toss(string $matchId, bool $live = false): ?array
     ]);
     cache_set($cacheKey, $pack);
     return $pack;
+}
+
+function crictracker_featured_hubs(): array
+{
+    return [
+        [
+            'league' => 'cs60',
+            'format' => 'T10',
+            'hint' => 'canada-super-60',
+            'schedule' => 'https://iml-t20.crictracker.com/canada-super-60/schedule/',
+        ],
+        [
+            'league' => 'ed10',
+            'format' => 'T10',
+            'hint' => 'emirates-d10',
+            'schedule' => 'https://iml-t20.crictracker.com/emirates-d10/schedule/',
+        ],
+    ];
+}
+
+function crictracker_slug_date(string $slug): string
+{
+    if (!preg_match('/(\d{2})-(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)-(\d{4})/i', $slug, $m)) {
+        return '';
+    }
+    $months = [
+        'jan' => '01', 'feb' => '02', 'mar' => '03', 'apr' => '04', 'may' => '05', 'jun' => '06',
+        'jul' => '07', 'aug' => '08', 'sep' => '09', 'oct' => '10', 'nov' => '11', 'dec' => '12',
+    ];
+    return $m[3] . '-' . $months[strtolower($m[2])] . '-' . $m[1];
+}
+
+function crictracker_canon_team(string $name): string
+{
+    $name = trim(html_entity_decode($name));
+    $name = preg_replace('/^(play ongoing|result|live)\s+/i', '', $name) ?? $name;
+    if (function_exists('canonical_schedule_team')) {
+        return canonical_schedule_team($name);
+    }
+    return $name;
+}
+
+function parse_crictracker_toss(string $html, string $league = ''): ?array
+{
+    if (!preg_match_all('/([A-Za-z][A-Za-z0-9 .\'-]{2,48})\s+elected to\s+(bat|bowl|field)/i', $html, $rows, PREG_SET_ORDER)) {
+        return null;
+    }
+    foreach (array_reverse($rows) as $row) {
+        $winner = crictracker_canon_team(trim($row[1]));
+        if ($winner === '' || preg_match('/ongoing|starts|score/i', $winner)) {
+            continue;
+        }
+        if ($league !== '' && function_exists('extra_team_type_exact') && extra_team_type_exact($winner) !== $league) {
+            continue;
+        }
+        return [
+            'tossWinner' => $winner,
+            'tossDecision' => strtolower($row[2]) === 'bat' ? 'bat' : 'bowl',
+        ];
+    }
+    return null;
+}
+
+function parse_crictracker_sides(string $html): array
+{
+    $title = '';
+    if (preg_match('/<h1[^>]*>(.*?)<\/h1>/is', $html, $m)) {
+        $title = trim(html_entity_decode(strip_tags($m[1])));
+    } elseif (preg_match('/<title[^>]*>(.*?)<\/title>/is', $html, $m)) {
+        $title = trim(html_entity_decode(strip_tags($m[1])));
+    }
+    if (!preg_match('/^(.+?)\s+vs\s+(.+?)(?:,| - | \d|$)/i', $title, $m)) {
+        return ['', ''];
+    }
+    return [crictracker_canon_team(trim($m[1])), crictracker_canon_team(trim($m[2]))];
+}
+
+function featured_fixture_near(string $a, string $b, string $pageDate, string $league): ?array
+{
+    if (!function_exists('featured_domestic_fixtures') || !function_exists('names_match')) {
+        return null;
+    }
+    $best = null;
+    $bestDiff = 3;
+    foreach (featured_domestic_fixtures() as $fx) {
+        if (($fx['league'] ?? '') !== $league) {
+            continue;
+        }
+        $same = (names_match($fx['teamA'] ?? '', $a) && names_match($fx['teamB'] ?? '', $b))
+            || (names_match($fx['teamA'] ?? '', $b) && names_match($fx['teamB'] ?? '', $a));
+        if (!$same) {
+            continue;
+        }
+        $fd = (string) ($fx['date'] ?? '');
+        if ($pageDate === '' || $fd === '') {
+            $best = $fx;
+            continue;
+        }
+        $diff = abs((strtotime($fd) - strtotime($pageDate)) / 86400);
+        if ($diff <= $bestDiff) {
+            $bestDiff = $diff;
+            $best = $fx;
+        }
+    }
+    return $best;
+}
+
+function hydrate_featured_scorecard_history(array &$local, array &$have, array &$index): bool
+{
+    $added = false;
+    $fetched = 0;
+    foreach (crictracker_featured_hubs() as $hub) {
+        $cacheKey = 'ct_sched_' . $hub['league'];
+        $sched = cache_get($cacheKey, 1800);
+        if (!is_array($sched)) {
+            $html = http_get($hub['schedule'], 12);
+            $sched = [];
+            if (is_string($html) && $html !== '') {
+                preg_match_all('/live-scores\/([a-z0-9-]+)/i', $html, $m);
+                foreach (array_unique($m[1] ?? []) as $slug) {
+                    if (str_contains($slug, $hub['hint'])) {
+                        $sched[$slug] = 'https://iml-t20.crictracker.com/live-scores/' . $slug . '/full-scorecard/';
+                    }
+                }
+            }
+            cache_set($cacheKey, $sched);
+        }
+        foreach ($sched as $slug => $url) {
+            $pageDate = crictracker_slug_date((string) $slug);
+            $today = function_exists('ist_today') ? ist_today() : date('Y-m-d');
+            if ($pageDate !== '' && $pageDate > $today) {
+                continue;
+            }
+            $scKey = 'ct_sc_' . substr(md5((string) $slug), 0, 16);
+            $pack = cache_get($scKey, 43200);
+            if (!is_array($pack) || empty($pack['tossWinner'])) {
+                $miss = cache_get($scKey . '_miss', 1200);
+                if ($miss) {
+                    continue;
+                }
+                if ($fetched >= 22) {
+                    continue;
+                }
+                $html = http_get($url, 10);
+                $fetched++;
+                if (!is_string($html) || $html === '') {
+                    cache_set($scKey . '_miss', ['ok' => 1]);
+                    continue;
+                }
+                $toss = parse_crictracker_toss($html, $hub['league']);
+                [$teamA, $teamB] = parse_crictracker_sides($html);
+                if (!$toss || $teamA === '' || $teamB === '') {
+                    cache_set($scKey . '_miss', ['ok' => 1]);
+                    continue;
+                }
+                $fx = featured_fixture_near($teamA, $teamB, $pageDate, $hub['league']);
+                $pack = [
+                    'id' => 'ct_' . preg_replace('/[^a-z0-9_]/', '', (string) $slug),
+                    'league' => $hub['league'],
+                    'date' => $fx['date'] ?? $pageDate,
+                    'format' => $hub['format'],
+                    'teamA' => $fx['teamA'] ?? $teamA,
+                    'teamB' => $fx['teamB'] ?? $teamB,
+                    'venue' => $fx['venue'] ?? '',
+                    'tossWinner' => $toss['tossWinner'],
+                    'tossDecision' => $toss['tossDecision'],
+                    'matchWinner' => '',
+                    'source' => 'crictracker',
+                ];
+                cache_set($scKey, $pack);
+            }
+            if (empty($pack['tossWinner']) || empty($pack['teamA']) || empty($pack['teamB'])) {
+                continue;
+            }
+            $fp = function_exists('history_fingerprint')
+                ? history_fingerprint(history_row_from_match($pack, $pack['date'] ?? ''))
+                : '';
+            if ($fp !== '' && isset($have[$fp])) {
+                continue;
+            }
+            $local[] = $pack;
+            if ($fp !== '') {
+                $have[$fp] = true;
+            }
+            $pair = strtolower(trim($pack['teamA']) . '|' . trim($pack['teamB']) . '|' . ($pack['date'] ?? ''));
+            $rev = strtolower(trim($pack['teamB']) . '|' . trim($pack['teamA']) . '|' . ($pack['date'] ?? ''));
+            $index['byPair'][$pair] = $pack;
+            $index['byPair'][$rev] = $pack;
+            $added = true;
+        }
+    }
+    return $added;
 }
 
 function local_historical_toss_store(): array
@@ -917,6 +1121,10 @@ function hydrate_cricbuzz_toss_history(array $matches): array
             }
         }
         cache_set('cb_hist_crawl', ['ok' => 1, 'at' => time()]);
+    }
+
+    if (hydrate_featured_scorecard_history($local, $have, $index)) {
+        $added = true;
     }
 
     if ($added) {

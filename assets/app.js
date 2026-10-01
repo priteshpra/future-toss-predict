@@ -228,7 +228,9 @@ function renderPunterDesk(matches) {
     const pick = matchPick(m);
     return `<button class="desk-row ${st.cls}" type="button" data-jump="${esc(m.id)}">
         <span class="desk-act">${esc(st.label)}</span>
-        <span class="desk-vs"><b>${esc(pick || m.teamA)}</b> <small>${esc(m.teamA)} vs ${esc(m.teamB)}</small></span>
+        <span class="desk-vs"><b>${esc(pick || m.teamA)}</b> <small>${esc(m.teamA)} vs ${esc(m.teamB)}</small>
+          <span class="desk-wl">${esc(m.teamA)} ${tossDots(m.analysis?.teamA, m.form?.aLast5Rows)} <em>${esc(m.form?.aLast5 || '0/0')}</em> · ${esc(m.teamB)} ${tossDots(m.analysis?.teamB, m.form?.bLast5Rows)} <em>${esc(m.form?.bLast5 || '0/0')}</em></span>
+        </span>
         <span class="desk-meta">${esc(fmtMins(m.minutesToToss))}<br>${esc(rupeeLine(m))}</span>
       </button>`;
   }).join('')}
@@ -259,7 +261,7 @@ function maybePlayNotify(m) {
 function copyPick(m) {
   const st = actionStamp(m);
   const extra = m.tossWinner
-    ? `chose ${m.tossDecision || '—'}`
+    ? `toss winner ${m.tossWinner}`
     : `${rupeeLine(m)} · toss ${m.tossTime || m.time || ''} IST`;
   const text = `${st.label} ${st.sub || ''} · ${m.teamA} vs ${m.teamB} · ${extra}`;
   if (navigator.clipboard?.writeText) navigator.clipboard.writeText(text.trim());
@@ -271,7 +273,9 @@ function tossDots(team, rows) {
     : ((team?.last5Rows && team.last5Rows.length)
       ? team.last5Rows
       : (team?.record?.recent || []));
-  if (!rec.length) return '';
+  if (!rec.length) {
+    return `<div class="toss-dots empty" title="No completed toss sample yet"><em class="na">—</em><em class="na">—</em><em class="na">—</em><em class="na">—</em><em class="na">—</em></div>`;
+  }
   return `<div class="toss-dots">${rec.slice(0, 5).map((r) => `<em class="${r.won ? 'w' : 'l'}">${r.won ? 'W' : 'L'}</em>`).join('')}</div>`;
 }
 
@@ -303,7 +307,7 @@ function cardHTML(m) {
           : '<span class="badge">UPCOMING</span>';
   const st = actionStamp(m);
   const stampMeta = tossed
-    ? (m.tossDecision ? `chose ${m.tossDecision}` : 'ground toss')
+    ? (result === 'pass' ? 'AI PASS' : result === 'fail' ? 'AI FAIL' : 'toss winner')
     : `${rupeeLine(m)} · ${fmtMins(m.minutesToToss)}`;
   const stamp = `<div class="action-stamp ${st.cls}"><b>${esc(st.label)}</b><span>${esc(st.sub || '')}</span><em>${esc(stampMeta)}</em></div>`;
   const pickClass = report.action === 'PLAY'
@@ -342,14 +346,14 @@ function cardHTML(m) {
         ? 'no pick'
         : 'pending';
   const actual = m.tossWinner
-    ? `<div class="insight">Ground toss: <b>${esc(m.tossWinner)}</b> chose ${esc(m.tossDecision || '—')}  ·  AI ${resultMark}</div>`
+    ? `<div class="insight">Toss winner: <b>${esc(m.tossWinner)}</b>  ·  AI ${resultMark}</div>`
     : '';
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const dateBit = (m.date && m.date !== state.date)
     ? `  ·  ${Number(m.date.slice(8, 10))} ${months[Number(m.date.slice(5, 7)) - 1] || m.date}`
     : '';
-  const last5A = form.aLast5 && form.aLast5 !== '0/0' ? form.aLast5 : '—';
-  const last5B = form.bLast5 && form.bLast5 !== '0/0' ? form.bLast5 : '—';
+  const last5A = form.aLast5 || '0/0';
+  const last5B = form.bLast5 || '0/0';
   const hasTg = !!(pred.hasTgLoad || (m.punterLoad && (m.punterLoad.amountA + m.punterLoad.amountB) > 0));
   const web = m.websiteLoad || src.website || {};
   const onBook = !!(pred.onBook || web.onBook);
@@ -430,7 +434,6 @@ function cardHTML(m) {
         <span>📍 ${esc(m.venue)}</span>
         <span>Last 10: ${form.aLast10 || '—'} vs ${form.bLast10 || '—'}</span>
         <span>H2H toss ${h2h.teamAWins ?? 0}-${h2h.teamBWins ?? 0}</span>
-        <span>${venue.dewFactor || '—'} dew</span>
       </div>
       <div class="actions">
         <button class="btn mint" data-act="analysis" data-id="${m.id}">Full analysis</button>
@@ -504,19 +507,7 @@ function renderScoreboard(matches) {
 }
 
 
-function paintMatchGrid() {
-  const grid = $('grid');
-  if (!grid) return;
-  if (!state.matches.length) {
-    grid.innerHTML = `<div class="empty">Is date par scheduled match nahi mila. Niche se custom match add karo.</div>`;
-    return;
-  }
-  const shown = filteredMatches(state.matches);
-  if (!shown.length) {
-    grid.innerHTML = `<div class="empty">Is filter pe match nahi. Upar se <b>All</b> ya <b>Toss done</b> try karo.</div>`;
-    return;
-  }
-  grid.innerHTML = shown.map(cardHTML).join('');
+function bindMatchGrid(grid) {
   grid.querySelectorAll('[data-act]').forEach((btn) => {
     const m = state.matches.find((x) => x.id === btn.dataset.id);
     if (!m) return;
@@ -534,6 +525,43 @@ function paintMatchGrid() {
       }
     };
   });
+}
+
+function listSection(title, note, matches) {
+  if (!matches.length) return '';
+  return `<div class="list-section">${esc(title)} <small>${matches.length} · ${esc(note)}</small></div>${matches.map(cardHTML).join('')}`;
+}
+
+function paintMatchGrid() {
+  const grid = $('grid');
+  if (!grid) return;
+  if (!state.matches.length) {
+    grid.innerHTML = `<div class="empty">Is date par scheduled match nahi mila. Niche se custom match add karo.</div>`;
+    return;
+  }
+  const shown = filteredMatches(state.matches);
+  if (!shown.length) {
+    grid.innerHTML = `<div class="empty">Is filter pe match nahi. Upar se <b>All</b> ya <b>Toss done</b> try karo.</div>`;
+    return;
+  }
+  const f = state.deskFilter || 'all';
+  if (f === 'all') {
+    const open = shown.filter((m) => !m.tossWinner);
+    const done = shown.filter((m) => !!m.tossWinner);
+    grid.innerHTML = listSection('Remaining toss', 'last-5 W/L + tipper analysis', open)
+      + listSection('Toss done', 'last-5 W/L + Pass/Fail', done);
+  } else {
+    const note = f === 'done'
+      ? 'last-5 W/L + Pass/Fail'
+      : 'last-5 W/L + analysis';
+    const title = f === 'live' ? 'Live desk'
+      : f === 'play' ? 'Play / lean'
+        : f === 'wait' ? 'Wait load'
+          : f === 'watch' ? 'Watch'
+            : f === 'done' ? 'Toss done' : 'Matches';
+    grid.innerHTML = listSection(title, note, shown);
+  }
+  bindMatchGrid(grid);
 }
 
 function renderMatches(payload) {
@@ -683,7 +711,6 @@ function lastTossTable(team) {
       <td>${esc(r.date || '—')}</td>
       <td>vs ${esc(r.vs || '—')}</td>
       <td class="${won ? 'w' : 'l'}">${won ? 'WON' : 'LOST'}</td>
-      <td>${esc(won ? (r.decision || '—') : '—')}</td>
     </tr>`;
   }).join('');
   const rec = team.record || {};
@@ -691,14 +718,13 @@ function lastTossTable(team) {
     <div class="toss-block">
       <div class="insight">
         <b>${esc(team.name)}</b>${team.captain ? `  ·  captain ${esc(team.captain)}` : ''}${team.home ? '  ·  Home' : ''}<br>
-        Career ${rec.won || 0}/${rec.played || 0} (${rec.pct || 50}%)  ·  Last 10: ${team.last10Wins || 0}/${team.last10Total || 0} (${team.last10Pct || 50}%)  ·  Last 5: ${team.last5Wins || 0}/${team.last5Total || 0} (${team.last5Pct || 50}%)<br>
-        After winning toss: bowl ${rec.choseBowl || 0} / bat ${rec.choseBat || 0}  ·  usual call <b>${esc(rec.call || '—')}</b>
+        Career ${rec.won || 0}/${rec.played || 0} (${rec.pct || 50}%)  ·  Last 10: ${team.last10Wins || 0}/${team.last10Total || 0} (${team.last10Pct || 50}%)  ·  Last 5: ${team.last5Wins || 0}/${team.last5Total || 0} (${team.last5Pct || 50}%)
         ${team.streak?.text ? `<br>${esc(team.streak.text)}` : ''}
       </div>
       ${tossDots(team)}
       <table class="toss-table">
-        <caption>${esc(team.name)} — last toss results</caption>
-        <thead><tr><th>Date</th><th>Opponent</th><th>Toss</th><th>Call</th></tr></thead>
+        <caption>${esc(team.name)} — last toss winners</caption>
+        <thead><tr><th>Date</th><th>Opponent</th><th>Toss</th></tr></thead>
         <tbody>${body}</tbody>
       </table>
     </div>`;
@@ -794,7 +820,7 @@ function analysisDetailHTML(a, teamAName, teamBName, extra = {}) {
   const insights = Array.isArray(pick.insights) ? pick.insights : (Array.isArray(a.prediction?.insights) ? a.prediction.insights : []);
   const gradeSide = extra.tossWinner ? gradedPick({ prediction: pick }) : '';
   const actual = extra.tossWinner
-    ? `<div class="agree-note">Ground toss already saved: <b>${esc(extra.tossWinner)}</b> chose ${esc(extra.tossDecision || '—')}${!gradeSide ? ' · no pick' : (namesClose(extra.tossWinner, gradeSide) ? ' · AI PASS' : ' · AI FAIL')
+    ? `<div class="agree-note">Toss winner: <b>${esc(extra.tossWinner)}</b>${!gradeSide ? ' · no pick' : (namesClose(extra.tossWinner, gradeSide) ? ' · AI PASS' : ' · AI FAIL')
     }</div>`
     : '';
   if (extra.tossWinner) {
@@ -808,14 +834,13 @@ function analysisDetailHTML(a, teamAName, teamBName, extra = {}) {
     <div class="insight">${esc(teamAName)} ${h2h.teamAWins ?? 0} – ${h2h.teamBWins ?? 0} ${esc(teamBName)} from ${h2h.total ?? 0} meetings</div>
   `;
   }
+  const notes = insights.filter((i) => !/bowl|bat first|chose |dew|preferred decision|calling at|ground calling/i.test(String(i)));
   return `
     ${whyPickHTML(a, teamAName, teamBName, extra)}
     ${actual}
     <div class="insight"><b>Last-match toss lean</b>: ${esc(last.winner || pick.favoredWinner || 'Even')}  ·  ${esc(teamAName)} ${last.pctA ?? pick.teamAPct ?? '—'}% vs ${esc(teamBName)} ${last.pctB ?? pick.teamBPct ?? '—'}%</div>
     <div class="insight"><b>Punter load</b>: ${load.hasMoney ? `${esc(load.winner || 'Even')}  ·  ${load.pctA}% vs ${load.pctB}%` : 'Is match pe mapped toss money nahi mila — last toss hi lean hai'}</div>
-    <div class="insight">If they win toss, usual call: <b>${esc(pick.decision || pick.likelyDecision || v.preferredDecision || '—')}</b> at ${esc(v.venueName || extra.venue || '')}</div>
-    <h3>Model notes</h3>
-    ${insights.map((i) => `<div class="insight">${esc(i)}</div>`).join('')}
+    ${notes.length ? `<h3>Model notes</h3>${notes.map((i) => `<div class="insight">${esc(i)}</div>`).join('')}` : ''}
     <h3>Last toss results</h3>
     ${lastTossTable(a.teamA || {})}
     ${lastTossTable(a.teamB || {})}
@@ -867,7 +892,7 @@ function openTossModal(m) {
   }
   $('tossTitle').textContent = `${m.teamA} vs ${m.teamB}`;
   $('tossSub').textContent = m.tossWinner
-    ? `Saved toss: ${m.tossWinner} chose ${m.tossDecision || '—'}. Change karo to naya result lock ho jayega.`
+    ? `Saved toss winner: ${m.tossWinner}. Change karo to naya result lock ho jayega.`
     : 'Ground toss winner select karo. Save ke baad yeh lock rehta hai — refresh pe erase nahi hoga.';
   $('tossWinnerA').textContent = m.teamA;
   $('tossWinnerB').textContent = m.teamB;
@@ -875,15 +900,12 @@ function openTossModal(m) {
   $('tossWinnerB').classList.toggle('mint', namesClose(m.tossWinner, m.teamB));
   $('tossWinnerA').dataset.winner = m.teamA;
   $('tossWinnerB').dataset.winner = m.teamB;
-  const dec = (m.tossDecision || 'bowl').toLowerCase();
-  if ($('tossDecBowl')) $('tossDecBowl').checked = dec !== 'bat';
-  if ($('tossDecBat')) $('tossDecBat').checked = dec === 'bat';
   box.classList.add('show');
 }
 
 async function saveToss(winner) {
   if (!tossMatch || !winner) return;
-  const decision = $('tossDecBat')?.checked ? 'bat' : 'bowl';
+  const decision = m.tossDecision || 'bowl';
   const m = tossMatch;
   closeTossModal();
   await api('set_toss', {
@@ -1036,7 +1058,6 @@ async function loadBoard() {
       <td>${t.played}</td>
       <td>${t.tossWon}</td>
       <td><b>${t.tossWinPct}%</b></td>
-      <td>${t.choseBowl}/${t.choseBat}</td>
     </tr>
   `).join('');
 }

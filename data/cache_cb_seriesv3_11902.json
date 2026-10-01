@@ -1,5 +1,5 @@
 {
-    "ts": 1790697401,
+    "ts": 1790841963,
     "data": [
         {
             "matchId": "151543",
@@ -9,9 +9,9 @@
             "format": "ODI",
             "date": "2026-09-30",
             "time": "02:00 PM IST",
-            "state": "Preview",
-            "teamA": "India",
-            "teamB": "West Indies"
+            "state": "Complete",
+            "teamA": "West Indies",
+            "teamB": "India"
         },
         {
             "matchId": "151532",

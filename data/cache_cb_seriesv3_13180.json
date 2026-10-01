@@ -1,41 +1,41 @@
 {
-    "ts": 1790697401,
+    "ts": 1790841963,
     "data": [
         {
-            "matchId": "173127",
-            "seriesId": "13180",
-            "series": "CSA T20 Challenge 2026",
-            "desc": "Pool B",
-            "format": "T20",
-            "date": "2026-09-29",
-            "time": "04:30 PM IST",
-            "state": "Upcoming",
-            "teamA": "South Africa Emerging Players",
-            "teamB": "KwaZulu-Natal Inland Tuskers"
-        },
-        {
-            "matchId": "173133",
+            "matchId": "173153",
             "seriesId": "13180",
             "series": "CSA T20 Challenge 2026",
             "desc": "Pool A",
             "format": "T20",
-            "date": "2026-09-29",
-            "time": "05:30 PM IST",
-            "state": "Toss",
-            "teamA": "Warriors",
-            "teamB": "Limpopo"
+            "date": "2026-09-30",
+            "time": "09:30 PM IST",
+            "state": "Complete",
+            "teamA": "Dolphins",
+            "teamB": "Northern Cape"
         },
         {
-            "matchId": "173143",
+            "matchId": "173163",
             "seriesId": "13180",
             "series": "CSA T20 Challenge 2026",
             "desc": "Pool B",
             "format": "T20",
-            "date": "2026-09-29",
+            "date": "2026-09-30",
             "time": "09:30 PM IST",
+            "state": "Complete",
+            "teamA": "Eastern Storm",
+            "teamB": "Mpumalanga Rhinos"
+        },
+        {
+            "matchId": "173170",
+            "seriesId": "13180",
+            "series": "CSA T20 Challenge 2026",
+            "desc": "Pool A",
+            "format": "T20",
+            "date": "2026-10-01",
+            "time": "04:30 PM IST",
             "state": "Preview",
-            "teamA": "Boland",
-            "teamB": "Knights"
+            "teamA": "South Western Districts",
+            "teamB": "Border"
         },
         {
             "matchId": "172981",
@@ -122,40 +122,40 @@
             "teamB": "North West - Eastvaal Renault Dragons"
         },
         {
-            "matchId": "173153",
-            "seriesId": "13180",
-            "series": "CSA T20 Challenge 2026",
-            "desc": "Pool A",
-            "format": "T20",
-            "date": "2026-09-30",
-            "time": "09:30 PM IST",
-            "state": "Upcoming",
-            "teamA": "Dolphins",
-            "teamB": "Northern Cape"
-        },
-        {
-            "matchId": "173163",
+            "matchId": "173127",
             "seriesId": "13180",
             "series": "CSA T20 Challenge 2026",
             "desc": "Pool B",
             "format": "T20",
-            "date": "2026-09-30",
-            "time": "09:30 PM IST",
-            "state": "Upcoming",
-            "teamA": "Eastern Storm",
-            "teamB": "Mpumalanga Rhinos"
+            "date": "2026-09-29",
+            "time": "04:30 PM IST",
+            "state": "Abandon",
+            "teamA": "South Africa Emerging Players",
+            "teamB": "KwaZulu-Natal Inland Tuskers"
         },
         {
-            "matchId": "173170",
+            "matchId": "173133",
             "seriesId": "13180",
             "series": "CSA T20 Challenge 2026",
             "desc": "Pool A",
             "format": "T20",
-            "date": "2026-10-01",
-            "time": "04:30 PM IST",
-            "state": "Upcoming",
-            "teamA": "South Western Districts",
-            "teamB": "Border"
+            "date": "2026-09-29",
+            "time": "05:30 PM IST",
+            "state": "Complete",
+            "teamA": "Warriors",
+            "teamB": "Limpopo"
+        },
+        {
+            "matchId": "173143",
+            "seriesId": "13180",
+            "series": "CSA T20 Challenge 2026",
+            "desc": "Pool B",
+            "format": "T20",
+            "date": "2026-09-29",
+            "time": "09:30 PM IST",
+            "state": "Complete",
+            "teamA": "Knights",
+            "teamB": "Boland"
         },
         {
             "matchId": "173187",

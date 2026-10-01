@@ -41,6 +41,29 @@ function extra_teams(): array
         ['name' => 'Mussoorie Queens', 'short' => 'MSQ', 'type' => 'upl', 'badge' => '👑', 'color' => '#a855f7', 'captain' => 'Nandini Kashyap', 'aliases' => ['Mussoorie', 'Mussoorie Queens Women']],
         ['name' => 'Haridwar Elmas', 'short' => 'HRE', 'type' => 'upl', 'badge' => '🔱', 'color' => '#ea580c', 'captain' => '', 'aliases' => ['Haridwar Spring Elmas', 'Haridwar']],
         ['name' => 'Nainital Tigers', 'short' => 'NTT', 'type' => 'upl', 'badge' => '🐯', 'color' => '#16a34a', 'captain' => '', 'aliases' => ['Nainital SG Tigers', 'Nainital']],
+        ['name' => 'Sharjah', 'short' => 'SHA', 'type' => 'ed10', 'badge' => '🇦🇪', 'color' => '#dc2626', 'captain' => '', 'aliases' => ['Sharjah D10']],
+        ['name' => 'Dubai', 'short' => 'DUB', 'type' => 'ed10', 'badge' => '🏙️', 'color' => '#0ea5e9', 'captain' => '', 'aliases' => ['Dubai D10']],
+        ['name' => 'Ajman', 'short' => 'AJM', 'type' => 'ed10', 'badge' => '🟡', 'color' => '#eab308', 'captain' => '', 'aliases' => ['AJT']],
+        ['name' => 'Fujairah', 'short' => 'FUJ', 'type' => 'ed10', 'badge' => '🟢', 'color' => '#16a34a', 'captain' => '', 'aliases' => ['Fuj']],
+        ['name' => 'Abu Dhabi', 'short' => 'ABD', 'type' => 'ed10', 'badge' => '⚪', 'color' => '#94a3b8', 'captain' => '', 'aliases' => ['Aby Dhabi']],
+        ['name' => 'Emirates Blues', 'short' => 'EMB', 'type' => 'ed10', 'badge' => '🔵', 'color' => '#2563eb', 'captain' => '', 'aliases' => ['Emirates Blue', 'E Blues', 'Blues']],
+        ['name' => 'Emirates Red', 'short' => 'EMR', 'type' => 'ed10', 'badge' => '🔴', 'color' => '#ef4444', 'captain' => '', 'aliases' => ['Emirates Reds', 'E Reds', 'Reds']],
+        ['name' => 'NSW Breakers', 'short' => 'NSW-W', 'type' => 'wncl', 'badge' => '🔵', 'color' => '#1d4ed8', 'captain' => '', 'aliases' => ['New South Wales Women', 'NSW Women', 'NSW-W']],
+        ['name' => 'Queensland Fire', 'short' => 'QLD-W', 'type' => 'wncl', 'badge' => '🟤', 'color' => '#b45309', 'captain' => '', 'aliases' => ['Queensland Women', 'QLD Women', 'Qld Women']],
+        ['name' => 'Victoria Women', 'short' => 'VIC-W', 'type' => 'wncl', 'badge' => '🔷', 'color' => '#2563eb', 'captain' => '', 'aliases' => ['VIC-W', 'VIC Women']],
+        ['name' => 'South Australia Women', 'short' => 'SOA-W', 'type' => 'wncl', 'badge' => '🔴', 'color' => '#dc2626', 'captain' => '', 'aliases' => ['South Australian Scorpions', 'SAust Women', 'SOA-W']],
+        ['name' => 'Western Australia Women', 'short' => 'WA-W', 'type' => 'wncl', 'badge' => '🟡', 'color' => '#ca8a04', 'captain' => '', 'aliases' => ['WA Women', 'WAWMN', 'Western Australia W']],
+        ['name' => 'Tasmania Women', 'short' => 'TAS-W', 'type' => 'wncl', 'badge' => '🟢', 'color' => '#16a34a', 'captain' => '', 'aliases' => ['Tasmanian Tigers Women', 'TAS-W', 'Tasmania W']],
+        ['name' => 'ACT Meteors', 'short' => 'ACT-W', 'type' => 'wncl', 'badge' => '🟣', 'color' => '#7c3aed', 'captain' => '', 'aliases' => ['ACT Women', 'Australian Capital Territory Women', 'ACTW']],
+        ['name' => 'White Rock Warriors', 'short' => 'WRW', 'type' => 'cs60', 'badge' => '⚔️', 'color' => '#64748b', 'captain' => 'Chris Greaves', 'aliases' => ['Whiterock Warriors', 'White Rock', 'Whiterock']],
+        ['name' => 'Brampton Blitz', 'short' => 'BRB', 'type' => 'cs60', 'badge' => '⚡', 'color' => '#f97316', 'captain' => 'Saad Bin Zafar', 'aliases' => ['Brampton', 'BBZ']],
+        ['name' => 'Mississauga Masters', 'short' => 'MGM', 'type' => 'cs60', 'badge' => '🎯', 'color' => '#0ea5e9', 'captain' => 'Imad Wasim', 'aliases' => ['Mississauga']],
+        ['name' => 'Montreal Royal Tigers', 'short' => 'MRT', 'type' => 'cs60', 'badge' => '🐯', 'color' => '#eab308', 'captain' => 'Dilon Heyliger', 'aliases' => ['Montreal Royal Tiger', 'Montreal', 'Royal Tigers']],
+        ['name' => 'Toronto Sixers', 'short' => 'TSX', 'type' => 'cs60', 'badge' => '6️⃣', 'color' => '#2563eb', 'captain' => 'Daniel Sams', 'aliases' => ['Sixers', 'TTS']],
+        ['name' => 'Vancouver Anchors', 'short' => 'VAN', 'type' => 'cs60', 'badge' => '⚓', 'color' => '#06b6d4', 'captain' => 'Martin Guptill', 'aliases' => ['Vancouver Kings', 'Vancouver', 'Anchors', 'VCK']],
+        ['name' => 'Toronto Sixers Women', 'short' => 'TSX-W', 'type' => 'cs60', 'badge' => '💠', 'color' => '#60a5fa', 'captain' => '', 'aliases' => ['Toronto W', 'Sixers Women']],
+        ['name' => 'Vancouver Warriors Women', 'short' => 'VW-W', 'type' => 'cs60', 'badge' => '🛡️', 'color' => '#c084fc', 'captain' => '', 'aliases' => ['Vancouver W', 'Warriors Women']],
+        ['name' => 'Vancouver Anchors Women', 'short' => 'VAN-W', 'type' => 'cs60', 'badge' => '⚓', 'color' => '#67e8f9', 'captain' => '', 'aliases' => ['Anchors Women']],
         ['name' => 'Eastern Storm', 'short' => 'ESTORM', 'type' => 'odi', 'badge' => '⚡', 'color' => '#7c3aed', 'captain' => ''],
         ['name' => 'Border', 'short' => 'BOR', 'type' => 'odi', 'badge' => '🛡️', 'color' => '#0f766e', 'captain' => ''],
         ['name' => 'Uganda', 'short' => 'UGA', 'type' => 'international', 'badge' => '🇺🇬', 'color' => '#eab308', 'captain' => 'Riazat Ali Shah'],
@@ -160,11 +183,61 @@ function same_fixture_row(array $m, string $nA, string $nB, string $date): bool
         || (history_side_hit($a, $nB) && history_side_hit($b, $nA));
 }
 
+function closed_featured_leagues(): array
+{
+    return ['cs60', 'ed10', 'wncl', 'odisha', 'wapl', 'upl'];
+}
+
+function extra_team_type_exact(string $name): string
+{
+    $norm = normalize_name($name);
+    if ($norm === '') {
+        return '';
+    }
+    foreach (extra_teams() as $t) {
+        $cands = array_merge([$t['name'] ?? '', $t['short'] ?? ''], $t['aliases'] ?? []);
+        foreach ($cands as $c) {
+            if ($c !== '' && normalize_name((string) $c) === $norm) {
+                return (string) ($t['type'] ?? '');
+            }
+        }
+    }
+    return '';
+}
+
+function history_row_for_league(array $m, string $league): bool
+{
+    $league = strtolower(trim($league));
+    if ($league === '' || !in_array($league, closed_featured_leagues(), true)) {
+        return true;
+    }
+    $rowL = strtolower((string) ($m['league'] ?? ''));
+    if ($rowL === $league) {
+        return true;
+    }
+    $a = extra_team_type_exact((string) ($m['teamA'] ?? ''));
+    $b = extra_team_type_exact((string) ($m['teamB'] ?? ''));
+    return $a === $league && $b === $league;
+}
+
 function local_completed_history_rows(): array
 {
     $ovr = read_json(data_path('overrides.json'), ['toss' => []]);
     $tossMap = is_array($ovr['toss'] ?? null) ? $ovr['toss'] : [];
     $rows = [];
+    $push = function (array $m, string $date) use (&$rows, $tossMap) {
+        $k1 = strtolower(match_key($m['teamA'] ?? '', $m['teamB'] ?? '', $date));
+        $k2 = strtolower(match_key($m['teamB'] ?? '', $m['teamA'] ?? '', $date));
+        if (isset($tossMap[$k1]) && is_array($tossMap[$k1])) {
+            $m = array_merge($m, $tossMap[$k1]);
+        } elseif (isset($tossMap[$k2]) && is_array($tossMap[$k2])) {
+            $m = array_merge($m, $tossMap[$k2]);
+        }
+        if (empty($m['tossWinner'])) {
+            return;
+        }
+        $rows[] = history_row_from_match($m, $date);
+    };
     foreach ([read_json(data_path('fixtures.json'), []), read_json(data_path('custom.json'), [])] as $byDate) {
         if (!is_array($byDate)) {
             continue;
@@ -174,20 +247,22 @@ function local_completed_history_rows(): array
                 continue;
             }
             foreach ($matches as $m) {
-                if (!is_array($m)) {
-                    continue;
+                if (is_array($m)) {
+                    $push($m, (string) $date);
                 }
-                $k1 = strtolower(match_key($m['teamA'] ?? '', $m['teamB'] ?? '', (string) $date));
-                $k2 = strtolower(match_key($m['teamB'] ?? '', $m['teamA'] ?? '', (string) $date));
-                if (isset($tossMap[$k1]) && is_array($tossMap[$k1])) {
-                    $m = array_merge($m, $tossMap[$k1]);
-                } elseif (isset($tossMap[$k2]) && is_array($tossMap[$k2])) {
-                    $m = array_merge($m, $tossMap[$k2]);
+            }
+        }
+    }
+    $log = read_json(data_path('day_log.json'), []);
+    if (is_array($log)) {
+        foreach ($log as $date => $matches) {
+            if (!is_array($matches)) {
+                continue;
+            }
+            foreach ($matches as $m) {
+                if (is_array($m)) {
+                    $push($m, (string) $date);
                 }
-                if (empty($m['tossWinner'])) {
-                    continue;
-                }
-                $rows[] = history_row_from_match($m, (string) $date);
             }
         }
     }
@@ -587,10 +662,13 @@ function history_side_hit(string $side, string $norm): bool
     return $prefix === '';
 }
 
-function team_recent(string $norm, int $limit = 10): array
+function team_recent(string $norm, int $limit = 10, string $league = ''): array
 {
     $out = [];
     foreach (load_history() as $m) {
+        if ($league !== '' && !history_row_for_league($m, $league)) {
+            continue;
+        }
         if (history_side_hit($m['nA'] ?? '', $norm) || history_side_hit($m['nB'] ?? '', $norm)) {
             $out[] = $m;
             if (count($out) >= $limit) {
@@ -601,10 +679,13 @@ function team_recent(string $norm, int $limit = 10): array
     return $out;
 }
 
-function h2h_recent(string $a, string $b, int $limit = 15): array
+function h2h_recent(string $a, string $b, int $limit = 15, string $league = ''): array
 {
     $out = [];
     foreach (load_history() as $m) {
+        if ($league !== '' && !history_row_for_league($m, $league)) {
+            continue;
+        }
         $ab = history_side_hit($m['nA'] ?? '', $a) && history_side_hit($m['nB'] ?? '', $b);
         $ba = history_side_hit($m['nA'] ?? '', $b) && history_side_hit($m['nB'] ?? '', $a);
         if ($ab || $ba) {
@@ -715,11 +796,14 @@ function opponent_name(array $m, string $norm): string
     return $m['teamA'] ?? 'opponent';
 }
 
-function team_toss_record(string $norm, string $skipA = '', string $skipB = '', string $skipDate = ''): array
+function team_toss_record(string $norm, string $skipA = '', string $skipB = '', string $skipDate = '', string $league = ''): array
 {
     $played = $won = $bat = $bowl = 0;
     $recent = [];
     foreach (load_history() as $m) {
+        if ($league !== '' && !history_row_for_league($m, $league)) {
+            continue;
+        }
         if (!history_side_hit($m['nA'] ?? '', $norm) && !history_side_hit($m['nB'] ?? '', $norm)) {
             continue;
         }
@@ -765,23 +849,23 @@ function team_toss_record(string $norm, string $skipA = '', string $skipB = '', 
     ];
 }
 
-function analyze_toss(string $teamA, string $teamB, string $venue = '', string $date = ''): array
+function analyze_toss(string $teamA, string $teamB, string $venue = '', string $date = '', string $league = ''): array
 {
     $tA = find_team($teamA);
     $tB = find_team($teamB);
     $nA = normalize_name($teamA);
     $nB = normalize_name($teamB);
-    $recentA = array_values(array_filter(team_recent($nA, 14), fn($m) => !same_fixture_row($m, $nA, $nB, $date)));
-    $recentB = array_values(array_filter(team_recent($nB, 14), fn($m) => !same_fixture_row($m, $nA, $nB, $date)));
-    $h2h = array_values(array_filter(h2h_recent($nA, $nB, 18), fn($m) => !same_fixture_row($m, $nA, $nB, $date)));
+    $recentA = array_values(array_filter(team_recent($nA, 14, $league), fn($m) => !same_fixture_row($m, $nA, $nB, $date)));
+    $recentB = array_values(array_filter(team_recent($nB, 14, $league), fn($m) => !same_fixture_row($m, $nA, $nB, $date)));
+    $h2h = array_values(array_filter(h2h_recent($nA, $nB, 18, $league), fn($m) => !same_fixture_row($m, $nA, $nB, $date)));
     $recentA = array_slice($recentA, 0, 10);
     $recentB = array_slice($recentB, 0, 10);
     $h2h = array_slice($h2h, 0, 15);
     $venueStats = venue_profile($venue);
     $homeA = is_home_team($teamA, $venueStats);
     $homeB = is_home_team($teamB, $venueStats);
-    $recA = team_toss_record($nA, $nA, $nB, $date);
-    $recB = team_toss_record($nB, $nA, $nB, $date);
+    $recA = team_toss_record($nA, $nA, $nB, $date, $league);
+    $recB = team_toss_record($nB, $nA, $nB, $date, $league);
 
     $last5A = array_slice($recentA, 0, 5);
     $last5B = array_slice($recentB, 0, 5);

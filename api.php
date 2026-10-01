@@ -480,7 +480,7 @@ function enrich_match(array $m, string $date): array
     $tossTime = $m['tossTime'] ?? toss_time_from_match($time);
     $mins = minutes_until_toss($date, $tossTime);
     $status = strtoupper($m['status'] ?? 'UPCOMING');
-    $analysis = analyze_toss($teamA, $teamB, $m['venue'] ?? '', $date);
+    $analysis = analyze_toss($teamA, $teamB, $m['venue'] ?? '', $date, (string) ($m['league'] ?? ''));
     $tossWinner = $m['tossWinner'] ?? null;
 
     if ($tossWinner) {
@@ -626,10 +626,11 @@ function collect_source_rows(array $store, array $log, string $date): array
         }
         $m = apply_field_override($m, $fields, $date);
         foreach ($rows as $i => $ex) {
-            $same = (sides_match($ex['teamA'] ?? '', $m['teamA'] ?? '') && sides_match($ex['teamB'] ?? '', $m['teamB'] ?? ''))
-                || (sides_match($ex['teamA'] ?? '', $m['teamB'] ?? '') && sides_match($ex['teamB'] ?? '', $m['teamA'] ?? ''))
-                || (!empty($m['id']) && ($ex['id'] ?? '') === $m['id']);
-            if (!$same) {
+            $sameId = !empty($m['id']) && ($ex['id'] ?? '') === $m['id'];
+            $sameSides = (sides_match($ex['teamA'] ?? '', $m['teamA'] ?? '') && sides_match($ex['teamB'] ?? '', $m['teamB'] ?? ''))
+                || (sides_match($ex['teamA'] ?? '', $m['teamB'] ?? '') && sides_match($ex['teamB'] ?? '', $m['teamA'] ?? ''));
+            $sameSlot = abs(parse_ist_minutes($ex['time'] ?? '') - parse_ist_minutes($m['time'] ?? '')) <= 25;
+            if (!$sameId && !($sameSides && $sameSlot)) {
                 continue;
             }
             if (!empty($m['userEdited']) || !empty($m['userToss'])) {
@@ -710,6 +711,15 @@ function guess_live_league(array $lm): string
     if (str_contains($blob, 'uttarakhand premier') || str_contains($blob, 'pithoragarh') || str_contains($blob, 'bageshwar') || str_contains($blob, 'mussoorie') || str_contains($blob, 'dehradun warriors') || str_contains($blob, 'haridwar elmas') || str_contains($blob, 'nainital tigers')) {
         return 'upl';
     }
+    if (str_contains($blob, 'emirates d10') || str_contains($blob, 'dafa news d10') || str_contains($blob, 'seven districts') || str_contains($blob, 'emirates blues') || str_contains($blob, 'emirates red') || str_contains($blob, 'fujairah') || str_contains($blob, 'ajman')) {
+        return 'ed10';
+    }
+    if (str_contains($blob, 'wncl') || str_contains($blob, 'women\'s national cricket') || str_contains($blob, 'womens national cricket') || str_contains($blob, 'nsw breakers') || str_contains($blob, 'queensland fire') || str_contains($blob, 'act meteors') || str_contains($blob, 'tasmanian tigers w')) {
+        return 'wncl';
+    }
+    if (str_contains($blob, 'super 60') || str_contains($blob, 'super60') || str_contains($blob, 'cans60') || str_contains($blob, 'brampton blitz') || str_contains($blob, 'mississauga masters') || str_contains($blob, 'white rock') || str_contains($blob, 'whiterock') || str_contains($blob, 'vancouver anchors') || str_contains($blob, 'vancouver kings') || str_contains($blob, 'vancouver warriors') || str_contains($blob, 'toronto sixers') || str_contains($blob, 'montreal royal')) {
+        return 'cs60';
+    }
     if (str_contains($blob, 'women') && str_contains($blob, 'odi')) {
         return 'women_odi';
     }
@@ -749,7 +759,7 @@ function live_row_as_fixture(array $lm, string $date): array
         'teamB' => $lm['teamB'],
         'league' => $league,
         'tournament' => $lm['title'] ?: (($lm['teamA'] ?? '') . ' vs ' . ($lm['teamB'] ?? '')),
-        'format' => str_contains(strtolower($lm['title'] ?? ''), 'odi') ? 'ODI' : (str_contains(strtolower($lm['title'] ?? ''), 'test') ? 'Test' : 'T20'),
+        'format' => (str_contains(strtolower($lm['title'] ?? ''), 'odi') ? 'ODI' : (str_contains(strtolower($lm['title'] ?? ''), 'test') ? 'Test' : ((str_contains(strtolower($lm['title'] ?? ''), 'd10') || str_contains(strtolower($lm['title'] ?? ''), 't10') || str_contains(strtolower($lm['title'] ?? ''), 'super 60') || str_contains(strtolower($lm['title'] ?? ''), 'super60')) ? 'T10' : 'T20'))),
         'time' => $lm['time'] ?? ($status === 'LIVE' ? '10:00 AM IST' : '07:30 PM IST'),
         'venue' => $lm['venue'] ?: 'International Cricket Ground',
         'status' => $status === 'COMPLETED' ? 'COMPLETED' : ($status === 'LIVE' ? 'LIVE' : 'UPCOMING'),
@@ -1045,7 +1055,7 @@ try {
             if ($teamA === '' || $teamB === '') {
                 json_ok(['error' => 'Both teams required'], 400);
             }
-            $analysis = analyze_toss($teamA, $teamB, $venue, ist_today());
+            $analysis = analyze_toss($teamA, $teamB, $venue, ist_today(), trim($_GET['league'] ?? $_POST['league'] ?? ''));
             $tmp = [
                 'id' => 'sim_' . md5($teamA . '|' . $teamB),
                 'teamA' => $teamA,
