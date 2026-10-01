@@ -905,8 +905,8 @@ function openTossModal(m) {
 
 async function saveToss(winner) {
   if (!tossMatch || !winner) return;
-  const decision = m.tossDecision || 'bowl';
   const m = tossMatch;
+  const decision = m.tossDecision || 'bowl';
   closeTossModal();
   await api('set_toss', {
     date: m.date,

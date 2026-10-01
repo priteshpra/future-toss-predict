@@ -1003,7 +1003,7 @@ try {
             if (!$matches && $league !== 'all' && $date === ist_today()) {
                 $matches = collect_day(ist_shift($date, 1), $league);
             }
-            $loadMap = [];
+                $loadMap = [];
             $websiteBoard = ['date' => $date, 'matches' => [], 'listed' => 0];
             $tgFeed = ['posts' => []];
             $nearToss = false;
@@ -1025,17 +1025,17 @@ try {
                 $websiteBoard = build_tossbook_board($tgFeed['posts'] ?? [], $date, $matches);
             } catch (Throwable $e) {
                 $loadMap = [];
-            }
-            foreach ($matches as &$mm) {
+                }
+                foreach ($matches as &$mm) {
                 if (!empty($mm['tossWinner'])) {
                     $mm = apply_frozen_or_strip($mm);
                     continue;
-                }
+                    }
                 $web = website_load_for_match($mm, $websiteBoard['matches'] ?? []);
                 $mm = apply_live_toss_markets($mm, $loadMap[$mm['id']] ?? null, $web);
                 save_live_lock($mm);
-            }
-            unset($mm);
+                }
+                unset($mm);
             $alerts = array_values(array_filter($matches, fn($m) => in_array($m['phase'], ['alert_30', 'toss_now'], true) && empty($m['tossWinner'])));
             json_ok([
                 'date' => $date,
